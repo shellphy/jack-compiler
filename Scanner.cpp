@@ -36,7 +36,7 @@ Scanner* Scanner::getInstance(string sourceFile)
 	return scanner;
 }
 
-TokenType Scanner::searchReserved(string &s)
+Scanner::TokenType Scanner::searchReserved(string &s)
 {
 	for (auto it = begin(reservedWords); it != end(reservedWords); ++it)
 		if (it->lexeme == s)
@@ -79,7 +79,7 @@ void Scanner::scanToken()
 	}
 }
 
-deque<Token> Scanner::getTokens()
+deque<Scanner::Token> Scanner::getTokens()
 {	
 	return tokens;
 }
@@ -95,7 +95,7 @@ void Scanner::output()
 	}
 }
 
-Token Scanner::nextToken()
+Scanner::Token Scanner::nextToken()
 {
 	Token token;
 	unsigned tokenStringIndex = 0;
@@ -348,15 +348,26 @@ Token Scanner::nextToken()
 				break;
 			}
 		case ASSIGN_STATE:
-			rollBack();
-			state = DONE_STATE;
-			break;
+			if (ch == '=')
+			{
+				state = EQ_STATE;
+				token.kind = EQ;
+				token.lexeme += ch;
+				break;
+			}
+			else
+			{
+				rollBack();
+				state = DONE_STATE;
+				break;
+			}
 		case LT_STATE:											// С�ں�״̬
 			if (ch == '=')
 			{
 				state = LE_STATE;
 				token.kind = LE;
 				token.lexeme += ch;
+				break;
 			}
 			else
 			{
