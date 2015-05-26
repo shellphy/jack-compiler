@@ -11,7 +11,6 @@ using namespace std;
 Scanner::Scanner(string sourceFile)
 {
 	row = column = 0;
-	isEof = false;
 	bufferPos = 0;
 	
 	reservedWords[0] = { RESERVEDWORD, "if", 0, 0 };
@@ -91,7 +90,7 @@ void Scanner::output()
 	{
 		auto token = tokens.front();
 		tokens.pop_front();
-		cout << " " << token.lexeme << "\t(" << token.currentRow << ", " << token.currentColumn << ")" << endl;
+		cout << "Kind: " << token.kind << ", " << token.lexeme << "\t(" << token.currentRow << ", " << token.currentColumn << ")" << endl;
 	}
 }
 
@@ -105,7 +104,6 @@ Scanner::Token Scanner::nextToken()
 		char ch = nextChar();
 		if (ch == EOF)
 		{
-			isEof = true;
 			token.kind = ENDOFFILE;
 			break;
 		}
@@ -115,7 +113,7 @@ Scanner::Token Scanner::nextToken()
 			column = bufferPos;
 			if (ch == ' ' || ch == '\t' || ch == '\n')
 				;
-			else if (isalpha(ch))
+			else if (isalpha(ch) || ch == '_')
 			{
 				state = ID_STATE;		// ½øÈë±êÊ¶·û×´Ì¬
 				token.kind = ID;
@@ -279,15 +277,15 @@ Scanner::Token Scanner::nextToken()
 				break;
 			}
 		case ID_STATE:											// ±êÊ¶·û×´Ì¬
-			if (!isalnum(ch))
+			if (isalpha(ch) || isdigit(ch) || ch == '_')
 			{
-				rollBack();
-				state = DONE_STATE;
+				token.lexeme += ch;
 				break;
 			}
 			else
 			{
-				token.lexeme += ch;
+				rollBack();
+				state = DONE_STATE;
 				break;
 			}
 		case LPARAN_STATE:										// ×óÀ¨ºÅ×´Ì¬

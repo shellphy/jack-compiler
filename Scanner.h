@@ -87,7 +87,6 @@ private:
 	unsigned bufferPos;					// 缓冲行的指针
 	unsigned row;						// 标记当前缓冲行在源程序中的行
 	unsigned column;					// 标记当前Token在缓冲行中的列
-	bool isEof;							// 标记是否读取到文件结束
 	deque<Token> tokens;				// 保存源程序中所有的Token
 	ifstream fin;						// 源程序文件的输入流对象
 	
