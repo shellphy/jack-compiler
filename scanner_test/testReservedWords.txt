@@ -1,0 +1,2 @@
+if  else  while  int  float  void  return  string  const
+ifelse   whileint    floatvoid    return    string  conststring
