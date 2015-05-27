@@ -13,4 +13,4 @@
     float = interger(.digit+) | interger((E|e)digit+) | interger(.digit+)((E|e)digit+)
     string = "(^")*"
     identifier = letter(letter|digit)*
-    reserved_words = if | else | while | int | float | void | return | string
+    reserved words = if | else | while | int | float | void | return | string
