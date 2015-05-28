@@ -81,16 +81,6 @@ void Scanner::scanToken()
 	}
 }
 
-bool Scanner::isLegalSymbol(char ch)
-{
-	if (ch == ' ' || ch == '\n' || ch == '\t' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '<' || ch == '='
-		|| ch == '>' || ch == '!' || ch == ';' || ch == ',' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{'
-		|| ch == '}' || ch == '"' || ch == '\'')
-		return true;
-	else
-		return false;
-}
-
 deque<Scanner::Token> Scanner::getTokens()
 {
 	return tokens;
@@ -432,7 +422,7 @@ Scanner::Token Scanner::nextToken()
 				token.kind = FLOAT;
 				token.lexeme += ch;
 			}
-			else if (isLegalSymbol(ch))
+			else if (ch == ' ' || ch == '\n' || ch == '\t')
 			{
 				rollBack();
 				state = DONE_STATE;
@@ -465,7 +455,7 @@ Scanner::Token Scanner::nextToken()
 			token.lexeme += ch;
 			break;
 		case CHAR_STATE:										// ×Ö·û×´Ì¬
-			if (ch != '\\' & ch != '\'')
+			if (ch != '\\' && ch != '\'')
 			{
 				state = CHAR_STATE_A;
 				token.lexeme += ch;

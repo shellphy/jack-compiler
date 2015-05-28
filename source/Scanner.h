@@ -104,7 +104,6 @@ private:
 	deque<Token> tokens;				// 保存源程序中所有的Token
 	ifstream fin;						// 源程序文件的输入流对象
 
-	bool isLegalSymbol(char ch);		// 合法的符号
 	Scanner(string sourceFile);			// 构造函数
 	char nextChar();					// 返回缓冲区中的下一个字符
 	void rollBack();					// 回滚缓冲区
