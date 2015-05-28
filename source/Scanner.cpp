@@ -363,7 +363,7 @@ Scanner::Token Scanner::nextToken()
 				token.lexeme += ch;
 				break;
 			}
-			else if (isLegalSymbol(ch))
+			else if (ch == ' ' || ch == '\n' || ch == '\t')
 			{
 				rollBack();
 				state = DONE_STATE;
@@ -380,7 +380,7 @@ Scanner::Token Scanner::nextToken()
 			{
 				token.lexeme += ch;
 			}
-			else if (isLegalSymbol(ch))
+			else if (ch == ' ' || ch == '\n' || ch == '\t')
 			{
 				rollBack();
 				state = DONE_STATE;
