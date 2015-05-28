@@ -370,7 +370,7 @@ Scanner::Token Scanner::nextToken()
 			{
 				token.lexeme += ch;
 			}
-			else if (ch == ' ' || ch == '\n' || ch == '\t')
+			else if (ch == ' ' || ch == '\n' || ch == '\t' || ch == '(')
 			{
 				rollBack();
 				state = DONE_STATE;
