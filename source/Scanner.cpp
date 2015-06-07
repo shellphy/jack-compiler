@@ -12,16 +12,7 @@ Scanner::Scanner(string sourceFile)
 {
 	row = column = 0;
 	bufferPos = 0;
-
-	reservedWords[0] = { RESERVEDWORD, "if", 0, 0 };
-	reservedWords[1] = { RESERVEDWORD, "else", 0, 0 };
-	reservedWords[2] = { RESERVEDWORD, "int", 0, 0 };
-	reservedWords[3] = { RESERVEDWORD, "return", 0, 0 };
-	reservedWords[4] = { RESERVEDWORD, "void", 0, 0 };
-	reservedWords[5] = { RESERVEDWORD, "while", 0, 0 };
-	reservedWords[6] = { RESERVEDWORD, "float", 0, 0};
-	reservedWords[7] = { RESERVEDWORD, "string", 0, 0 };
-	reservedWords[8] = { RESERVEDWORD, "const", 0, 0};
+	tokens = new(deque<Token>);
 
 	fin.open(sourceFile.c_str());
 	if (fin.fail())
@@ -30,6 +21,7 @@ Scanner::Scanner(string sourceFile)
 			<< sourceFile << "不存在" << std::endl;
 		exit(-1);
 	}
+	scanToken();
 }
 
 Scanner* Scanner::getInstance(string sourceFile)
@@ -40,10 +32,32 @@ Scanner* Scanner::getInstance(string sourceFile)
 
 Scanner::TokenType Scanner::searchReserved(string &s)
 {
-	for (auto it = begin(reservedWords); it != end(reservedWords); ++it)
-		if (it->lexeme == s)
-			return it->kind;
-	return ID;
+	if (s == "if")
+		return RW_IF;
+	else if (s == "else")
+		return RW_ELSE;
+	else if (s == "void")
+		return RW_VOID;
+	else if (s == "int")
+		return RW_INT;
+	else if (s == "float")
+		return RW_FLOAT;
+	else if (s == "while")
+		return RW_WHILE;
+	else if (s == "break")
+		return RW_BREAK;
+	else if (s == "continue")
+		return RW_CONTINUE;
+	else if (s == "return")
+		return RW_RETURN;
+	else if (s == "string")
+		return RW_STRING;
+	else if (s == "char")
+		return RW_CHAR;
+	else if (s == "const")
+		return RW_CONST;
+	else
+		return ID;
 }
 
 char Scanner::nextChar()
@@ -55,14 +69,24 @@ char Scanner::nextChar()
 		lineBuffer += '\n';
 		if (!fin.fail())
 		{
-			bufferPos = 0;
+			bufferPos = column = 0;
+			if (lineBuffer[bufferPos] == '\t')
+				column += 4;
+			else
+				column++;
 			return lineBuffer[bufferPos++];
 		}
 		else
 			return EOF;
 	}
 	else
+	{
+		if (lineBuffer[bufferPos] == '\t')
+			column += 8;
+		else
+			column++;
 		return lineBuffer[bufferPos++];
+	}
 }
 
 void Scanner::rollBack()
@@ -76,12 +100,13 @@ void Scanner::scanToken()
 	Token token = nextToken();
 	while (token.kind != ENDOFFILE)
 	{
-		tokens.push_back(token);
+		tokens->push_back(token);
 		token = nextToken();
 	}
+	tokens->push_back(token);
 }
 
-deque<Scanner::Token> Scanner::getTokens()
+deque<Scanner::Token> * Scanner::getTokens()
 {
 	return tokens;
 }
@@ -89,13 +114,14 @@ deque<Scanner::Token> Scanner::getTokens()
 void Scanner::output()
 {
 	ofstream fout("ScannerOutput.txt");
-	scanToken();
-	while (!tokens.empty())
+	while (!tokens->empty())
 	{
-		auto token = tokens.front();
-		tokens.pop_front();
+		auto token = tokens->front();
+		tokens->pop_front();
 		string kind;
-		if (token.kind == RESERVEDWORD)
+		if (token.kind == RW_IF || token.kind == RW_ELSE || token.kind == RW_VOID || token.kind == RW_INT || 
+			token.kind == RW_FLOAT ||token.kind == RW_STRING || token.kind == RW_CHAR || token.kind == RW_CONST || 
+			token.kind == RW_WHILE || token.kind == RW_BREAK || token.kind == RW_CONTINUE || token.kind == RW_RETURN)
 			cout << "关键字: ";
 		else if (token.kind == ID)
 			cout << "标识符: ";
@@ -167,7 +193,6 @@ Scanner::Token Scanner::nextToken()
 		switch (state)
 		{
 		case START_STATE:										// 开始状态
-			column = bufferPos;
 			if (ch == ' ' || ch == '\t' || ch == '\n')
 				;
 			else if (isalpha(ch) || ch == '_')
@@ -351,18 +376,11 @@ Scanner::Token Scanner::nextToken()
 			{
 				state = E_FLOAT_STATE;
 				token.lexeme += ch;
-				break;
-			}
-			else if (ch == ' ' || ch == '\n' || ch == '\t')
-			{
-				rollBack();
-				state = DONE_STATE;
 			}
 			else
 			{
-				state = ERROR_STATE;
-				token.kind = ERROR;
-				token.lexeme += ch;
+				rollBack();
+				state = DONE_STATE;
 			}
 			break;
 		case ID_STATE:											// 标识符状态
@@ -370,16 +388,10 @@ Scanner::Token Scanner::nextToken()
 			{
 				token.lexeme += ch;
 			}
-			else if (ch == ' ' || ch == '\n' || ch == '\t' || ch == '(')
+			else
 			{
 				rollBack();
 				state = DONE_STATE;
-			}
-			else
-			{
-				state = ERROR_STATE;
-				token.kind = ERROR;
-				token.lexeme += ch;
 			}
 			break;
 		case D_FLOAT_STATE:										// 接近带小数点的浮点数状态
@@ -422,16 +434,10 @@ Scanner::Token Scanner::nextToken()
 				token.kind = FLOAT;
 				token.lexeme += ch;
 			}
-			else if (ch == ' ' || ch == '\n' || ch == '\t')
+			else
 			{
 				rollBack();
 				state = DONE_STATE;
-			}
-			else
-			{
-				state = ERROR_STATE;
-				token.kind = ERROR;
-				token.lexeme += ch;
 			}
 			break;
 		case STRING_STATE:										// 字符串状态
@@ -477,7 +483,6 @@ Scanner::Token Scanner::nextToken()
 			if (ch == '\'')
 			{
 				state = DONE_STATE;
-				//token.lexeme += ch;
 			}
 			else
 			{
@@ -509,7 +514,6 @@ Scanner::Token Scanner::nextToken()
 			if (ch == '\'')
 			{
 				state = DONE_STATE;
-				//token.lexeme += ch;
 			}
 			else
 			{
@@ -592,6 +596,11 @@ Scanner::Token Scanner::nextToken()
 				state = DONE_STATE;
 				break;
 			}
+		case EQ_STATE:											// 等于号状态
+			rollBack();
+			token.kind = EQ;
+			state = DONE_STATE;
+			break;
 		case LT_STATE:											// 小于号状态
 			if (ch == '=')
 			{
@@ -638,14 +647,17 @@ Scanner::Token Scanner::nextToken()
 		case LE_STATE:											// 小于等于号状态
 			rollBack();
 			token.kind = LE;
+			state = DONE_STATE;
 			break;
 		case GE_STATE:											// 大于等于号状态
 			rollBack();
 			token.kind = GE;
+			state = DONE_STATE;
 			break;
 		case NEQ_STATE:											// 不等于号状态
 			rollBack();
 			token.kind = NEQ;
+			state = DONE_STATE;
 			break;
 		case ERROR_STATE:										// 错误状态
 			if (ch == ' ' || ch == '\n' || ch == '\t')

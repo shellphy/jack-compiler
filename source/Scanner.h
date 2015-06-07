@@ -55,13 +55,13 @@ private:
 public:
 	enum TokenType
 	{
-		RESERVEDWORD,	// 保留字	
+		// 保留字	
+		RW_IF, RW_ELSE, RW_INT, RW_RETURN, RW_VOID, RW_FLOAT, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_STRING, RW_CONST, RW_CHAR,
 		ID,				// 标识符
 		INT,			// 整型数字
 		FLOAT,			// 浮点数
 		CHAR,			// 字符
 		STRING,			// 字符串
-		
 
 		// 特殊符号
 		PLUS,		// 加										+
@@ -87,7 +87,6 @@ public:
 		ERROR,		// 错误
 		ENDOFFILE	// 文件结束
 	};
-private:
 	struct Token
 	{
 		TokenType kind;				// Token的类型
@@ -95,24 +94,23 @@ private:
 		unsigned currentRow;	   	// 当前行
 		unsigned currentColumn;		// 当前列
 	};
-
-	Token reservedWords[9];				// 保留字组数
+private:
 	string lineBuffer;					// 缓冲行, 保存源程序中的一行数据
 	unsigned bufferPos;					// 缓冲行的指针
 	unsigned row;						// 标记当前缓冲行在源程序中的行
 	unsigned column;					// 标记当前Token在缓冲行中的列
-	deque<Token> tokens;				// 保存源程序中所有的Token
+	deque<Token> *tokens;				// 保存源程序中所有的Token
 	ifstream fin;						// 源程序文件的输入流对象
 
 	Scanner(string sourceFile);			// 构造函数
 	char nextChar();					// 返回缓冲区中的下一个字符
 	void rollBack();					// 回滚缓冲区
-	Token nextToken();					// 返回下一个Token
 	void scanToken();					// 扫描所有的Token, 保存到tokens中
 	TokenType searchReserved(string &s);	// 查找关键字
+	Token nextToken();					// 返回下一个Token
 public:
 	static Scanner* getInstance(string sourceFile = "input.c");	// 创建Scanner的单实例
-	deque<Token> getTokens();		// 返回源程序中所有的Token
+	deque<Token> * getTokens();		// 返回源程序中所有的Token
 
 	// 测试函数
 	void output();					// 输出源程序中的所有Token
