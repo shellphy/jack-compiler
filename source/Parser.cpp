@@ -7,6 +7,12 @@
 using namespace std;
 
 unsigned int Parser::errorNumbers = 1;
+Parser * Parser::instance = new Parser();
+
+void Parser::print()
+{
+	printSyntaxTree(syntaxTree);
+}
 
 void Parser::printSyntaxTree(Parser::TreeNode *tree)
 {
@@ -81,13 +87,18 @@ void Parser::printSyntaxTree(Parser::TreeNode *tree)
 	indentno -= 2;
 }
 
-Parser::Parser(string s)
+Parser::Parser()
 {
-	scanner = Scanner::getInstance(s);
+
+}
+
+void Parser::parse(string filename)
+{
+	scanner = Scanner::getInstance();
+	scanner->scanToken(filename);
 	tokens = scanner->getTokens();
 	syntaxTree = parse_program();
 	cout << "**************************syntaxTree*****************************" << endl;
-	printSyntaxTree(syntaxTree);
 }
 
 void Parser::syntaxError(string want, string got)
@@ -103,10 +114,9 @@ Parser::TreeNode * Parser::getSyntaxTree()
 	return syntaxTree;
 }
 
-Parser* Parser::getInstance(string s)
+Parser* Parser::getInstance()
 {
-	Parser *parser = new Parser(s);
-	return parser;
+	return instance;
 }
 
 void Parser::readNextToken()

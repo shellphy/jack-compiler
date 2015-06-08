@@ -9,7 +9,9 @@ int main(int argc, char *argv[])
 		cerr << "usage: " << argv[0] << " <filename>" << endl;
 		exit(-1);
 	}
-	auto parser = Parser::getInstance(argv[1]);
+	auto parser = Parser::getInstance();
+	parser->parse(argv[1]);
+	parser->print();
 
 	return 0;
 }

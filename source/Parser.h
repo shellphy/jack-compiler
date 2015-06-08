@@ -43,7 +43,8 @@ private:
 	deque<Scanner::Token> *tokens;
 	Scanner::Token currentToken, secondToken, thirdToken;
 	
-	Parser(string);
+	Parser();
+	static Parser *instance;
 	static unsigned int errorNumbers;
 	void syntaxError(string want, string got);
 
@@ -76,11 +77,12 @@ private:
 	TreeNode * parse_factor();
 	TreeNode * parse_call();
 	TreeNode * parse_args();
-
+	void printSyntaxTree(TreeNode *tree);
 public:
 	TreeNode *getSyntaxTree();
-	void printSyntaxTree(TreeNode *tree);
-	static Parser* getInstance(string s);	// 创建Parser的单实例
+	void print();
+	void parse(string s);
+	static Parser* getInstance();	// 创建Parser的单实例
 };
 
 #endif

@@ -101,17 +101,16 @@ private:
 	unsigned column;					// 标记当前Token在缓冲行中的列
 	deque<Token> *tokens;				// 保存源程序中所有的Token
 	ifstream fin;						// 源程序文件的输入流对象
-
-	Scanner(string sourceFile);			// 构造函数
+	static Scanner *instance;					// 单实例
+	Scanner();							// 构造函数
 	char nextChar();					// 返回缓冲区中的下一个字符
 	void rollBack();					// 回滚缓冲区
-	void scanToken();					// 扫描所有的Token, 保存到tokens中
 	TokenType searchReserved(string &s);	// 查找关键字
 	Token nextToken();					// 返回下一个Token
 public:
-	static Scanner* getInstance(string sourceFile = "input.c");	// 创建Scanner的单实例
+	static Scanner* getInstance();	// 创建Scanner的单实例
 	deque<Token> * getTokens();		// 返回源程序中所有的Token
-
+	void scanToken(string filename);	// 扫描所有的Token, 保存到tokens中
 	// 测试函数
 	void output();					// 输出源程序中的所有Token
 };

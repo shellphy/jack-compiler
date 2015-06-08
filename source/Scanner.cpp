@@ -8,26 +8,18 @@
 
 using namespace std;
 
-Scanner::Scanner(string sourceFile)
+Scanner * Scanner::instance = new Scanner();
+
+Scanner::Scanner()
 {
 	row = column = 0;
 	bufferPos = 0;
 	tokens = new(deque<Token>);
-
-	fin.open(sourceFile.c_str());
-	if (fin.fail())
-	{
-		std::cerr << "文件打开失败， 文件"
-			<< sourceFile << "不存在" << std::endl;
-		exit(-1);
-	}
-	scanToken();
 }
 
-Scanner* Scanner::getInstance(string sourceFile)
+Scanner* Scanner::getInstance()
 {
-	Scanner *scanner = new Scanner(sourceFile);
-	return scanner;
+	return instance;
 }
 
 Scanner::TokenType Scanner::searchReserved(string &s)
@@ -95,8 +87,16 @@ void Scanner::rollBack()
 	bufferPos--;
 }
 
-void Scanner::scanToken()
+void Scanner::scanToken(string filename)
 {
+	fin.open(filename.c_str());
+	if (fin.fail())
+	{
+		std::cerr << "文件打开失败， 文件"
+			<< filename << "不存在" << std::endl;
+		exit(-1);
+	}
+
 	Token token = nextToken();
 	while (token.kind != ENDOFFILE)
 	{
