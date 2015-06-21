@@ -8,18 +8,17 @@
 
 using namespace std;
 
-Scanner * Scanner::instance = new Scanner();
-
-Scanner::Scanner()
+Scanner::Scanner(string filename)
 {
+	fin.open(filename.c_str());
+	if (fin.fail())
+	{
+		cerr << "file " << filename << " does not exit" << endl;
+		exit(-1);
+	}
 	row = column = 0;
 	bufferPos = 0;
 	tokens = new(deque<Token>);
-}
-
-Scanner* Scanner::getInstance()
-{
-	return instance;
 }
 
 Scanner::TokenType Scanner::searchReserved(string &s)
@@ -87,16 +86,8 @@ void Scanner::rollBack()
 	bufferPos--;
 }
 
-void Scanner::scanToken(string filename)
+void Scanner::scanToken()
 {
-	fin.open(filename.c_str());
-	if (fin.fail())
-	{
-		std::cerr << "文件打开失败， 文件"
-			<< filename << "不存在" << std::endl;
-		exit(-1);
-	}
-
 	Token token = nextToken();
 	while (token.kind != ENDOFFILE)
 	{
@@ -173,6 +164,8 @@ void Scanner::output()
 			cout << "右花括号: ";
 		else if (token.kind == ERROR)
 			cout << "错误的单词: ";
+		else if (token.kind == ENDOFFILE)
+			cout << "文件结束: ";
 		cout << token.lexeme << "\t(" << token.currentRow << ", " << token.currentColumn << ")" << endl;
 	}
 }

@@ -39,13 +39,12 @@ public:
 	};
 private:
 	TreeNode *syntaxTree;
-	Scanner *scanner;
+	Scanner scanner;
 	deque<Scanner::Token> *tokens;
 	Scanner::Token currentToken, secondToken, thirdToken;
 	
-	Parser();
 	static Parser *instance;
-	static unsigned int errorNumbers;
+	unsigned int errorNumbers;
 	void syntaxError(string want, string got);
 
 	void readNextToken();
@@ -79,10 +78,10 @@ private:
 	TreeNode * parse_args();
 	void printSyntaxTree(TreeNode *tree);
 public:
+	Parser(string filename);
 	TreeNode *getSyntaxTree();
 	void print();
-	void parse(string s);
-	static Parser* getInstance();	// 创建Parser的单实例
+	void parse();
 };
 
 #endif
