@@ -162,7 +162,7 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     expression_statement -> expression ; 
                           | ;
     selection_statement -> if ( expression ) statement
-			 | if ( expression ) statement else statement
+                         | if ( expression ) statement else statement
     iteration_statement -> while ( expression ) statement
     return_statement -> return ; 
                       | return expression ;
@@ -173,26 +173,26 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
          | ID [ expression ]
     relational_operator -> <= 
                          | >=
-			 | ==
-			 | <
- 			 | >
-			 | !=
+                         | ==
+                         | <
+                         | >
+                         | !=
     additive_expression -> additive_expression + term
-			 | additive_expression – term
-			 | term
+                         | additive_expression – term
+                         | term
     term -> term * factor
-	  | term / factor
-	  | factor
+          | term / factor
+          | factor
     factor -> ( expression )
             | var
-	    | call
-	    | INT
-	    | FLOAT
-	    | CHAR
+            | call
+            | INT
+            | FLOAT
+            | CHAR
             | STRING
     call -> ID ( args )
     args -> arg_list 
-	  | empty
+          | empty
     arg_list -> arg_list , expression
               | expression
 </pre>
