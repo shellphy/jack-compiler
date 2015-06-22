@@ -125,6 +125,84 @@ int main()
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
 
 <pre>
+    program -> declaration_list
+    declaration_list -> declaration_list declaration
+                      | declaration
+3, declaration  var_declaration
+| function_declaration
+| const_declaration
+4, var_declaration  type ID ;
+	            | type ID [ INT ] ; 					// 声明并定义变量
+5, const_declaration  const type ID ;
+ 				  | const type ID [ INT ] ;		    // 声明并定义常量
+6, type  int
+       | float
+       | void
+       | string
+       | char
+7, function_declaration  type ID ( params ) compound_statement //声明并定义函数
+8, params  param_list 
+         | void
+         | empty
+9, param_list  param_list , param
+           | param										// 
+
+参数列表
+10, param  type ID
+         | type ID [ ]										// 
+
+参数
+11, compound_statement  { local_declarations statement_list }		// 复合语句
+11, local_declarations  local_declarations var_declaration
+                  | empty
+12, statement_list  statement_list statement
+               | empty
+13, statement  expression_statement 		// 表达式语句
+            | compound_statement			// 复合语句
+            | selection_statement			// 选择语句
+	        | iteration_statement			// 迭代语句
+			| return_statement				// 返回语句
+            | assign_statement				// 赋值语句
+14, expression_statement  expression ; 
+                      | ;
+15, selection_statement  if ( expression ) statement
+					| if ( expression ) statement else statement
+17, iteration_statement  while ( expression ) statement
+18, return_statement  return ; 
+                  | return expression ;
+19, expression  additive_expression relational_operator additive_expression
+             | additive_expression
+20, assign_statement  var = expression ;
+21, var  ID
+       | ID [ expression ]
+22, relational_operator  <= 
+                    | >=
+				    | ==
+					| <
+ 					| >
+					| !=
+23, additive_expression  additive_expression + term
+				    | additive_expression – term
+					| term
+24, term  term * factor
+	    | term / factor
+		| factor
+25, factor  ( expression )
+         | var
+		 | call
+		 | INT
+		 | FLOAT
+		 | CHAR
+         | STRING
+26, call  ID ( args )
+27, args  arg_list 
+	    | empty
+28, arg_list  arg_list , expression
+          | expression
+
+
+
+
 prog   -> { decs stms }
 decs   -> dec decs
         |
