@@ -35,6 +35,10 @@ private:
 		NEQ_STATE,			// 不等于状态
 		LT_STATE,			// 小于状态
 		LE_STATE,			// 小于等于状态
+		IN_AND_STATE,		// 接近与状态
+		AND_STATE,			// 与状态
+		IN_OR_STATE,		// 接近或状态
+		OR_STATE,			// 或状态
 		GT_STATE,			// 大于状态
 		GE_STATE,			// 大于等于状态
 		LPARAN_STATE,		// 左括号状态
@@ -56,10 +60,11 @@ public:
 	enum TokenType
 	{
 		// 保留字	
-		RW_IF, RW_ELSE, RW_INT, RW_RETURN, RW_VOID, RW_FLOAT, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_STRING, RW_CONST, RW_CHAR,
+		RW_IF, RW_ELSE, RW_INT, RW_RETURN, RW_VOID, RW_FLOAT, RW_WHILE, RW_BREAK, RW_CONTINUE, RW_STRING, RW_CONST, RW_CHAR, RW_BOOL, RW_TRUE, RW_FALSE,
 		
 		ID,				// 标识符
 		INT,			// 整型数字
+		BOOL,			// 布尔类型
 		FLOAT,			// 浮点数
 		CHAR,			// 字符
 		STRING,			// 字符串
@@ -76,6 +81,8 @@ public:
 		LE,			// 小于等于 less than or equal				<=
 		GT,			// 大于 greater than						>
 		GE,			// 大于等于  greater than or equal			>=
+		AND,		// 与										&&
+		OR,			// 或										||
 		LPARAN,		// 左括号									(
 		RPARAN,		// 右括号									)
 		SEMI,		// 分号										;

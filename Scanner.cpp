@@ -23,7 +23,13 @@ Scanner::Scanner(string filename)
 
 Scanner::TokenType Scanner::searchReserved(string &s)
 {
-	if (s == "if")
+	if (s == "bool")
+		return RW_BOOL;
+	else if (s == "true")
+		return RW_TRUE;
+	else if (s == "false")
+		return RW_FALSE;
+	else if (s == "if")
 		return RW_IF;
 	else if (s == "else")
 		return RW_ELSE;
@@ -331,6 +337,20 @@ Scanner::Token Scanner::nextToken()
 				token.currentRow = row;
 				token.currentColumn = column;
 			}
+			else if (ch == '&')
+			{
+				state = IN_AND_STATE;	// 进入接近与状态
+				token.lexeme += ch;
+				token.currentRow = row;
+				token.currentColumn = column;
+			}
+			else if (ch == '|')
+			{
+				state = IN_OR_STATE;	// 进入接近或状态
+				token.lexeme += ch;
+				token.currentRow = row;
+				token.currentColumn = column;
+			}
 			else if (ch == '"')
 			{
 				state = STRING_STATE;	// 进入字符串状态
@@ -342,7 +362,6 @@ Scanner::Token Scanner::nextToken()
 			{
 				state = CHAR_STATE;
 				token.kind = CHAR;
-				//token.lexeme += ch;
 				token.currentRow = row;
 				token.currentColumn = column;
 			}
@@ -594,6 +613,16 @@ Scanner::Token Scanner::nextToken()
 			token.kind = EQ;
 			state = DONE_STATE;
 			break;
+		case AND_STATE:
+			rollBack();
+			token.kind = AND;
+			state = DONE_STATE;
+			break;
+		case OR_STATE:
+			rollBack();
+			token.kind = OR;
+			state = DONE_STATE;
+			break;
 		case LT_STATE:											// 小于号状态
 			if (ch == '=')
 			{
@@ -608,6 +637,7 @@ Scanner::Token Scanner::nextToken()
 				state = DONE_STATE;
 				break;
 			}
+		
 		case GT_STATE:											// 大于号状态
 			if (ch == '=')
 			{
@@ -627,6 +657,36 @@ Scanner::Token Scanner::nextToken()
 			{
 				state = NEQ_STATE;
 				token.kind = NEQ;
+				token.lexeme += ch;
+				break;
+			}
+			else
+			{
+				state = ERROR_STATE;
+				token.kind = ERROR;
+				token.lexeme += ch;
+				break;
+			}
+		case IN_AND_STATE:										// 接近与状态
+			if (ch == '&')
+			{
+				state = AND_STATE;
+				token.kind = AND;
+				token.lexeme += ch;
+				break;
+			}
+			else
+			{
+				state = ERROR_STATE;
+				token.kind = ERROR;
+				token.lexeme += ch;
+				break;
+			}
+		case IN_OR_STATE:
+			if (ch == '|')
+			{
+				state = OR_STATE;
+				token.kind = OR;
 				token.lexeme += ch;
 				break;
 			}

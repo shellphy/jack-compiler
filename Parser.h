@@ -11,11 +11,10 @@ class Parser
 {
 private:
 	enum NodeKind {
-		Var_declaration_kind, Var_array_declaration_kind,
-		Const_declaration_kind, Const_array_declaration_kind,
+		Var_declaration_kind, Var_array_declaration_kind, Const_kind,
 		Function_declaration_kind, Param_kind, Argument_kind, Object_kind,
-		If_kind, While_kind, Assign_kind, Call_kind, Return_kind,
-		Operation_kind, Const_kind, Identifier_kind, Type_kind, 
+		If_kind, While_kind, Assign_kind, Call_kind, Return_kind,Break_kind, 
+		Continue_kind, Operation_kind, Bool_kind, Identifier_kind, Type_kind, 
 	};
 public:
 	class TreeNode
@@ -45,10 +44,10 @@ private:
 	
 	static Parser *instance;
 	unsigned int errorNumbers;
-	void syntaxError(string want, string got);
+	void syntaxError(string got);
 
 	void readNextToken();
-	void match(Scanner::TokenType, string expectedString);
+	void match(string expectedString);
 	bool peek(Scanner::TokenType expectedToken);
 
 	TreeNode * parse_program();
@@ -56,7 +55,6 @@ private:
 	TreeNode * parse_declaration();
 	TreeNode * parse_var_declaration();
 	TreeNode * parse_function_declaration();
-	TreeNode * parse_const_declaration();
 	TreeNode * parse_type();
 	TreeNode * parse_params();
 	TreeNode * parse_compound_statement();
@@ -70,6 +68,7 @@ private:
 	TreeNode * parse_iteration_statement();
 	TreeNode * parse_return_statement();
 	TreeNode * parse_expression();
+	TreeNode * parse_boolexpression();
 	TreeNode * parse_var();
 	TreeNode * parse_additive_expression();
 	TreeNode * parse_term();
