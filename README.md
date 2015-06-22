@@ -105,13 +105,13 @@ int main()
 根据上面的词法规则可以画出状态转移图(FA),以方便编程
 
 1,&nbsp;简单的转移图示例:
-![图片1](http://f.picphotos.baidu.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=9ca1c3f5d854564ee165e43c83e5edbf/0823dd54564e925804fc79089982d158cdbf4e08.jpg?referer=6ce7022ac6cec3fdd2299345aa06&x=.jpg "图片1")
+
 2,&nbsp;标识符,整型和浮点型的转移图:
-
+![图片1](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/1.png)
 3,&nbsp;字符串的转移图:
-
+![图片2](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/2.png)
 4,&nbsp;字符的转移图
-
+![图片3](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/3.png)
 
 <a name = "语法分析器"/>
 ### 语法分析器
