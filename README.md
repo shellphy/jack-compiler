@@ -172,8 +172,11 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     iteration_statement -> <strong>while (</strong> expression <strong>)</strong> statement
     return_statement -> <strong>return ;</strong> 
                       | <strong>return</strong> expression <strong>;</strong>
-    expression -> additive_expression relational_operator additive_expression
-                | additive_expression
+    expression -> expression <strong>&&</strong> boolexpression
+                | expression <strong>||</strong> boolexpression
+                | boolexpression
+    boolexpression -> additive_expression relational_operator additive_expression
+                    | additive_expression
     assign_statement -> var = expression ;
     var -> <strong>ID</strong>
          | <strong>ID [</strong> expression <strong>]</strong>
