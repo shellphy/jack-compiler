@@ -131,7 +131,7 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     declaration -> var_declaration
                  | function_declaration
                  | const_declaration
-    var_declaration -> type <b><font color="red">ID</font></b> ;
+    var_declaration -> type <font color="red">ID</font> ;
                      | type ID [ INT ] ;
     const_declaration -> const type ID ;
                        | const type ID [ INT ] ;
