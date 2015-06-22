@@ -124,13 +124,34 @@ int main()
 ####C-Mini语言的语法
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
 
-* program -> declaration_list  
-* declaration_list -> declaration_list declaration<br />
-                    | declaration
-* declaration -> var_declaration  
+1, program -> declaration_list  
+2, declaration_list -> declaration_list declaration
+                     | declaration
+3, declaration -> var_declaration  
                | function_declaration  
-               | const_declaration
-             
+               | const_declaration  
+4, ar_declaration -> type ID ;  
+	                | type ID [ INT ] ;  
+5, const_declaration -> const type ID ;  
+ 				          | const type ID [ INT ] ;  
+6, type -> int  
+         | float  
+         | void  
+         | string  
+         | char  
+7, function_declaration -> type ID ( params ) compound_statement  
+8, params -> param_list  
+           | void  
+           | empty  
+9, param_list -> param_list , param  
+               | param  
+10, 
+
+参数列表
+10, param  type ID
+         | type ID [ ]										// 
+
+参数
 
 
 
