@@ -20,8 +20,6 @@
 
 当然,我现在实现的这个编译器比书本里面的C-Mini项目做了一些的扩展,比如增加了float类型,string类型等
 
-<font color="#FF0000">aixiangfei</font>
-
 <a name = "项目介绍"/>
 ##项目介绍
 C-Mini是C语言的一个子集,写这个编译器仅仅是为了加深对编译器内部工作原理的理解
@@ -133,8 +131,8 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     declaration -> var_declaration
                  | function_declaration
                  | const_declaration
-    var_declaration -> type <font color="red">ID</font> ;
-                     | type ID [ INT ] ;
+    var_declaration -> type <strong>ID</strong> ;
+                     | type <strong>ID</strong> <strong>[<strong> <strong>INT<strong> <strong>]<strong> ;
     const_declaration -> const type ID ;
                        | const type ID [ INT ] ;
     type -> int
