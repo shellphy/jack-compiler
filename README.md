@@ -1,9 +1,11 @@
-# C-Mini-Compiler 
+C-Mini-Compiler 
+===============
 
-## 背景介绍
+背景介绍
+-----------
 C-Mini是一个C语言的子集
 
-## 项目介绍
+##项目介绍
 支持整型, 浮点型, 字符型, 字符串类型关键字有if, else, while, return, void, int, float, const, string
 
 ## 使用说明
