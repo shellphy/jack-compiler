@@ -183,7 +183,6 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                          | <strong><</strong>
                          | <strong>></strong>
                          | <strong>!=</strong>
-                         | <strong>!</strong>
                          | <strong>&&</strong>
                          | <strong>||</strong>
     additive_expression -> additive_expression <strong>+</strong> term
