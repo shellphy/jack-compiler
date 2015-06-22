@@ -125,7 +125,7 @@ int main()
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
 
 * program -> declaration_list  
-* declaration_list -> declaration_list declaration  
+* declaration_list -> declaration_list declaration<br />
                     | declaration
 * declaration -> var_declaration  
                | function_declaration  
