@@ -259,7 +259,8 @@ int main(void)
 }
 ```
 通过Parser之后生成的语法树为:  
-![](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/5.png)
+![](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/5.png)  
+(注: 如果看不清图片里面的内容,建议把图片另存为本地图片,然后再放大浏览)  
 
 <a name = "语义分析器"/>
 ### 语义分析器
