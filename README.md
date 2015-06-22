@@ -40,7 +40,7 @@ C-Mini test.c
 
 <a name = "词法分析器"/>
 ### 词法分析器
-词法分析器的源代码为Scanner.cpp  使用的手工编码的方法实现的
+词法分析器的源代码为Scanner.cpp  使用的手工编码的方法实现的  
 &nbsp;&nbsp;&nbsp;&nbsp;词法分析器的主要任务是识别源程序中的单词(Token),假如有下面的代码:
 ```C++
 int main()
