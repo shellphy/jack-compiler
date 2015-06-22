@@ -44,7 +44,8 @@ int main()
     return 0;
 }
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;通过词法分析器的扫描之后,返回的是一个一个单词:  
+&nbsp;&nbsp;&nbsp;&nbsp;通过词法分析器的扫描之后,返回的是一个一个单词:
+
     关键字int  
     标识符main  
     左圆括号'('  
