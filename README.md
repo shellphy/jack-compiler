@@ -234,6 +234,15 @@ int func(int a, int b);
 
 <a name = "语法树">
 ####语法树
+树的节点类型:  
+![](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.png)
+一个节点最多有5个孩子,用0到4表示,节点的类型nodeKind在Parser.h中声明为枚举类型NodeKind  
+源程序的所有Token通过递归下降算法扫描一遍, 就会递归地构建一个语法树  
+以下面的程序代码为例:  
+```C++
+
+```
+
 
 <a name = "语义分析器"/>
 ### 语义分析器
