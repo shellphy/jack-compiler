@@ -1,6 +1,6 @@
 # C-Mini-Compiler 
 
-[TOC]
+##<a name = "index"/>目录
 
 #背景介绍
 C-Mini是一个C语言的子集
