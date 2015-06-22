@@ -123,7 +123,8 @@ int main()
 ### 语法分析器
 ####C-Mini语言的语法
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
-&nbsp;&nbsp;1, program&nbsp;->&nbsp;declaration_list<br />
+
+* 1, program&nbsp;->&nbsp;declaration_list<br />
   &nbsp;&nbsp;2,&nbsp;declaration_list&nbsp;->&nbsp;declaration_list&nbsp;declaration
        <br />
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| declaration <br />
