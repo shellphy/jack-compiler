@@ -132,9 +132,9 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                  | function_declaration
                  | const_declaration
     var_declaration -> type ID ;
-	             | type ID [ INT ] ;
+                     | type ID [ INT ] ;
     const_declaration -> const type ID ;
- 		       | const type ID [ INT ] ;
+                       | const type ID [ INT ] ;
     type -> int
           | float
           | void
@@ -156,8 +156,8 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     statement -> expression_statement
                | compound_statement
                | selection_statement
-	       | iteration_statement
-	       | return_statement
+               | iteration_statement
+               | return_statement
                | assign_statement
     expression_statement -> expression ; 
                           | ;
