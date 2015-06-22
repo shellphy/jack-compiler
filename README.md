@@ -62,50 +62,38 @@ int main()
 
 <a name = "词法规则"/>
 #### 词法规则
-1,支持的字符集:
-
+1,&nbsp;支持的字符集:
 
       ASCII码
 
 2,&nbsp;标识符规则:
 
-
     digit = [0-9]  
     letter = [a-z]|[A-Z]  
     ID = letter(letter|digit)*
     
-3. 保留字:
-
+3,&nbsp;保留字:
 
     if  else  while  int  float  void  return  string  const  char  break  continue
     
-4. 整型数:
-
+4,&nbsp;整型数:
 
     INT = (+|-)?digit+
     
-
-5. 浮点数:
-
+5,&nbsp;浮点数:
 
     FLOAT = interger(.digit+) | interger((E|e)digit+) | interger(.digit+)((E|e)digit+)
     
-  
-6. 字符:
-
+6,&nbsp;字符:
 
     以单引号开始,紧接着一个ASCII码字符,或者一个转义字符,最后以单引号结束.  
     转义字符有 \a, \b, \f, \n, \r, \t, \v, \\, \?, \’, \”
 
-  
-7. 字符串:
-
+7,&nbsp;字符串:
 
     string = "((^")*(\”)*(^”)*)*"
     
-  
-8. 合法的符号:
-
+8,&nbsp;合法的符号:
 
     +  -  *  /   <   <=  >  >=  ==  =  !=  ;  ,  (  )  [  ]  {  }  /*  */  “
     
