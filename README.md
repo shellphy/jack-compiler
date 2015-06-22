@@ -136,8 +136,8 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                  | const_declaration
     var_declaration -> type <strong>ID</strong> <strong>;</strong>
                      | type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
-    const_declaration -> <strong>const</strong> type <strong>ID</strong> <strong>;</strong>
-                       | <strong>const</strong> type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
+    const_declaration -> <strong>const</strong> type <strong>ID</strong> <strong>=</strong> expression <strong>;</strong>
+                       | <strong>const</strong> type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>=<strong> expression <strong>;</strong>
     type -> <strong>int</strong>
           | <strong>float</strong>
           | <strong>void</strong>
@@ -212,7 +212,8 @@ int func(int a, int b)
 int func(int a, int b)
 ```
 
-变量声明
+变量声明可以是单值变量的声明也可以是数组的声明,但是不能在声明的时候赋值,必须先声明,后赋值.  
+
 
 <a name = "语法树">
 ####语法树
