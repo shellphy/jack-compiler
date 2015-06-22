@@ -145,6 +145,7 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
           | <strong>void</strong>
           | <strong>string</strong>
           | <strong>char</strong>
+          | <strong>bool</strong>
     function_declaration -> type <strong>ID</strong> <strong>(</strong> params <strong>)</strong> compound_statement 
     params -> param_list 
             | <strong>void</strong>
@@ -182,8 +183,14 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                          | <strong><</strong>
                          | <strong>></strong>
                          | <strong>!=</strong>
+                         | <strong>!</strong>
+                         | <strong>&&</strong>
+                         | <strong>||</strong>
     additive_expression -> additive_expression <strong>+</strong> term
                          | additive_expression <strong>–</strong> term
+                         | additive_expression <strong>!</strong> term
+                         | additive_expression <strong>||</strong> term
+                         | additive_expression <strong>&&</strong> term
                          | term
     term -> term <strong>*</strong> factor
           | term <strong>/</strong> factor
