@@ -128,103 +128,73 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
     program -> declaration_list
     declaration_list -> declaration_list declaration
                       | declaration
-3, declaration  var_declaration
-| function_declaration
-| const_declaration
-4, var_declaration  type ID ;
-	            | type ID [ INT ] ; 					// 声明并定义变量
-5, const_declaration  const type ID ;
- 				  | const type ID [ INT ] ;		    // 声明并定义常量
-6, type  int
-       | float
-       | void
-       | string
-       | char
-7, function_declaration  type ID ( params ) compound_statement //声明并定义函数
-8, params  param_list 
-         | void
-         | empty
-9, param_list  param_list , param
-           | param										// 
-
-参数列表
-10, param  type ID
-         | type ID [ ]										// 
-
-参数
-11, compound_statement  { local_declarations statement_list }		// 复合语句
-11, local_declarations  local_declarations var_declaration
-                  | empty
-12, statement_list  statement_list statement
-               | empty
-13, statement  expression_statement 		// 表达式语句
-            | compound_statement			// 复合语句
-            | selection_statement			// 选择语句
-	        | iteration_statement			// 迭代语句
-			| return_statement				// 返回语句
-            | assign_statement				// 赋值语句
-14, expression_statement  expression ; 
-                      | ;
-15, selection_statement  if ( expression ) statement
-					| if ( expression ) statement else statement
-17, iteration_statement  while ( expression ) statement
-18, return_statement  return ; 
-                  | return expression ;
-19, expression  additive_expression relational_operator additive_expression
-             | additive_expression
-20, assign_statement  var = expression ;
-21, var  ID
-       | ID [ expression ]
-22, relational_operator  <= 
-                    | >=
-				    | ==
-					| <
- 					| >
-					| !=
-23, additive_expression  additive_expression + term
-				    | additive_expression – term
-					| term
-24, term  term * factor
-	    | term / factor
-		| factor
-25, factor  ( expression )
-         | var
-		 | call
-		 | INT
-		 | FLOAT
-		 | CHAR
-         | STRING
-26, call  ID ( args )
-27, args  arg_list 
-	    | empty
-28, arg_list  arg_list , expression
-          | expression
-
-
-
-
-prog   -> { decs stms }
-decs   -> dec decs
-        |
-dec    -> type id ;
-type   -> <b>int</b>
-        | <b>bool</b>
-stms   -> stm stms
-        |
-stm    -> id = exp ;
-        | <b>printi</b>(exp) ;
-        | <b>printb</b>(exp) ;
-exp    -> intnum
-        | <b>true</b>
-        | <b>false</b>
-        | id
-        | (exp)
-        | exp + exp
-        | exp - exp
-        | exp * exp
-        | exp / exp
-        | exp && exp
-        | exp || exp
+    declaration -> var_declaration
+                 | function_declaration
+                 | const_declaration
+    var_declaration -> type ID ;
+	             | type ID [ INT ] ;
+    const_declaration -> const type ID ;
+ 		       | const type ID [ INT ] ;
+    type -> int
+          | float
+          | void
+          | string
+          | char
+    function_declaration -> type ID ( params ) compound_statement 
+    params -> param_list 
+            | void
+            | empty
+    param_list -> param_list , param
+                | param	
+    param -> type ID
+           | type ID [ ]
+    compound_statement -> { local_declarations statement_list }	
+    local_declarations -> local_declarations var_declaration
+                        | empty
+    statement_list -> statement_list statement
+                    | empty
+    statement -> expression_statement
+               | compound_statement
+               | selection_statement
+	       | iteration_statement
+	       | return_statement
+               | assign_statement
+    expression_statement -> expression ; 
+                          | ;
+    selection_statement -> if ( expression ) statement
+			 | if ( expression ) statement else statement
+    iteration_statement -> while ( expression ) statement
+    return_statement -> return ; 
+                      | return expression ;
+    expression -> additive_expression relational_operator additive_expression
+                | additive_expression
+    assign_statement -> var = expression ;
+    var -> ID
+         | ID [ expression ]
+    relational_operator -> <= 
+                         | >=
+			 | ==
+			 | <
+ 			 | >
+			 | !=
+    additive_expression -> additive_expression + term
+			 | additive_expression – term
+			 | term
+    term -> term * factor
+	  | term / factor
+	  | factor
+    factor -> ( expression )
+            | var
+	    | call
+	    | INT
+	    | FLOAT
+	    | CHAR
+            | STRING
+    call -> ID ( args )
+    args -> arg_list 
+	  | empty
+    arg_list -> arg_list , expression
+              | expression
 </pre>
 
 
