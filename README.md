@@ -45,18 +45,18 @@ int main()
 }
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;通过词法分析器的扫描之后,返回的是一个一个单词:  
-&nbsp;&nbsp;&nbsp;&nbsp;关键字int  
-&nbsp;&nbsp;&nbsp;&nbsp;标识符main  
-&nbsp;&nbsp;&nbsp;&nbsp;左圆括号'('  
-&nbsp;&nbsp;&nbsp;&nbsp;左花括号'{'  
-&nbsp;&nbsp;&nbsp;&nbsp;标识符printf
-&nbsp;&nbsp;&nbsp;&nbsp;左圆括号'('  
-&nbsp;&nbsp;&nbsp;&nbsp;字符串"Hello, world!\n"  
-&nbsp;&nbsp;&nbsp;&nbsp;右圆括号')'  
-&nbsp;&nbsp;&nbsp;&nbsp;分号';'  
-&nbsp;&nbsp;&nbsp;&nbsp;标识符return  
-&nbsp;&nbsp;&nbsp;&nbsp;数字0  
-&nbsp;&nbsp;&nbsp;&nbsp;右花括号'}'
+    &nbsp;&nbsp;&nbsp;&nbsp;关键字int  
+    &nbsp;&nbsp;&nbsp;&nbsp;标识符main  
+    &nbsp;&nbsp;&nbsp;&nbsp;左圆括号'('  
+    &nbsp;&nbsp;&nbsp;&nbsp;左花括号'{'  
+    &nbsp;&nbsp;&nbsp;&nbsp;标识符printf
+    &nbsp;&nbsp;&nbsp;&nbsp;左圆括号'('  
+    &nbsp;&nbsp;&nbsp;&nbsp;字符串"Hello, world!\n"  
+    &nbsp;&nbsp;&nbsp;&nbsp;右圆括号')'  
+    &nbsp;&nbsp;&nbsp;&nbsp;分号';'  
+    &nbsp;&nbsp;&nbsp;&nbsp;标识符return  
+    &nbsp;&nbsp;&nbsp;&nbsp;数字0  
+    &nbsp;&nbsp;&nbsp;&nbsp;右花括号'}'
 
 
 <a name = "词法规则"/>
