@@ -79,7 +79,7 @@ int main()
     
 3,&nbsp;保留字:
 
-    if  else  while  int  float  void  return  string  char  break  continue
+    bool  true  false  if  else  while  int  float  void  return  string  char  break  continue
     
 4,&nbsp;整型数:
 
