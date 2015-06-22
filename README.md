@@ -135,20 +135,20 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                      | type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
     const_declaration -> <strong>const</strong> type <strong>ID</strong> <strong>;</strong>
                        | <strong>const</strong> type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
-    type -> int
-          | float
-          | void
-          | string
-          | char
-    function_declaration -> type ID ( params ) compound_statement 
+    type -> <strong>int</strong>
+          | <strong>float</strong>
+          | <strong>void</strong>
+          | <strong>string</strong>
+          | <strong>char</strong>
+    function_declaration -> type <strong>ID</strong> <strong>(</strong> params <strong>)</strong> compound_statement 
     params -> param_list 
-            | void
+            | <strong>void</strong>
             | empty
     param_list -> param_list , param
                 | param	
-    param -> type ID
-           | type ID [ ]
-    compound_statement -> { local_declarations statement_list }	
+    param -> type <strong>ID</strong>
+           | type <strong>ID [ ]</strong>
+    compound_statement -> <strong>{</strong> local_declarations statement_list <strong>}</strong>	
     local_declarations -> local_declarations var_declaration
                         | empty
     statement_list -> statement_list statement
@@ -159,41 +159,41 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                | iteration_statement
                | return_statement
                | assign_statement
-    expression_statement -> expression ; 
-                          | ;
-    selection_statement -> if ( expression ) statement
-                         | if ( expression ) statement else statement
-    iteration_statement -> while ( expression ) statement
-    return_statement -> return ; 
-                      | return expression ;
+    expression_statement -> expression <strong>;</strong> 
+                          | <strong>;</strong>
+    selection_statement -> <strong>if (</strong> expression <strong>)</strong> statement
+                         | <strong>if (</strong> expression <strong>)</strong> statement <strong>else</strong> statement
+    iteration_statement -> <strong>while (</strong> expression <strong>)</strong> statement
+    return_statement -> <strong>return ;</strong> 
+                      | <strong>return</strong> expression <strong>;</strong>
     expression -> additive_expression relational_operator additive_expression
                 | additive_expression
     assign_statement -> var = expression ;
-    var -> ID
-         | ID [ expression ]
-    relational_operator -> <= 
-                         | >=
-                         | ==
-                         | <
-                         | >
-                         | !=
-    additive_expression -> additive_expression + term
-                         | additive_expression – term
+    var -> <strong>ID</strong>
+         | <strong>ID [</strong> expression <strong>]</strong>
+    relational_operator -> <strong><=</strong> 
+                         | <strong>>=</strong>
+                         | <strong>==</strong>
+                         | <strong><</strong>
+                         | <strong>></strong>
+                         | <strong>!=</strong>
+    additive_expression -> additive_expression <strong>+</strong> term
+                         | additive_expression <strong>–</strong> term
                          | term
-    term -> term * factor
-          | term / factor
+    term -> term <strong>*</strong> factor
+          | term <strong>/</strong> factor
           | factor
     factor -> ( expression )
             | var
             | call
-            | INT
-            | FLOAT
-            | CHAR
-            | STRING
-    call -> ID ( args )
+            | <strong>INT</strong>
+            | <strong>FLOAT</strong>
+            | <strong>CHAR</strong>
+            | <strong>STRING</strong>
+    call -> <strong>ID (</strong> args <strong>)</strong>
     args -> arg_list 
           | empty
-    arg_list -> arg_list , expression
+    arg_list -> arg_list <strong>,</strong> expression
               | expression
 </pre>
 
