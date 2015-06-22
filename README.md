@@ -46,18 +46,18 @@ int main()
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;通过词法分析器的扫描之后,返回的是一个一个单词:
 
-    关键字int  
-    标识符main  
-    左圆括号'('  
-    左花括号'{'  
-    标识符printf
-    左圆括号'('  
-    字符串"Hello, world!\n"  
-    右圆括号')'  
-    分号';'  
-    标识符return  
-    数字0  
-    右花括号'}'
+    关键字&nbsp;int  
+    标识符&nbsp;main  
+    左圆括号&nbsp;'('  
+    左花括号&nbsp;'{'  
+    标识符&nbsp;printf
+    左圆括号&nbsp;'('  
+    字符串&nbsp;"Hello, world!\n"  
+    右圆括号&nbsp;')'  
+    分号&nbsp;';'  
+    标识符&nbsp;return  
+    数字&nbsp;0  
+    右花括号&nbsp;'}'
 
 
 <a name = "词法规则"/>
