@@ -105,7 +105,7 @@ int main()
 根据上面的词法规则可以画出状态转移图(FA),以方便编程
 
 1,&nbsp;简单的转移图示例:
-![图片1](http://f.picphotos.baidu.com/album/s%3D1100%3Bq%3D90/sign=bbf3d7430f7b020808c93be052e9c9a2/0823dd54564e925804fc79089982d158cdbf4e08.jpg)
+![图片1](http://f.picphotos.baidu.com/album/s%3D1100%3Bq%3D90/sign=bbf3d7430f7b020808c93be052e9c9a2/0823dd54564e925804fc79089982d158cdbf4e08.jpg "图片1")
 2,&nbsp;标识符,整型和浮点型的转移图:
 
 3,&nbsp;字符串的转移图:
