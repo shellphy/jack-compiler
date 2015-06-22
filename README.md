@@ -207,7 +207,7 @@ int func(int a, int b)
 ```
 而不能是下面的形式:
 ```C++
-int func(int a, int b)
+int func(int a, int b);
 ```
 
 变量声明可以是单值变量的声明也可以是数组的声明,但是不能在声明的时候赋值,必须先声明,后赋值.  
