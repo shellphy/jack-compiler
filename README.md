@@ -123,76 +123,15 @@ int main()
 ### 语法分析器
 ####C-Mini语言的语法
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
-&nbsp;&nbsp;1,&nbsp;program&nbsp;->&nbsp;declaration_list  
-&nbsp;&nbsp;2,&nbsp;declaration_list&nbsp;->&nbsp;declaration_list&nbsp;declaration  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| declaration
-    3, declaration -> var_declaration
-                    | function_declaration
-                    | const_declaration
-    4, var_declaration -> type ID ;
-                        | type ID [ INT ] ; 
-    5, const_declaration -> const type ID ;
-                          | const type ID [ INT ] ;
-    6, type -> int
-             | float
-             | void
-             | string
-             | char
-    7, function_declaration  type ID ( params ) compound_statement //声明并定义函数
-    8, params -> param_list 
-               | void
-               | empty
-    9, param_list -> param_list , param
-                   | param
-    10, param -> type ID
-               | type ID [ ]
-    11, compound_statement -> { local_declarations statement_list }
-    11, local_declarations -> local_declarations var_declaration
-                            | empty
-    12, statement_list -> statement_list statement
-                        | empty
-    13, statement -> expression_statement 		// 表达式语句
-                   | compound_statement			// 复合语句
-                   | selection_statement		// 选择语句
-                   | iteration_statement		// 迭代语句
-                   | return_statement			// 返回语句
-                   | assign_statement			// 赋值语句
-    14, expression_statement -> expression ; 
-                              | ;
-    15, selection_statement -> if ( expression ) statement
-                             | if ( expression ) statement else statement
-    16, iteration_statement -> while ( expression ) statement
-    18, return_statement -> return ; 
-                          | return expression ;
-    18, expression -> additive_expression relational_operator additive_expression
-                    | additive_expression
-    19, assign_statement -> var = expression ;
-    20, var -> ID
-             | ID [ expression ]
-    21, relational_operator -> <= 
-                             | >=
-                             | ==
-                             | <
-                             | >
-                             | !=
-    22, additive_expression -> additive_expression + term
-                             | additive_expression – term
-                             | term
-    23, term -> term * factor
-              | term / factor
-              | factor
-    24, factor -> ( expression )
-                | var
-                | call
-                | INT
-                | FLOAT
-                | CHAR
-                | STRING
-    25, call -> ID ( args )
-    26, args -> arg_list 
-              | empty
-    27, arg_list -> arg_list , expression
-                  | expression
+&nbsp;&nbsp;1, program&nbsp;->&nbsp;declaration_list<br />
+  &nbsp;&nbsp;2,&nbsp;declaration_list&nbsp;->&nbsp;declaration_list&nbsp;declaration
+       <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| declaration <br />
+  &nbsp;&nbsp;3,&nbsp;declaration&nbsp;->&nbsp;var_declaration <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  | function_declaration <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | const_declaration <br />
+&nbsp;&nbsp; 4,&nbsp;var_declaration&nbsp;->&nbsp;type&nbsp;ID&nbsp;;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | type&nbsp;ID&nbsp;[&nbsp;INT&nbsp;]&nbsp;; 
              
 
 
