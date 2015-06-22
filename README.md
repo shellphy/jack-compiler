@@ -124,15 +124,12 @@ int main()
 ####C-Mini语言的语法
 C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
 
-* 1, program -> declaration_list  
-  &nbsp;&nbsp;2,&nbsp;declaration_list&nbsp;->&nbsp;declaration_list&nbsp;declaration
-       <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| declaration <br />
-  &nbsp;&nbsp;3,&nbsp;declaration&nbsp;->&nbsp;var_declaration <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  | function_declaration <br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | const_declaration <br />
-&nbsp;&nbsp; 4,&nbsp;var_declaration&nbsp;->&nbsp;type&nbsp;ID&nbsp;;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | type&nbsp;ID&nbsp;[&nbsp;INT&nbsp;]&nbsp;; 
+* program -> declaration_list  
+* declaration_list -> declaration_list declaration  
+                    | declaration
+* declaration -> var_declaration  
+               | function_declaration  
+               | const_declaration
              
 
 
