@@ -34,8 +34,41 @@ C-Mini test.c
 
 <a name = "词法分析器"/>
 ### 词法分析器
+1,支持的字符集:
 
+    ASCII码
 
+2,标识符规则:
+
+    digit = [0-9]  
+    letter = [a-z]|[A-Z]  
+    ID = letter(letter|digit)*
+    
+3,保留字:
+
+    if  else  while  int  float  void  return  string  const  char  break  continue
+    
+4,整型数:
+
+    INT = (+|-)?digit+
+    
+5,浮点数:
+
+    FLOAT = interger(.digit+) | interger((E|e)digit+) | interger(.digit+)((E|e)digit+)
+    
+6,字符:
+
+    以单引号开始,紧接着一个ASCII码字符,或者一个转义字符,最后以单引号结束.  
+    转义字符有 \a, \b, \f, \n, \r, \t, \v, \\, \?, \’, \”
+
+7,字符串:
+
+    string = "((^")*(\”)*(^”)*)*"
+    
+8,合法的符号:
+
+    +  -  *  /   <   <=  >  >=  ==  =  !=  ;  ,  (  )  [  ]  {  }  /*  */  “
+    
 <a name = "语法分析器"/>
 ### 语法分析器
 语法树
