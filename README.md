@@ -136,8 +136,6 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                  | const_declaration
     var_declaration -> type <strong>ID</strong> <strong>;</strong>
                      | type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
-    const_declaration -> <strong>const</strong> type <strong>ID</strong> <strong>=</strong> expression <strong>;</strong>
-                       | <strong>const</strong> type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>=</strong> expression <strong>;</strong>
     type -> <strong>int</strong>
           | <strong>float</strong>
           | <strong>void</strong>
@@ -163,7 +161,7 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                | return_statement
                | assign_statement
     expression_statement -> expression <strong>;</strong> 
-                          | <strong>;</strong>
+                          | empty <strong>;</strong>
     selection_statement -> <strong>if (</strong> expression <strong>)</strong> statement
                          | <strong>if (</strong> expression <strong>)</strong> statement <strong>else</strong> statement
     iteration_statement -> <strong>while (</strong> expression <strong>)</strong> statement
