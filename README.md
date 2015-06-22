@@ -256,8 +256,8 @@ int main(void)
 		write(fact(x));
 }
 ```
-通过Parser之后生成的语法树为:
-
+通过Parser之后生成的语法树为:  
+(图片制作中...)
 
 <a name = "语义分析器"/>
 ### 语义分析器
