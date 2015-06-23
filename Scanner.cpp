@@ -26,9 +26,9 @@ Scanner::TokenType Scanner::searchReserved(string &s)
 	if (s == "bool")
 		return RW_BOOL;
 	else if (s == "true")
-		return RW_TRUE;
+		return BOOL;
 	else if (s == "false")
-		return RW_FALSE;
+		return BOOL;
 	else if (s == "if")
 		return RW_IF;
 	else if (s == "else")

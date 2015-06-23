@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "Parser.h"
+#include "Analyzer.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +14,9 @@ int main(int argc, char *argv[])
 	Parser parser(argv[1]);
 	parser.parse();
 	parser.print();
+	Analyzer analyzer;
+	cout << "\n开始语义分析" << endl;
+	analyzer.checkType(parser.getSyntaxTree());
 
 	return 0;
 }

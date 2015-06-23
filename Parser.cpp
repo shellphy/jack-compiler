@@ -22,6 +22,9 @@ void Parser::printSyntaxTree(Parser::TreeNode *tree)
 			cout << " ";
 		switch (tree->nodeKind)
 		{	
+		case Parser::compound_statement_kind:
+			cout << "compound_statement" << endl;
+			break;
 		case Parser::Bool_kind:
 			cout << tree->token.lexeme << endl;
 			break;
@@ -37,11 +40,8 @@ void Parser::printSyntaxTree(Parser::TreeNode *tree)
 		case Parser::Param_kind:						
 			cout << "param" << endl;			
 			break;
-		case Parser::Argument_kind:						
-			cout << "argument" << endl;			
-			break;
-		case Parser::Object_kind:						
-			cout << "object: " << tree->token.lexeme << endl;
+		case Parser::Param_Array_kind:
+			cout << "array declaration" << endl;
 			break;
 		case Parser::If_kind:							
 			cout << "if" << endl;		
@@ -429,6 +429,9 @@ Parser::TreeNode * Parser::parse_param()
 	}
 	if (peek(Scanner::LBRACKET))
 	{
+		TreeNode *p = new TreeNode();
+		p->nodeKind = Param_Array_kind;
+		t->child[2] = p;
 		match("]");
 		return t;
 	}
@@ -444,9 +447,11 @@ Parser::TreeNode * Parser::parse_compound_statement()
 {
 	TreeNode *t = nullptr;
 	match("{");
-	t = parse_local_declarations();
-	TreeNode *p = t;
-	if (t != nullptr)
+	t = new TreeNode();
+	t->nodeKind = compound_statement_kind;
+	t->child[0] = parse_local_declarations();
+	TreeNode *p = t->child[0];
+	if (t->child[0] != nullptr)
 	{	
 		while (p->next != nullptr)
 			p = p->next;
@@ -454,9 +459,10 @@ Parser::TreeNode * Parser::parse_compound_statement()
 	}
 	else
 	{
-		t = parse_statement_list();
+		t->child[0] = parse_statement_list();
 	}
 	match("}");
+
 	return t;
 }
 
@@ -471,10 +477,22 @@ Parser::TreeNode * Parser::parse_compound_statement()
 Parser::TreeNode * Parser::parse_local_declarations()
 {
 	TreeNode *t = nullptr;
+	TreeNode *p = t;
 	while (currentToken.kind == Scanner::RW_INT || currentToken.kind == Scanner::RW_FLOAT
-		   || currentToken.kind == Scanner::RW_VOID || currentToken.kind == Scanner::RW_STRING
-		   || currentToken.kind == Scanner::RW_CHAR)
-		t = parse_var_declaration();
+		|| currentToken.kind == Scanner::RW_VOID || currentToken.kind == Scanner::RW_STRING
+		|| currentToken.kind == Scanner::RW_CHAR || currentToken.kind == Scanner::RW_BOOL)
+	{
+		TreeNode *q = parse_var_declaration();
+		if (t == nullptr)
+		{
+			t = p = q;
+		}
+		else
+		{
+			p->next = q;
+			p = q;
+		}
+	}
 	return t;
 }
 
@@ -644,7 +662,7 @@ Parser::TreeNode * Parser::parse_return_statement()
 Parser::TreeNode * Parser::parse_var()
 {
 	TreeNode *t = new TreeNode();
-	t->nodeKind = Object_kind;
+	t->nodeKind = Identifier_kind;
 	t->token = currentToken;
 	readNextToken();
 	if (peek(Scanner::LBRACKET))
@@ -759,8 +777,9 @@ Parser::TreeNode * Parser::parse_term()
 Parser::TreeNode * Parser::parse_factor()
 {
 	TreeNode *t = nullptr;
-	if (currentToken.kind == Scanner::INT || currentToken.kind == Scanner::CHAR || 
-		currentToken.kind == Scanner::FLOAT || currentToken.kind == Scanner::STRING)
+	if (currentToken.kind == Scanner::INT || currentToken.kind == Scanner::CHAR 
+	 || currentToken.kind == Scanner::FLOAT || currentToken.kind == Scanner::STRING
+	 || currentToken.kind == Scanner::BOOL)
 	{
 		t = new TreeNode();
 		t->nodeKind = Const_kind;

@@ -8,15 +8,14 @@
 using namespace std;
 
 class Parser
-{
-private:
+{	
+public:
 	enum NodeKind {
-		Var_declaration_kind, Var_array_declaration_kind, Const_kind,
-		Function_declaration_kind, Param_kind, Argument_kind, Object_kind,
+		Var_declaration_kind, Var_array_declaration_kind, Const_kind,Param_Array_kind,
+		Function_declaration_kind, Param_kind, compound_statement_kind,
 		If_kind, While_kind, Assign_kind, Call_kind, Return_kind,Break_kind, 
 		Continue_kind, Operation_kind, Bool_kind, Identifier_kind, Type_kind, 
 	};
-public:
 	class TreeNode
 	{
 	public:
