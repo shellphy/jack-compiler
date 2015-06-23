@@ -141,7 +141,6 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
                       | declaration
     declaration -> var_declaration
                  | function_declaration
-                 | const_declaration
     var_declaration -> type <strong>ID</strong> <strong>;</strong>
                      | type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
     type -> <strong>int</strong>
