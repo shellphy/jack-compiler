@@ -203,6 +203,7 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
             | <strong>FLOAT</strong>
             | <strong>CHAR</strong>
             | <strong>STRING</strong>
+            | <strong>BOOL</strong>
     call -> <strong>ID (</strong> args <strong>)</strong>
     args -> arg_list 
           | empty
