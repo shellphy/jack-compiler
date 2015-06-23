@@ -103,7 +103,7 @@ int main()
     
 8,&nbsp;合法的符号:
 
-    +  -  *  /   <   <=  >  >=  ==  =  !=  ;  ,  (  )  [  ]  {  }  /*  */  “
+    +  -  *  /   <   <=  >  >=  ==  =  !=  ;  ,  (  )  [  ]  {  }  /*  */  “   &&   ||
     
 <a name = "转移图"/>
 ####转移图
@@ -202,7 +202,6 @@ C-Mini语言的语法由如下的上下文无关文法(BNF)定义.
             | <strong>INT</strong>
             | <strong>FLOAT</strong>
             | <strong>CHAR</strong>
-            | <strong>STRING</strong>
             | <strong>BOOL</strong>
     call -> <strong>ID (</strong> args <strong>)</strong>
     args -> arg_list 
