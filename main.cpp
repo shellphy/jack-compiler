@@ -14,9 +14,12 @@ int main(int argc, char *argv[])
 	Parser parser(argv[1]);
 	parser.parse();
 	parser.print();
-	Analyzer analyzer;
-	cout << "\n开始语义分析" << endl;
-	analyzer.checkType(parser.getSyntaxTree());
+	if (parser.hasError() != true)
+	{
+		Analyzer analyzer;
+		cout << "\n开始语义分析" << endl;
+		analyzer.checkType(parser.getSyntaxTree());
+	}
 
 	return 0;
 }

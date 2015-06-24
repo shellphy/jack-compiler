@@ -90,6 +90,7 @@ void Parser::printSyntaxTree(Parser::TreeNode *tree)
 
 Parser::Parser(string filename) : scanner(filename)
 {
+	error = false;
 	errorNumbers = 1;
 }
 
@@ -107,6 +108,7 @@ void Parser::syntaxError(string got)
 		<< currentToken.currentRow << ", " << currentToken.currentColumn << ") " << endl;
 	cerr << "\tunexpected token " << got << endl;
 	Parser::errorNumbers++;
+	error = true;
 }
 
 Parser::TreeNode * Parser::getSyntaxTree()
@@ -300,8 +302,8 @@ Parser::TreeNode * Parser::parse_var_declaration()
 Parser::TreeNode * Parser::parse_type()
 {
 	TreeNode *t = new TreeNode();
-	if (currentToken.kind != Scanner::RW_INT && currentToken.kind && Scanner::RW_FLOAT
-		&& currentToken.kind != Scanner::RW_VOID && currentToken.kind && Scanner::RW_STRING
+	if (currentToken.kind != Scanner::RW_INT && currentToken.kind != Scanner::RW_FLOAT
+		&& currentToken.kind != Scanner::RW_VOID && currentToken.kind != Scanner::RW_STRING
 		&& currentToken.kind != Scanner::RW_CHAR && currentToken.kind != Scanner::RW_BOOL)
 		syntaxError(currentToken.lexeme);
 	t->nodeKind = Type_kind;
@@ -568,7 +570,7 @@ Parser::TreeNode * Parser::parse_statement()
 	else if (currentToken.kind == Scanner::RW_CONTINUE)
 	{
 		t = new TreeNode();
-		t->nodeKind = Const_kind;
+		t->nodeKind = Continue_kind;
 		t->token = currentToken;
 		readNextToken();
 	}
@@ -850,10 +852,15 @@ Parser::TreeNode * Parser::parse_args()
 			}
 			else
 			{
-				p->next = p;
+				p->next = q;
 				p = q;
 			}
 		}
 	}
 	return t;
+}
+
+bool Parser::hasError()
+{
+	return error;
 }

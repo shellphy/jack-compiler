@@ -14,6 +14,17 @@ bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
 	{
 		FunctionTable val;
 		val.type = t->child[0]->token.kind;
+		Scanner::TokenType type;
+		if (val.type == Scanner::RW_INT)
+			val.type = Scanner::INT;
+		else if (val.type == Scanner::RW_FLOAT)
+			val.type = Scanner::FLOAT;
+		else if (val.type = Scanner::RW_BOOL)
+			val.type = Scanner::BOOL;
+		else if (val.type == Scanner::RW_STRING)
+			val.type = Scanner::STRING;
+		else if (val.type == Scanner::RW_CHAR)
+			val.type = Scanner::CHAR;
 		auto ret = functionTable.insert({ t->child[1]->token.lexeme, val });
 		return ret.second;
 	}
@@ -21,6 +32,16 @@ bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
 	{
 		VariableTable val;
 		val.type = t->child[0]->token.kind;
+		if (val.type == Scanner::RW_INT)
+			val.type = Scanner::INT;
+		else if (val.type == Scanner::RW_FLOAT)
+			val.type = Scanner::FLOAT;
+		else if (val.type = Scanner::RW_BOOL)
+			val.type = Scanner::BOOL;
+		else if (val.type == Scanner::RW_STRING)
+			val.type = Scanner::STRING;
+		else if (val.type == Scanner::RW_CHAR)
+			val.type = Scanner::CHAR;
 		val.isArray = isArray;
 		auto ret = variablaTable.back().insert({ t->child[1]->token.lexeme, val });
 		return ret.second;

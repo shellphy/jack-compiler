@@ -36,6 +36,7 @@ public:
 		}
 	};
 private:
+	bool error;
 	TreeNode *syntaxTree;
 	Scanner scanner;
 	deque<Scanner::Token> *tokens;
@@ -77,6 +78,7 @@ private:
 	void printSyntaxTree(TreeNode *tree);
 public:
 	Parser(string filename);
+	bool hasError();
 	TreeNode *getSyntaxTree();
 	void print();
 	void parse();

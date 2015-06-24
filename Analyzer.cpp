@@ -4,9 +4,8 @@
 
 void Analyzer::error(Scanner::Token token, string s)
 {
-	cout << "error: (" << token.currentRow << ", " << token.currentColumn << ")  ";
-	cout << "值: " << token.lexeme << " ";
-	cout << s << endl;
+	cout << "error: (" << token.currentRow << ", " << token.currentColumn << ")  "
+		<< token.lexeme << " " << s << endl;
 }
 
 void Analyzer::traverse( Parser::TreeNode *tree)
@@ -171,13 +170,15 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 		case Parser::Break_kind:
 		{
 			if (inWhile == false)
-				error(tree->token, "break不能出现在这里");
+				error(tree->token, "不能出现在这里");
+			checkType(tree->next);
 			return;
 		}
 		case Parser::Continue_kind:
 		{
 			if (inWhile == false)
-				error(tree->token, "continue不能出现在这里");
+				error(tree->token, "不能出现在这里");
+			checkType(tree->next);
 			return;
 		}
 		case Parser::Operation_kind:
