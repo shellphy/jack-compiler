@@ -14,7 +14,7 @@ private:
 	SymbolTable symbolTable;
 	void error(Scanner::Token token, string s);
 	void traverse(Parser::TreeNode *tree);
-	bool typeCompatible(Parser::TreeNode *t1, Parser::TreeNode *t2);
+	Scanner::TokenType typeCompatible(Parser::TreeNode *tree);
 	bool paramCompatible(Parser::TreeNode *t);
 public:
 	void checkType(Parser::TreeNode *tree);

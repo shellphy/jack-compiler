@@ -92,6 +92,7 @@ public:
 		LBRACE,		// 左花括号									{
 		RBRACE,		// 右花括号									}
 
+		NONE,		// 无类型
 		ERROR,		// 错误
 		ENDOFFILE	// 文件结束
 	};

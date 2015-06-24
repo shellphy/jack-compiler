@@ -5,6 +5,7 @@
 void Analyzer::error(Scanner::Token token, string s)
 {
 	cout << "error: (" << token.currentRow << ", " << token.currentColumn << ")  ";
+	cout << "值: " << token.lexeme << " ";
 	cout << s << endl;
 }
 
@@ -14,14 +15,57 @@ void Analyzer::traverse( Parser::TreeNode *tree)
 		checkType(tree->child[i]);
 }
 
-bool Analyzer::typeCompatible(Parser::TreeNode *t1, Parser::TreeNode *t2)
+Scanner::TokenType Analyzer::typeCompatible(Parser::TreeNode *tree)
 {
-	return true;
+	switch (tree->nodeKind)
+	{
+	case Parser::Operation_kind:
+	case Parser::Assign_kind:
+	{
+		Scanner::TokenType t1 = typeCompatible(tree->child[0]);
+		Scanner::TokenType t2 = typeCompatible(tree->child[1]);
+		if (t1 != t2)
+		{
+			error(tree->child[0]->token, "类型不兼容");
+			return t1;
+		}
+		else
+			return t1;
+	}
+	case Parser::Identifier_kind:
+	{
+		auto t = symbolTable.findVariableTable(tree->token.lexeme);
+		return t.first.type;
+	}
+	case Parser::Call_kind:
+	{
+		auto t = symbolTable.findFunctionTable(tree->child[0]->token.lexeme);
+		return t.first.type;
+	}
+	case Parser::Const_kind:
+	{
+		return tree->token.kind;
+	}
+	default:
+		break;
+	}
 }
 
 bool Analyzer::paramCompatible(Parser::TreeNode *t)
 {
-	return true;
+	auto node = t->child[1];
+	vector<SymbolTable::VariableTable> params = symbolTable.findFunctionTable(t->child[0]->token.lexeme).first.params;
+	auto it = params.begin();
+	while (node != nullptr && it != params.end())
+	{
+		auto type = typeCompatible(node);
+		if (type != it->type)
+			return false;
+		++it;
+	}
+	if (it == params.end())
+		return true;
+	return false;
 }
 
 void Analyzer::checkType(Parser::TreeNode *tree)
@@ -52,6 +96,7 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			traverse(tree);
 			symbolTable.variablaTable.pop_back();
 			checkType(tree->next);
+
 			return;
 		}
 		case Parser::Var_declaration_kind:
@@ -59,6 +104,7 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			if (symbolTable.insert(SymbolTable::TableKind::Variable, tree) == false)
 				error(tree->child[1]->token, "变量重复声明");
 			checkType(tree->next);
+
 			return;
 		}
 		case Parser::Var_array_declaration_kind:
@@ -66,6 +112,7 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			if (symbolTable.insert(SymbolTable::TableKind::Variable, tree, true) == false)
 				error(tree->child[1]->token, "变量重复声明");
 			checkType(tree->next);
+
 			return;
 		}
 		case Parser::Const_kind:
@@ -74,20 +121,11 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 		}
 		case Parser::Param_kind:
 		{
-			if (tree->child[2] != nullptr)
-			{
-				if (symbolTable.insert(SymbolTable::TableKind::Variable, tree, true) == false)
-					error(tree->child[1]->token, "变量重复声明");
-				symbolTable.insertParam(functionName, tree, true);
-				checkType(tree->next);
-			}
-			else if (tree->child[2] == nullptr)
-			{
-				if (symbolTable.insert(SymbolTable::TableKind::Variable, tree) == false)
-					error(tree->child[1]->token, "变量重复声明");
-				symbolTable.insertParam(functionName, tree);
-				checkType(tree->next);
-			}
+			if (symbolTable.insert(SymbolTable::TableKind::Variable, tree, true) == false)
+				error(tree->child[1]->token, "变量重复声明");
+			symbolTable.insertParam(functionName, tree, true);
+			checkType(tree->next);
+		
 			return;
 		}
 		case Parser::Param_Array_kind:
@@ -110,13 +148,13 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 		}
 		case Parser::Assign_kind:
 		{
-			if (typeCompatible(tree->child[0], tree->child[1]) == false)
-				error(tree->child[0]->token, "类型不兼容");
+			typeCompatible(tree);
+			checkType(tree->next);
 			return;
 		}
 		case Parser::Call_kind:
 		{
-			if (symbolTable.find(SymbolTable::TableKind::Function, tree->child[0]->token.lexeme) == false)
+			if (symbolTable.findFunctionTable(tree->child[0]->token.lexeme).second == false)
 				error(tree->child[0]->token, "函数" + tree->child[0]->token.lexeme + "未定义");
 			if (paramCompatible(tree) == false)
 				error(tree->child[1]->token, "函数实参与形参不匹配");
@@ -144,8 +182,7 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 		}
 		case Parser::Operation_kind:
 		{
-			if (typeCompatible(tree->child[0], tree->child[1]) == false)
-				error(tree->child[0]->token, "类型不兼容");
+			typeCompatible(tree);
 			return;
 		}
 		case Parser::Bool_kind:
@@ -154,7 +191,7 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 		}
 		case Parser::Identifier_kind:
 		{
-			if (symbolTable.find(SymbolTable::TableKind::Variable, tree->token.lexeme) == false)
+			if (symbolTable.findVariableTable(tree->token.lexeme).second == false)
 				error(tree->token, "变量" + tree->token.lexeme + "未定义");
 			return;
 		}

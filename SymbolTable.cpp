@@ -3,7 +3,9 @@
 
 void SymbolTable::insertParam(string funcName, Parser::TreeNode *t, bool isArray)
 {
-
+	auto func_iter = functionTable.find(funcName);
+	auto val = findVariableTable(t->child[1]->token.lexeme).first;
+	func_iter->second.params.push_back(val);
 }
 
 bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
@@ -11,8 +13,8 @@ bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
 	if (kind == Function)
 	{
 		FunctionTable val;
-		val.type = t->child[1]->token.kind;
-		auto ret = functionTable.insert({ t->child[2]->token.lexeme, val });
+		val.type = t->child[0]->token.kind;
+		auto ret = functionTable.insert({ t->child[1]->token.lexeme, val });
 		return ret.second;
 	}
 	else if (kind == Variable)
@@ -25,22 +27,36 @@ bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
 	}
 }
 
-bool SymbolTable::find(TableKind kind, string s)
+pair<SymbolTable::FunctionTable, bool> SymbolTable::findFunctionTable(std::string s)
 {
-	if (kind == Function)
+	pair<FunctionTable, bool> rt;
+	auto func_iter = functionTable.find(s);
+	if (func_iter == functionTable.end())
 	{
-		if (functionTable.find(s) == functionTable.end())
-			return false;
-		else
-			return true;
+		rt.second = false;
+		return rt;
 	}
-	else if (kind == Variable)
+	else
 	{
-		for (auto it = variablaTable.rbegin(); it != variablaTable.rend(); ++it)
+		rt.first = func_iter->second;
+		rt.second = true;
+		return rt;
+	}
+}
+
+pair<SymbolTable::VariableTable, bool> SymbolTable::findVariableTable(std::string s)
+{
+	pair<SymbolTable::VariableTable, bool> rt;
+	for (auto it = variablaTable.rbegin(); it != variablaTable.rend(); ++it)
+	{
+		auto var_iter = it->find(s);
+		if (var_iter != it->end())
 		{
-			if (it->find(s) != it->end())
-				return true;
+			rt.first = var_iter->second;
+			rt.second = true;
+			return rt;
 		}
-		return false;
 	}
+	rt.second = false;
+	return rt;
 }
