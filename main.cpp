@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	parser.parse();
 	parser.print();
 	Analyzer analyzer;
-	cout << "\n开始语义分析" << endl;
+	cout << "\n璇箟鍒嗘瀽: " << endl;
 	analyzer.checkType(parser.getSyntaxTree());
 
 	return 0;
