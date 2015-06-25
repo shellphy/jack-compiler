@@ -124,7 +124,11 @@ void Parser::readNextToken()
 		tokens->pop_front();
 	}
 	else
+	{
+		syntaxError(currentToken.lexeme);
 		exit(-1);
+	}
+		
 }
 
 void Parser::match(string expectedString)
@@ -207,15 +211,20 @@ Parser::TreeNode * Parser::parse_declaration()
 		tokens->pop_front();
 	}
 	else
+	{
+		syntaxError(currentToken.lexeme);
 		exit(-1);
-	
+	}
 	if (!tokens->empty())
 	{
 		thirdToken = tokens->front();
 		tokens->pop_front();
 	}
 	else
+	{
+		syntaxError(currentToken.lexeme);
 		exit(-1);
+	}
 
 	if (thirdToken.kind == Scanner::LPARAN)
 	{	

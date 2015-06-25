@@ -29,7 +29,7 @@ Scanner::TokenType Analyzer::typeCompatible(Parser::TreeNode *tree)
 			return t1;
 		}
 		else
-			return t1;
+			return Scanner::BOOL;
 	}
 	case Parser::Identifier_kind:
 	{
@@ -61,8 +61,9 @@ bool Analyzer::paramCompatible(Parser::TreeNode *t)
 		if (type != it->type)
 			return false;
 		++it;
+		node = node->next;
 	}
-	if (it == params.end())
+	if (it == params.end() && node == nullptr)
 		return true;
 	return false;
 }
@@ -114,10 +115,6 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 
 			return;
 		}
-		case Parser::Const_kind:
-		{
-			return;
-		}
 		case Parser::Param_kind:
 		{
 			if (symbolTable.insert(SymbolTable::TableKind::Variable, tree, true) == false)
@@ -125,10 +122,6 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			symbolTable.insertParam(functionName, tree, true);
 			checkType(tree->next);
 		
-			return;
-		}
-		case Parser::Param_Array_kind:
-		{
 			return;
 		}
 		case Parser::If_kind:
@@ -186,18 +179,10 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			typeCompatible(tree);
 			return;
 		}
-		case Parser::Bool_kind:
-		{
-			return;
-		}
 		case Parser::Identifier_kind:
 		{
 			if (symbolTable.findVariableTable(tree->token.lexeme).second == false)
 				error(tree->token, "变量" + tree->token.lexeme + "未定义");
-			return;
-		}
-		case Parser::Type_kind:
-		{
 			return;
 		}
 		default:
