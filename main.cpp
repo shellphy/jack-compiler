@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	if (parser.hasError() != true)
 	{
 		Analyzer analyzer;
-		cout << "\nÓïÒå·ÖÎö: " << endl;
+		cout << "\nSemantic Analyzer: " << endl;
 		analyzer.checkType(parser.getSyntaxTree());
 	}
 
