@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	if (parser.hasError() != true)
 	{
 		Analyzer analyzer;
-		cout << "\n¿ªÊ¼ÓïÒå·ÖÎö" << endl;
+		cout << "\nå¼€å§‹è¯­ä¹‰åˆ†æž: " << endl;
 		analyzer.checkType(parser.getSyntaxTree());
 	}
 
