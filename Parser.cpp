@@ -98,6 +98,8 @@ void Parser::parse()
 {
 	scanner.scanToken();
 	tokens = scanner.getTokens();
+	if (tokens->size() == 1)
+		exit(0);
 	syntaxTree = parse_program();
 	cout << "**************************syntaxTree*****************************" << endl;
 }
@@ -207,7 +209,10 @@ Parser::TreeNode * Parser::parse_declaration()
 		tokens->pop_front();
 	}
 	else
+	{
+		syntaxError(currentToken.lexeme);
 		exit(-1);
+	}
 	
 	if (!tokens->empty())
 	{
@@ -215,7 +220,11 @@ Parser::TreeNode * Parser::parse_declaration()
 		tokens->pop_front();
 	}
 	else
+	{
+		syntaxError(currentToken.lexeme);
 		exit(-1);
+	}
+		
 
 	if (thirdToken.kind == Scanner::LPARAN)
 	{	

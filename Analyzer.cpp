@@ -114,10 +114,6 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 
 			return;
 		}
-		case Parser::Const_kind:
-		{
-			return;
-		}
 		case Parser::Param_kind:
 		{
 			if (symbolTable.insert(SymbolTable::TableKind::Variable, tree, true) == false)
@@ -125,10 +121,6 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			symbolTable.insertParam(functionName, tree, true);
 			checkType(tree->next);
 		
-			return;
-		}
-		case Parser::Param_Array_kind:
-		{
 			return;
 		}
 		case Parser::If_kind:
@@ -186,18 +178,10 @@ void Analyzer::checkType(Parser::TreeNode *tree)
 			typeCompatible(tree);
 			return;
 		}
-		case Parser::Bool_kind:
-		{
-			return;
-		}
 		case Parser::Identifier_kind:
 		{
 			if (symbolTable.findVariableTable(tree->token.lexeme).second == false)
 				error(tree->token, "变量" + tree->token.lexeme + "未定义");
-			return;
-		}
-		case Parser::Type_kind:
-		{
 			return;
 		}
 		default:

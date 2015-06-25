@@ -36,7 +36,7 @@ bool SymbolTable::insert(TableKind kind, Parser::TreeNode *t, bool isArray)
 			val.type = Scanner::INT;
 		else if (val.type == Scanner::RW_FLOAT)
 			val.type = Scanner::FLOAT;
-		else if (val.type = Scanner::RW_BOOL)
+		else if (val.type == Scanner::RW_BOOL)
 			val.type = Scanner::BOOL;
 		else if (val.type == Scanner::RW_STRING)
 			val.type = Scanner::STRING;
