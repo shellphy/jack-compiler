@@ -217,7 +217,13 @@ Parser::TreeNode * Parser::parse_declaration()
 		syntaxError(currentToken.lexeme);
 		exit(-1);
 	}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9dd11952cc636f8de91d2e3feb6d63832bb6c4d6
 	
+=======
+>>>>>>> 5c6645241c9e0181027adeadf2ee148116e9b5cb
 	if (!tokens->empty())
 	{
 		thirdToken = tokens->front();
@@ -228,7 +234,14 @@ Parser::TreeNode * Parser::parse_declaration()
 		syntaxError(currentToken.lexeme);
 		exit(-1);
 	}
+<<<<<<< HEAD
 		
+=======
+<<<<<<< HEAD
+		
+=======
+>>>>>>> 5c6645241c9e0181027adeadf2ee148116e9b5cb
+>>>>>>> 9dd11952cc636f8de91d2e3feb6d63832bb6c4d6
 
 	if (thirdToken.kind == Scanner::LPARAN)
 	{	

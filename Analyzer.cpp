@@ -29,7 +29,7 @@ Scanner::TokenType Analyzer::typeCompatible(Parser::TreeNode *tree)
 			return t1;
 		}
 		else
-			return t1;
+			return Scanner::BOOL;
 	}
 	case Parser::Identifier_kind:
 	{
@@ -61,8 +61,9 @@ bool Analyzer::paramCompatible(Parser::TreeNode *t)
 		if (type != it->type)
 			return false;
 		++it;
+		node = node->next;
 	}
-	if (it == params.end())
+	if (it == params.end() && node == nullptr)
 		return true;
 	return false;
 }
