@@ -33,20 +33,26 @@ public:
     };
     static Info None;
 private:
-    vector<map<string, Info>> classesTable;
-    map<string, int> classIndex;
-    map<string, Info> subroutineTable;
+    vector<map<string, Info>> classesTable;     // 类符号表数组
+    map<string, int> classIndex;                // 从类名到数组索引
+    map<string, Info> subroutineTable;          // 函数符号表
     
-    int currentClassNumber;
+    int currentClassNumber;     // 当前类符号表数组索引
+    string currentClass;        // 当前类名称
     string getFunctionName(string name);
     string getClassName(string name);
     void initialSubroutineTable();
 public:
     SymbolTable();
-    void classesTableInsert(Parser::TreeNode *t);
-    void subroutineTableInsert(Parser::TreeNode *t);
-    Info find(string name);
+    void classesTableInsert(Parser::TreeNode *t);       // 类符号表的插入操作
+    void subroutineTableInsert(Parser::TreeNode *t);    // 函数符号表的插入操作
+    Info subroutineTableFind(string name);
+
+//    Info find(string name);     
     Info classesTableFind(string className, string functionName);
+    bool classIndexFind(string className);
+
+    void printClassesTable();
 };
 
 #endif

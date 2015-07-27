@@ -11,7 +11,7 @@ class Analyzer
 private:
     Parser::TreeNode *tree;
     SymbolTable symbolTable;
-    
+    string currentClass;
     void buildClassesTable(Parser::TreeNode *t);
     void checkStatements(Parser::TreeNode *t);
     void checkStatement(Parser::TreeNode *t);

@@ -72,6 +72,7 @@ public:
     void openFile(string filename);
     void closeFile();
     Token nextToken();					// 返回下一个Token
+    void resetRow();
 
     deque<Token> *tokens;				// 保存源程序中所有的Token
     deque<Token> * getTokens();		// 返回源程序中所有的Token

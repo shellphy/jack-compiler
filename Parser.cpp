@@ -44,12 +44,13 @@ Scanner::Token Parser::ungetToken()
 string Parser::getFullName(string name)
 {
     string fullname = currentParserFilename + ":" + name;
+    return fullname;
 }
 
 void Parser::syntaxError(string expected, Scanner::Token token)
 {
-    std::cerr << "Error in line " << token.currentRow 
-              << " expect a " << expected << ", but got a " << token.lexeme << std::endl;
+    std::cerr << "Error in class " << currentParserFilename << " in line " << token.currentRow 
+              << ": expect a " << expected << ", but got a " << token.lexeme << std::endl;
 }
 
 /*
@@ -70,18 +71,19 @@ Parser::TreeNode * Parser::parse_class_list()
     TreeNode * p = t;
     if (getToken().kind != Scanner::ENDOFFILE)
     {
-        cerr << "Syntax Error, unexpected token before EOF " << endl;
+        cerr << "Error in class " << currentParserFilename << ": unexpected token before EOF " << endl;
         exit(-1);
     }
     scanner.closeFile();
     for (auto it = filenames.cbegin(); it != filenames.cend(); ++it)
     {
         scanner.openFile(*it);
-        currentParserFilename = it->substr(it->size - 2, 2);
+        currentParserFilename = it->substr(0, it->size() - 2);
+        scanner.resetRow();
         TreeNode * q = parse_class();
         if (getToken().kind != Scanner::ENDOFFILE)
         {
-            cerr << "Syntax Error, unexpected token before EOF " << endl;
+            cerr << "Syntax Error in class " << currentParserFilename << ": unexpected token before EOF " << endl;
             exit(-1);
         }
         p->next = q;
@@ -560,14 +562,14 @@ Parser::TreeNode * Parser::parse_assign_statement()
 Parser::TreeNode * Parser::parse_left_value()
 {
     TreeNode * t = new TreeNode;
+    t->nodeKind = VAR_K;
     Scanner::Token token = getToken();
-    t->child[0] = new TreeNode;
-    t->child[0]->token = token;
+    t->token = token;
     token = getToken();
     if (token.lexeme == "[")
     {
         t->nodeKind = ARRAY_K;
-        t->child[1] = parse_expression();
+        t->child[0] = parse_expression();
         token = getToken();
         if (token.lexeme != "]")
         {
@@ -578,7 +580,6 @@ Parser::TreeNode * Parser::parse_left_value()
     else if (token.lexeme == "=")
     {
         ungetToken();
-        t->nodeKind = VAR_K;
     }
     return t;
 }
@@ -616,7 +617,15 @@ Parser::TreeNode * Parser::parse_if_statement()
     }
     token = getToken();
     if (token.lexeme == "else")
+    {
+        token = getToken();
+        if (token.lexeme != "{")
+            syntaxError("{", token);
         t->child[2] = parse_statements();
+        token = getToken();
+        if (token.lexeme != "}")
+            syntaxError("}", token);
+    }
     else
         ungetToken();
     return t;
@@ -689,7 +698,7 @@ Parser::TreeNode * Parser::parse_call_statement()
     token = getToken();
     if (token.lexeme == "(")
     {
-        t->child[0]->child[0] = parse_expressions();
+        t->child[1] = parse_expressions();
         token = getToken();
         if (token.lexeme != ")")
         {
@@ -705,15 +714,17 @@ Parser::TreeNode * Parser::parse_call_statement()
             ungetToken();
             syntaxError("identifier", token);
         }
-        t->child[0]->child[0] = new TreeNode;
-        t->child[0]->child[0]->token = token;
+        t->child[1] = new TreeNode;
+        t->child[1]->token = token;
         token = getToken();
         if (token.lexeme != "(")
         {
             ungetToken();
             syntaxError("(", token);
         }
-        t->child[0]->child[0]->child[0] = parse_expressions();
+        t->child[2] = parse_expressions();
+        if (t->child[2] == nullptr)
+            t->child[2] = new TreeNode;
         token = getToken();
         if (token.lexeme != ")")
         {
@@ -852,11 +863,30 @@ Parser::TreeNode * Parser::parse_factor()
 {
     TreeNode * t = nullptr;
     Scanner::Token token = getToken();
+    if (token.lexeme == "-")
+    {
+        t = new TreeNode;
+        t->nodeKind = NEGATIVE_K;
+        t->token = token;
+        t->child[0] = parse_positive_factor();
+    }
+    else
+    {
+        ungetToken();
+        t = parse_positive_factor();
+    }
+    return t;
+}
+
+Parser::TreeNode * Parser::parse_positive_factor()
+{
+    TreeNode * t = nullptr;
+    Scanner::Token token = getToken();
     if (token.lexeme == "!")
     {
         t = new TreeNode;
-        t->nodeKind = BOOL_K;
         t->token = token;
+        t->nodeKind = LOGICAL_EXPRESSION_K;
         t->child[0] = parse_not_factor();
     }
     else

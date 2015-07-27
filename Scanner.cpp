@@ -17,12 +17,17 @@ Scanner::Scanner()
     initSymbols();
 }
 
+void Scanner::resetRow()
+{
+    row = 0;
+}
+
 void Scanner::openFile(string filename)
 {
-    string suffix = filename.substr(filename.size - 2, 2);
-    if (suffix != ".j" || suffix != ".J")
+    string suffix = filename.substr(filename.size() - 2, 2);
+    if (suffix != ".j" && suffix != ".J")
     {
-        cerr << "filename must be ended in '.j' or '.J'" << endl;
+        cerr <<  "file '"<<filename << "' is not a standard java-- file, filename must be ended by '.j' or '.J'" << endl;
         exit(-1);
     }
     fin.open(filename);
@@ -413,7 +418,7 @@ Scanner::Token Scanner::nextToken()
             }
             else if (token.lexeme == "!")
             {
-                if (ch = '=')
+                if (ch == '=')
                 {
                     token.lexeme += ch;
                     state = DONE_STATE;
