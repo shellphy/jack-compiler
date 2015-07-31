@@ -8,8 +8,15 @@
     * [变量](#变量)
     * [语句](#语句)
     * [表达式](#表达式)
-    * [子程序调用](#子程序调用)
     * [java--标准库](#java--标准库)
+         * [Math类](#Math类)
+         * [String类](#String类)
+         * [Array类](#Array类)
+         * [Output类](#Output类)
+         * [Screen类](#Screen类)
+         * [Keyboard类](#Keyboard类)
+         * [Memory类](#Memory类)
+         * [Sys类](#Sys类)
     * [Demo](#Demo)
 * [项目介绍](#项目介绍)
 * [使用说明](#使用说明)
@@ -169,28 +176,28 @@ java--表达式必须是下列之一:
     Memory      处理内存操作
     Sys         提供与程序执行相关的服务
 
-#### Math  
+#### Math类
 该类实现各种数学运算操作
 
-#### String
+#### String类
 该类实现String数据类型以及与字符串相关的操作
 
-#### Array
+#### Array类
 该类构造和清楚数组
 
-#### Output
+#### Output类
 该类提供在屏幕上打印文本的服务
 
-#### Screen 
+#### Screen类
 该类提供在屏幕上绘制图形的服务
 
-#### Keyboard
+#### Keyboard类
 该类提供从标准键盘上读取输入的服务
 
-#### Memory
+#### Memory类
 该类允许直接访问宿主平台的主内存的服务
 
-#### Sys 
+#### Sys类
 该类提供与程序指向相关的服务
 
 ### Demo
