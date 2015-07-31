@@ -38,35 +38,39 @@
 ##java--语言介绍
 ### 语法要素
 1, 保留字:   
+
     class, constructor, method, function, int, boolean, char, void, static, field, if, else, while, return, true, false, null, this  
 2, 标识符: 
+
     由字母或下划线开头, 后接任意任意个字母或数字或下划线  
 3, 常量:   
+
     int类型的常数规定都是正整数, 没有负整数, 但是可以在正整数前面加上负号, 这是对正整数取负值的一元运算表达式  
     String类型的常量是把一个字符串用一对双引号括起来, 与java和C里面的字符串一样  
     boolean类型的常量可以是true和false  
     常数null表示一个空引用, 实际上就是数值0  
 4, 合法的符号:  
+
     (   )   [   ]   ,   .   ;   =    +   -   *   /   &   |   ~   <   >   <=   >=   ==   
 5, 注释:  
+
     与C语言和java一样, 支持两种注释形式, 单行注释//   和多行注释 /*  */  
 
 ### 程序结构
-    java--的基本编程单元是类, 每个类存在于独立的文件中, 可以单独编译, 下面是类的定义形式: 
+1, java--的基本编程单元是类, 每个类存在于独立的文件中, 可以单独编译, 下面是类的定义形式: 
     class 类名
     {
     	成员变量(field)声明 和 静态变量(static)声明	// 比如放在子程序声明之前
     	子程序声明	// 子程序声明可以是构造函数声明(construtor), 静态函数声明(function)和方法声明(method)
     }
     
-    子程序声明:
+2, 子程序声明:
     subroutine 类型 名称 (参数列表)
     {
     	局部变量声明
     	语句
     }
-    
-    java--必须至少包含一个Main类, 而且在Main类中必须包含一个function void main() 函数
+3, java--必须至少包含一个Main类, 而且在Main类中必须包含一个function void main() 函数
 
 ### 变量
     
