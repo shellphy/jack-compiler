@@ -39,7 +39,8 @@
 ### 语法要素
 1, 保留字:   
 
-    class, constructor, method, function, int, boolean, char, void, static, field, if, else, while, return, true, false, null, this  
+    class, constructor, method, function, int, boolean, char, void, 
+    static, field, if, else, while, return, true, false, null, this  
 2, 标识符: 
 
     由字母或下划线开头, 后接任意任意个字母或数字或下划线  
@@ -73,13 +74,71 @@
 3, java--必须至少包含一个Main类, 而且在Main类中必须包含一个function void main() 函数
 
 ### 变量
-    
+1, 变量分类  
+    java--中有四种变量类型: 成员变量, 静态变量, 局部变量和参数变量  
+    成员变量通过field关键字来声明  
+    静态变量通过static来声明
+    在函数体的开始声明的变量是局部变量  
+    在函数声明中声明的变量是参数变量  
+2, 数据类型  
+    基本数据类型和对象类型
+3, 基本类型
+    int, boolean, char
+4, 对象类型
+    同java一样, 声明一个对象实际上只是创建一个指向该对象的引用
+5, 数组
+    数组是通过内置类Array类声明的, 用Array声明的对象也是一个引用, 指向堆内存. 
+    对数组的引用可以与传统的一样
+        Array arr;
+        arr[3] = 4;
+    不支持多维数组. 
+6, 字符串
+    字符串是通过内置类String类来声明的, 同样, 用String声明的对象也是一个引用, 指向堆内存, 例如:
+        String s;
+        char c;
+        s = String.new("hello, world!\n");
+        c = s.charAt(4);
+7, 类型转换
+    java--是弱类型语言, 没有禁止不同类型之间的转换
 
 ### 语句
-
+1, 赋值语句  
+    变量 = 表达式
+    变量[表达式] = 表达式    
+2, if语句
+    if(表达式)                     // 不能省略大括号
+    {
+    	语句             
+    }
+    else
+    {
+        语句
+    }
+3, while语句
+    while(表达式)
+    {
+        语句
+    }
+4, 函数调用语句
+    方法名(表达式)
+    类名.函数名(表达式)
+5, return语句
+    return 表达式
+    return ;                     // 即使子程序返回void, 也要有return语句
 
 ### 表达式
-
+java--表达式必须是下列之一:
+    常数
+    在作用域内的变量名(变量可以是静态、局部、成员或参数类型)
+    关键字this, 引用当前对象 (不能用于函数中)
+    数组语法是: 数组名称[表达式], 其中数组名称是Array类型的变量名
+    返回值为非空类型的子程序调用
+    一元运算符 "-" 或 "~" 作前缀的表达式
+        - 表达式: 算术求反
+        ~ 表达式: 布尔求反
+    形如 "表达式 运算符 表达式" 的表达式, 其中运算符可以是以下二元运算符中的一种;
+        +  -  *  /  &  |  <=  < >=  >  ==
+    (表达式): 位于圆括号内的表达式
 
 ### 子程序
 
