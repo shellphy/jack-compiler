@@ -95,7 +95,7 @@ void CodeGen::translate(Parser::TreeNode *t)
             SymbolTable::Info info = symbolTable->subroutineTableFind(varName);
             if (info == SymbolTable::None)
                 info = symbolTable->classesTableFind(currentClassName, varName);
-            else if (info.kind == SymbolTable::FIELD)
+            if (info.kind == SymbolTable::FIELD)
                 writePush(THIS, info.index);
             else if (info.kind == SymbolTable::STATIC)
                 writePush(STATIC, info.index);
@@ -200,6 +200,10 @@ void CodeGen::translateCall(Parser::TreeNode *t)
                 writePush(THIS, info.index);
             else if (info.kind == SymbolTable::VAR)
                 writePush(LOCAL, info.index);
+            else if (info.kind == SymbolTable::ARG)
+                writePush(ARG, info.index);
+            else if (info.kind == SymbolTable::STATIC)
+                writePush(STATIC, info.index);
             string functionName = Parser::getFunctionName(t->token.lexeme);
             t->token.lexeme = info.type + "." + functionName;
         }
@@ -304,7 +308,7 @@ void CodeGen::writeExpression(Parser::TreeNode *t)
             SymbolTable::Info info = symbolTable->subroutineTableFind(varName);
             if (info == SymbolTable::None)
                 info = symbolTable->classesTableFind(currentClassName, varName);
-            else if (info.kind == SymbolTable::FIELD)
+            if (info.kind == SymbolTable::FIELD)
                 writePush(THIS, info.index);
             else if (info.kind == SymbolTable::STATIC)
                 writePush(STATIC, info.index);

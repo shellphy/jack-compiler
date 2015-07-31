@@ -108,13 +108,6 @@ void Analyzer::checkExpression(Parser::TreeNode *t)
                 }
                 else                                                   // 如果调用者是对象
                 {
-                    // 先检查当前子过程是不是method
-                    if (symbolTable->classesTableFind(currentClassName, currentFunctionName).kind == SymbolTable::FUNCTION);
-                    {
-                        cerr << "Error in class " << currentClassName << " in line " << t->token.currentRow
-                            << ": a method cannot called in a function" << endl;
-                        break;
-                    }
                     // 再检查caller有没有被声明
                     SymbolTable::Info objInfo = symbolTable->subroutineTableFind(callerName);
                     if (objInfo == SymbolTable::None)
@@ -176,6 +169,7 @@ void Analyzer::checkStatement(Parser::TreeNode *t)
     }
     case Parser::RETURN_STATEMENT_K:
     {
+        checkExpression(t->child[0]);
         SymbolTable::Info info = symbolTable->subroutineTableFind("this");
         if (t->child[0] == nullptr && info.type != "void")
         {
