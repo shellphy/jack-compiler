@@ -299,7 +299,7 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
     class -> <strong>class</strong> ID <strong>{</strong> classVarDecList subroutineDecList <strong>}</strong>
     classVarDecList -> classVarDecList classVarDec
              	     |
-    classVarDec -> <strong>static<strong> type varNameList <strong>;</strong>
+    classVarDec -> <strong>static</strong> type varNameList <strong>;</strong>
                  | <strong>field</strong> type varNameList <strong>;</strong>
     varNameList -> varNameList <strong>,</strong> ID
                  | ID
@@ -311,87 +311,69 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
           | ID
     subroutineDecList -> subroutineDecList subroutineDec
                        | 
-
-
-
-
-</pre>
-
-<pre>
-    program -> declaration_list
-    declaration_list -> declaration_list declaration
-                      | declaration
-    declaration -> var_declaration
-                 | function_declaration
-    var_declaration -> type <strong>ID</strong> <strong>;</strong>
-                     | type <strong>ID</strong> <strong>[</strong> <strong>INT</strong> <strong>]</strong> <strong>;</strong>
-    type -> <strong>int</strong>
-          | <strong>float</strong>
-          | <strong>void</strong>
-          | <strong>string</strong>
-          | <strong>char</strong>
-          | <strong>bool</strong>
-    function_declaration -> type <strong>ID</strong> <strong>(</strong> params <strong>)</strong> compound_statement 
-    params -> param_list 
-            | <strong>void</strong>
-            | empty
-    param_list -> param_list , param
-                | param	
-    param -> type <strong>ID</strong>
-           | type <strong>ID [ ]</strong>
-    compound_statement -> <strong>{</strong> local_declarations statement_list <strong>}</strong>	
-    local_declarations -> local_declarations var_declaration
-                        | empty
-    statement_list -> statement_list statement
-                    | empty
-    statement -> expression_statement
-               | compound_statement
-               | selection_statement
-               | iteration_statement
+    subroutineDec -> <strong>constructor</strong> type ID <strong>(</strong> params <strong>)</strong> subroutineBody
+                   | <strong>function</strong> type ID <strong>(</strong> params <strong>)</strong> subroutineBody
+                   | <strong>method</strong> type ID <strong>(</strong>params <strong>)</strong> subroutineBody
+    params -> paramList
+            | 
+    paramList -> paramList <strong>,</strong> param
+               | param
+    param -> type ID
+    subroutineBody -> <strong>{</strong> varDecList statements <strong>}</strong>
+    varDecList -> varDecList varDec
+                | 
+    varDec -> type varNameList <strong>;<strong>
+    statements -> statements statement
+                | 
+    statement -> assign_statement
+               | if_statement
+               | while_statement
                | return_statement
-               | assign_statement
-    expression_statement -> expression <strong>;</strong> 
-                          | empty <strong>;</strong>
-    selection_statement -> <strong>if (</strong> expression <strong>)</strong> statement
-                         | <strong>if (</strong> expression <strong>)</strong> statement <strong>else</strong> statement
-    iteration_statement -> <strong>while (</strong> expression <strong>)</strong> statement
-    return_statement -> <strong>return ;</strong> 
+               | call_statement <strong>;</strong>
+    assign_statement -> leftValue <strong>=</strong> expression <strong>;</strong> 
+    leftValue -> ID
+               | ID <strong>[</strong> expression <strong>]</strong>
+    if_statement -> <strong>if (</strong> expression <strong>)</strong> statement
+                  | <strong>if (</strong> expression <strong>)</strong> statement <strong>else</strong> statement
+    while_statement -> <strong>while (</strong> expression <strong>) {</strong> statement <strong>}</strong>
+    return_statement -> <strong>return ; </strong>
                       | <strong>return</strong> expression <strong>;</strong>
-    expression -> expression <strong>&&</strong> boolexpression
-                | expression <strong>||</strong> boolexpression
-                | boolexpression
-    boolexpression -> additive_expression relational_operator additive_expression
+    call_statement -> ID <strong>(</strong> expressions <strong>)</strong> 
+                    | ID <strong>.</strong> ID <strong>(</strong> expressions <strong>)</strong>
+    expressions -> expression_list
+                 | 
+    expression_list -> expression_list <strong>,</strong> expression
+                     | expression
+    expression -> expression <strong>&</strong> boolExpression
+                | expression <strong>|</strong> boolExpression
+                | boolExpression
+    boolExpression -> additive_expression relational_operator additive_expression
                     | additive_expression
-    assign_statement -> var = expression ;
-    var -> <strong>ID</strong>
-         | <strong>ID [</strong> expression <strong>]</strong>
     relational_operator -> <strong><=</strong> 
                          | <strong>>=</strong>
                          | <strong>==</strong>
                          | <strong><</strong>
                          | <strong>></strong>
                          | <strong>!=</strong>
-                         | <strong>=</strong>
     additive_expression -> additive_expression <strong>+</strong> term
                          | additive_expression <strong>–</strong> term
-                         | term
+                         | term    
     term -> term <strong>*</strong> factor
           | term <strong>/</strong> factor
           | factor
-    factor -> ( expression )
-            | var
-            | call
-            | <strong>INT</strong>
-            | <strong>FLOAT</strong>
-            | <strong>CHAR</strong>
-            | <strong>BOOL</strong>
-    call -> <strong>ID (</strong> args <strong>)</strong>
-    args -> arg_list 
-          | empty
-    arg_list -> arg_list <strong>,</strong> expression
-              | expression
+    factor -> <strong>-</strong> positive_factor
+            | positive_factor
+    positive_factor -> <strong>~</strong> not_factor
+                     | not_factor
+    positive_factor -> <strong>~</strong> not_factor
+                     | not_factor
+    keywordConstant -> <strong>true</strong>
+                     | <strong>false</strong>
+                     | <strong>null</strong>
+                     | <strong>this</strong>
+    call_expression -> ID <strong>(</strong> expression <strong>)</strong>
+                     | ID <strong>.</strong> ID <strong>(</strong> expression <strong>)</strong>
 </pre>
-
     1, 每个程序都是由一个声明列表组成
     2, 声明列表包括变量声明和函数声明,这里的函数声明本质上应该是函数定义,也就是说函数必须是下面的形式:  
 ```C++
