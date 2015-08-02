@@ -1,14 +1,14 @@
-# java--Compiler 
+# jack-Compiler 
 
 ##<a name = "index"/>目录
 * [背景介绍](#背景介绍)
-* [java--语言介绍](#java--语言介绍)
+* [jack语言介绍](#jack语言介绍)
     * [语法要素](#语法要素)
     * [程序结构](#程序结构)
     * [变量](#变量)
     * [语句](#语句)
     * [表达式](#表达式)
-    * [java--标准库](#java--标准库)
+    * [jack标准库](#jack标准库)
          * [Math类](#Math类)
          * [String类](#String类)
          * [Array类](#Array类)
@@ -36,12 +36,12 @@
 #背景介绍
 去年学了编译原理,但是这门课的理论太多了,而且很难,学得是云里雾里.网上很多大神说学了编译原理之后最好能够实际动手做一个编译器出来,这样对能力有很大的提升.于是就下了定决心,带着写一个编译器的目的来重新学习编译原理.然后开始找公开课,买书,就这样开始了.
 
-刚开始买的是龙书,这本书太难了,看得那过程太痛苦了.又到网上找了本<编译原理与实践>,这本书里有一个实际的tiny语言编译器.看了之后我发现实际的编译器开发工作并没有想象中的那么复杂,有些复杂的理论并不是必须的.
-又买了本<计算机系统要素>, 这本书里面有一个编译器的项目指导说明.
-于是便按照这里面的项目要求来写编译器了. 书里面要编译的语言叫做"jack", 我给这门语言稍微做了些修改和扩展, 
-由于这个语言和java很像, 差不多是java的一个子集, 所以给这门语言取名叫做java--
+刚开始买的是龙书,这本书太难了,看得那过程太痛苦了.又到网上找了本<编译原理与实践>,这本书里有一个实际的tiny语言编译器.看了之后我发现实际的编译器开发工作并没有想象中的那么复杂,有些复杂的理论并不是必须的.  
 
-<a name = "java--语言介绍">
+又买了本<计算机系统要素>, 这本书里面有一个编译器的项目指导说明.
+于是便按照这里面的项目要求来写编译器了. 书里面要编译的语言叫做"jack", 我给这门语言稍微做了些修改和扩展.
+
+<a name = "jack语言介绍">
 ##java--语言介绍
 ### 语法要素
 1, 保留字:   
@@ -66,7 +66,7 @@
 
 <a name = "程序结构"/>
 ### 程序结构
-1, java--的基本编程单元是类, 每个类存在于独立的文件中, 可以单独编译, 下面是类的定义形式: 
+1, jack的基本编程单元是类, 每个类存在于独立的文件中, 可以单独编译, 下面是类的定义形式: 
     
     class 类名
     {
@@ -81,13 +81,13 @@
     	局部变量声明
     	语句
     }
-3, java--必须至少包含一个Main类, 而且在Main类中必须包含一个function void main() 函数
+3, jack必须至少包含一个Main类, 而且在Main类中必须包含一个function void main() 函数
 
 <a name = "变量"/>
 ### 变量
 1, 变量分类  
     
-    java--中有四种变量类型: 成员变量, 静态变量, 局部变量和参数变量  
+    jack中有四种变量类型: 成员变量, 静态变量, 局部变量和参数变量  
     成员变量通过field关键字来声明  
     静态变量通过static来声明
     在函数体的开始声明的变量是局部变量  
@@ -119,7 +119,7 @@
         c = s.charAt(4);
 7, 类型转换
     
-    java--是弱类型语言, 没有禁止不同类型之间的转换
+    jack是弱类型语言, 没有禁止不同类型之间的转换
 
 <a name = "语句"/>
 ### 语句
@@ -221,13 +221,13 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-本项目是在Windows平台下用VS2013开发的,编译之后生成javac--.exe可执行文件
-javac-- Main.j  
-即可以对Main.j源文件编译,如果没有报错,就可以生成一个可执行文件Main.exe
+本项目是在Windows平台下用VS2013开发的,编译之后生成jack.exe可执行文件
+jack Main.jack  
+即可以对Main.jack源文件编译,如果没有报错,就可以生成一个可执行文件Main.exe
 
 <a name = "模块介绍"/>
 ## 模块介绍
-与其他编译器类似,java--编译器主要有词法分析器模块,语法分析器模块,语义分析器模块,中间代码生成模块, 虚拟机模块, 目标代码生成模块
+jack编译器主要有词法分析器模块,语法分析器模块,语义分析器模块,中间代码生成模块, 虚拟机模块, 目标代码生成模块
 
 <a name = "词法分析器"/>
 ### 词法分析器
@@ -261,40 +261,6 @@ int main()
 #### 词法规则
 首先定义一些词法规则,即这门语言对能够识别出来的单词,词法规则是用正则表达式来定义的
 
-1,&nbsp;支持的字符集:
-
-      ASCII码
-
-2,&nbsp;标识符规则:
-
-    digit = [0-9]  
-    letter = [a-z]|[A-Z]  
-    ID = letter(letter|digit)*
-    
-3,&nbsp;保留字:
-
-    bool  true  false  if  else  while  int  float  void  return  string  char  break  continue
-    
-4,&nbsp;整型数:
-
-    INT = (+|-)?digit+
-    
-5,&nbsp;浮点数:
-
-    FLOAT = interger(.digit+) | interger((E|e)digit+) | interger(.digit+)((E|e)digit+)
-    
-6,&nbsp;字符:
-
-    以单引号开始,紧接着一个ASCII码字符,或者一个转义字符,最后以单引号结束.  
-    转义字符有 \a, \b, \f, \n, \r, \t, \v, \\, \?, \’, \”
-
-7,&nbsp;字符串:
-
-    string = "((^")*(\”)*(^”)*)*"
-    
-8,&nbsp;合法的符号:
-
-    +  -  *  /   <   <=  >  >=  ==  =  !=  ;  ,  (  )  [  ]  {  }  /*  */  “   &&   ||
     
 <a name = "转移图"/>
 ####转移图
@@ -323,9 +289,34 @@ int main()
     2, 生成抽象语法树
 
 <a name = "语法规则">
-####C-Mini语言的语法
-C-Mini语言的语法由如下的上下文无关文法(BNF)定义.  
+####jack语言的语法
+jack语言的语法由如下的上下文无关文法(BNF)定义.  
 非粗体字表示非终结符, 粗体字表示终结符
+<pre>
+    program -> classlist
+    classlist -> classlist class
+               | class
+    class -> <strong>class</strong> ID <strong>{</strong> classVarDecList subroutineDecList <strong>}</strong>
+    classVarDecList -> classVarDecList classVarDec
+             	     |
+    classVarDec -> <strong>static<strong> type varNameList <strong>;</strong>
+                 | <strong>field</strong> type varNameList <strong>;</strong>
+    varNameList -> varNameList <strong>,</strong> ID
+                 | ID
+    type -> <strong>int</strong>
+          | <strong>float</strong>
+          | <strong>char</strong>
+          | <strong>boolean</strong>
+          | <strong>void</strong>
+          | ID
+    subroutineDecList -> subroutineDecList subroutineDec
+                       | 
+
+
+
+
+</pre>
+
 <pre>
     program -> declaration_list
     declaration_list -> declaration_list declaration
