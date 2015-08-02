@@ -322,7 +322,7 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
     subroutineBody -> <strong>{</strong> varDecList statements <strong>}</strong>
     varDecList -> varDecList varDec
                 | 
-    varDec -> type varNameList <strong>;<strong>
+    varDec -> type varNameList <strong>;</strong>
     statements -> statements statement
                 | 
     statement -> assign_statement
