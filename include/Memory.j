@@ -1,30 +1,30 @@
-class Memory 
+class Memory
 {
-    static Array freelist;      // æ­¤æ—¶freelistå®é™…ä¸Šå°±æ˜¯ä¸ªæŒ‡é’ˆ
+    static Array freelist;      // ´ËÊ±freelistÊµ¼ÊÉÏ¾ÍÊÇ¸öÖ¸Õë
 
-    /** åˆå§‹åŒ–å†…å­˜å‚æ•° */
+    /** ³õÊ¼»¯ÄÚ´æ²ÎÊı */
     function void init() 
     {
         freelist = 0;
-        freelist[2048] = 14334;
-        freelist[2049] = 2050;
+        freelist[2048] = 14334; // 14334 = 37FE(H)
+        freelist[2049] = 2050;  // 2050 = 802(H)
         return;
     }
-
-    /** è¿”å›åœ°å€ä¸ºaddressçš„å†…å­˜å•å…ƒ */
+    
+    /** ·µ»ØµØÖ·ÎªaddressµÄÄÚ´æµ¥Ôª */
     function int peek(int address) 
     {
         return freelist[address];
     }
 
-    /** å°†æ•´æ•°å€¼valueå­˜å…¥åœ°å€ä¸ºaddressçš„å†…å­˜å•å…ƒä¸­è®¾ç½®åœ¨è¿™ä¸ªåœ°å€ä¸Šçš„ä¸»å†…å­˜çš„å€¼ */
+    /** ½«ÕûÊıÖµvalue´æÈëµØÖ·ÎªaddressµÄÄÚ´æµ¥ÔªÖĞÉèÖÃÔÚÕâ¸öµØÖ·ÉÏµÄÖ÷ÄÚ´æµÄÖµ */
     function void poke(int address, int value) 
     {
         freelist[address] = value;
         return;
     }
-
-    /** ä»å†…å­˜å †ä¸­å¯»æ‰¾å¹¶åˆ†é…ä¸€å—å¤§å°ä¸ºsizeçš„å†…å­˜åŒº, è¿”å›å…¶åŸºåœ°å€çš„æŒ‡é’ˆ */
+    
+    /** ´ÓÄÚ´æ¶ÑÖĞÑ°ÕÒ²¢·ÖÅäÒ»¿é´óĞ¡ÎªsizeµÄÄÚ´æÇø, ·µ»ØÆä»ùµØÖ·µÄÖ¸Õë */
     function int alloc(int size) 
     {
         int listRoom, listTag, tempAdd, returnVal;
@@ -38,10 +38,10 @@ class Memory
             listTag = listTag + 1;
             listTag = Memory.peek(listTag);
             listRoom = Memory.peek(listTag);
-            if(listTag == 0) 
-            {
-                Sys.error(7);
-            }
+//            if(listTag == 0) 
+//            {
+//                Sys.error(7);
+//            }
         }
         returnVal = listTag + 2;
         Memory.poke(listTag, 0);
@@ -53,13 +53,13 @@ class Memory
         Memory.poke(listTag, listTag + 1);          
         return returnVal;
     }
-
-    /** æ”¶å›ä¹‹å‰åˆ†é…ç»™å¯¹è±¡çš„å†…å­˜ç©ºé—´ */
+    
+    /** ÊÕ»ØÖ®Ç°·ÖÅä¸ø¶ÔÏóµÄÄÚ´æ¿Õ¼ä */
     function void deAlloc(int object) 
     {
         int length;
-        length = Memory.peek(object + 1) - object - 2;
-        Memory.poke(object, length);
+        length = Memory.peek(object - 1) - object;
+        Memory.poke(object - 2, length);
         return;
-    }    
+    }
 }

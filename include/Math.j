@@ -108,7 +108,7 @@ class Math
 		flag = 0;
 		while (powerTwo < x)
         {
-			powerTwo = powerTwo+powerTwo;
+			powerTwo = powerTwo + powerTwo;
 			flag = flag + 1;
 		}
 		return flag;

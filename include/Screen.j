@@ -25,7 +25,7 @@ class Screen
     /** 为后续的drawXXX命令设置绘图颜色(white = false, black = true) */
     function void setColor(boolean b) 
     {
-        color=b;
+        color = b;
         return;
     }
 

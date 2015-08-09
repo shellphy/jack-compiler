@@ -1,4 +1,4 @@
-class Array 
+class Array
 {
     /** 构造大小为size的新数组 */
     function Array new(int size) 
@@ -7,7 +7,7 @@ class Array
         a = Memory.alloc(size);
         return a;
     }
-
+    
     /** 清除数组 */
     method void dispose() 
     {

@@ -69,7 +69,7 @@ class String
         return;
     }
 
-    /** 从最左边开始知道遇到非数字字符为止的字串的整数值 */
+    /** 从最左边开始直到遇到非数字字符为止的字串的整数值 */
     method int intValue() 
     {
         int length, i, result;

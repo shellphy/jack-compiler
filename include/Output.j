@@ -171,10 +171,10 @@ class Output
     {
         boolean oddOrEven;
         int column, row, flag, tempVal;
-        int divNum,address;
-        int tempChar,oriChar,answer;
+        int divNum, address;
+        int tempChar, oriChar, answer;
         Array zeroMap;
-        flag=0;
+        flag = 0;
         if(i == 23)
         {
             cursorRow = 0;
@@ -189,15 +189,15 @@ class Output
             charRow = i;
             charCol = j;         
         }
-        row=cursorRow;
-        column=cursorCol;
+        row = cursorRow;
+        column = cursorCol;
         //define zeroMap[]
         zeroMap = Output.getMap(32);
         //find address
-        divNum=Math.divide(column,16);
-        address=16384+Math.multiply(row,32)+divNum;
+        divNum = Math.divide(column,16);
+        address = 16384 + Math.multiply(row,32) + divNum;
         //print char 0
-        tempVal=Math.multiply(Math.divide(charCol,2),2);
+        tempVal = Math.multiply(Math.divide(charCol,2),2);
         if(tempVal == charCol)
         {
             oddOrEven=true;
@@ -210,9 +210,9 @@ class Output
         {
             while(flag < 11)
             {
-                tempChar=Math.multiply(zeroMap[flag], 256);                
-                oriChar=Memory.peek(address);
-                oriChar = (oriChar&255);
+                tempChar = Math.multiply(zeroMap[flag], 256);                
+                oriChar = Memory.peek(address);
+                oriChar = (oriChar & 255);
                 answer = tempChar + oriChar;
                 Memory.poke(address, answer);
                 address = address + 32;
