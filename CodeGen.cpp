@@ -7,6 +7,8 @@ using namespace std;
 
 CodeGen::CodeGen()
 {
+    ifLabelCount = 0;
+    whileLabelCount = 0;
     symbolTable = SymbolTable::getInstance();
 }
 
@@ -41,8 +43,6 @@ void CodeGen::translate(Parser::TreeNode *t)
     case Parser::SUBROUTINE_DEC_K:
     {
         isMethod = false;
-        whileLabelCount = 0;
-        ifLabelCount = 0;
         currentFunctionName = t->child[2]->token.lexeme;
         int nlocals = 0;
         for (auto p = t->child[4]->child[0]; p != nullptr; p = p->next)
