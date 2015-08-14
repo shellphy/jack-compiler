@@ -25,7 +25,7 @@ class Main
 }
 ```
 #####运行示例:
-![图片4](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.png)
+![图片4](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.jpg)
    
 
 ##<a name = "index"/>目录
