@@ -16,6 +16,7 @@ class Main
         Output.printString("What's your name?");
         Output.println();
         s = Input.readLine();
+        OUtput.printString("Your name is: ");
         Output.printString(s);
         Output.println();
         
