@@ -356,8 +356,14 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
             | positive_factor
     positive_factor -> <strong>~</strong> not_factor
                      | not_factor
-    positive_factor -> <strong>~</strong> not_factor
-                     | not_factor
+    not_factor -> <strong>INT_CONST</strong>
+                | <strong>CHAR_CONST</strong>
+                | <strong>STRING_CONST</strong>
+                | keywordConstant
+                | ID
+                | ID <strong>[</strong> expression <strong>]</strong>
+                | call_expression
+                | <strong>(</strong> expression <strong>)</strong>
     keywordConstant -> <strong>true</strong>
                      | <strong>false</strong>
                      | <strong>null</strong>
