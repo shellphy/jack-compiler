@@ -1,6 +1,32 @@
 # jack-Compiler 
 ### 这是个玩具编译器, 存在很多bug, 很多东西都不够完善, C++基础不太好, 代码也写的比较丑, 不够规范, 仅仅实现了基本的功能. 还有很多东西都搞不懂, 等以后能力提高了再研究!
 
+### 效果
+    代码:
+```C++
+class Main 
+{
+    function void main() 
+    {
+        String s;
+        
+        Output.printString("Hello, world!");
+        Output.println();
+        
+        Output.printString("What's your name?");
+        Output.println();
+        s = Input.readLine();
+        Output.printString(s);
+        Output.println();
+        
+        return;
+    }
+
+}
+```
+    运行示例:
+   
+
 ##<a name = "index"/>目录
 * [背景介绍](#背景介绍)
 * [jack语言介绍](#jack语言介绍)
