@@ -13,8 +13,7 @@
          * [String类](#String类)
          * [Array类](#Array类)
          * [Output类](#Output类)
-         * [Screen类](#Screen类)
-         * [Keyboard类](#Keyboard类)
+         * [Input类](#Input类)
          * [Memory类](#Memory类)
          * [Sys类](#Sys类)
     * [Demo](#Demo)
@@ -31,7 +30,7 @@
     * [语义分析器](#语义分析器)
           * [语义规则](#语义规则)
     * [虚拟机代码生成](#虚拟机代码生成)
-* [其他](#其他)
+* [虚拟机](#虚拟机)
 
 <a name = "背景介绍"/>
 #背景介绍
@@ -46,7 +45,7 @@
     static, field, if, else, while, return, true, false, null, this  
 2, 标识符: 
 
-    由字母或下划线开头, 后接任意任意个字母或数字或下划线  
+    由字母或下划线开头, 后接任意任意个字母或数字或下划线
 3, 常量:   
 
     int类型的常数规定都是正整数, 没有负整数, 但是可以在正整数前面加上负号, 这是对正整数取负值的一元运算表达式  
@@ -172,8 +171,7 @@ java--表达式必须是下列之一:
     String      实现字符串String类型和字符串相关操作
     Array       实现数组Array类型和数组相关操作
     Output      处理屏幕上的文字输出
-    Screen      处理屏幕上的图像输出
-    Keyboard    处理键盘的用户输入
+    Input       处理键盘的输入
     Memory      处理内存操作
     Sys         提供与程序执行相关的服务
 
@@ -193,12 +191,8 @@ java--表达式必须是下列之一:
 #### Output类
 该类提供在屏幕上打印文本的服务
 
-<a name = "Screen类"/>
-#### Screen类
-该类提供在屏幕上绘制图形的服务
-
-<a name = "Keyboard类"/>
-#### Keyboard类
+<a name = "Input类"/>
+#### Input类
 该类提供从标准键盘上读取输入的服务
 
 <a name = "Memory类"/>
@@ -217,18 +211,18 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-本项目是在Windows平台下用VS2013开发的,编译之后生成jack.exe可执行文件
-jack Main.jack  
-即可以对Main.jack源文件编译,如果没有报错,就可以生成一个可执行文件Main.exe
+这是用vs2013编译的, 工程文件都在目录中
+调试的时候, 需要把api目录复制到jackc和jack目录里面,生成jack.exe和jackc之后, 就把jack.exe, jackc.exe和api目录都复制到工作目录中
+然后再开始编写代码
 
 <a name = "模块介绍"/>
 ## 模块介绍
-jack编译器主要有词法分析器模块,语法分析器模块,语义分析器模块,中间代码生成模块, 虚拟机模块, 目标代码生成模块
+jack编译器主要有词法分析器,语法分析器,语义分析器,vm代码生成 和 虚拟机
 
 <a name = "词法分析器"/>
 ### 词法分析器
 词法分析器的源代码为Scanner.cpp  使用的手工编码的方法实现的  
-&nbsp;&nbsp;&nbsp;&nbsp;词法分析器的主要任务是识别源程序中的单词(Token),假如有下面的代码:
+&nbsp;&nbsp;&nbsp;&nbsp;词法分析器的主要任务是识别源程序中的单词(Token),假如有下面的C代码:
 ```C++
 int main()
 {
@@ -384,7 +378,6 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
 <a name = "符号表"/>
 ####符号表
 
-<a name = "其他"/>
-## 其他
-后续工作
+<a name = "虚拟机"/>
+####虚拟机
 
