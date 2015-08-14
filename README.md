@@ -1,4 +1,5 @@
 # jack-Compiler 
+### 这是个玩具编译器, 存在很多bug, 很多东西都不够完善, 代码也写的比较丑, 不够规范, 仅仅实现了基本的功能. 还有很多东西都搞不懂, 等以后能力提高了再研究!
 
 ##<a name = "index"/>目录
 * [背景介绍](#背景介绍)
@@ -13,8 +14,7 @@
          * [String类](#String类)
          * [Array类](#Array类)
          * [Output类](#Output类)
-         * [Screen类](#Screen类)
-         * [Keyboard类](#Keyboard类)
+         * [Input类](#Input类)
          * [Memory类](#Memory类)
          * [Sys类](#Sys类)
     * [Demo](#Demo)
@@ -31,16 +31,11 @@
     * [语义分析器](#语义分析器)
           * [语义规则](#语义规则)
     * [虚拟机代码生成](#虚拟机代码生成)
-* [其他](#其他)
+* [虚拟机](#虚拟机)
 
 <a name = "背景介绍"/>
 #背景介绍
 去年学了编译原理,但是这门课的理论太多了,而且很难,学得是云里雾里.网上很多大神说学了编译原理之后最好能够实际动手做一个编译器出来,这样对能力有很大的提升.于是就下了定决心,带着写一个编译器的目的来重新学习编译原理.然后开始找公开课,买书,就这样开始了.
-
-刚开始买的是龙书,这本书太难了,看得那过程太痛苦了.又到网上找了本<编译原理与实践>,这本书里有一个实际的tiny语言编译器.看了之后我发现实际的编译器开发工作并没有想象中的那么复杂,有些复杂的理论并不是必须的.  
-
-又买了本<计算机系统要素>, 这本书里面有一个编译器的项目指导说明.
-于是便按照这里面的项目要求来写编译器了. 书里面要编译的语言叫做"jack", 我给这门语言稍微做了些修改和扩展.
 
 <a name = "jack语言介绍">
 ##java--语言介绍
@@ -51,7 +46,7 @@
     static, field, if, else, while, return, true, false, null, this  
 2, 标识符: 
 
-    由字母或下划线开头, 后接任意任意个字母或数字或下划线  
+    由字母或下划线开头, 后接任意任意个字母或数字或下划线
 3, 常量:   
 
     int类型的常数规定都是正整数, 没有负整数, 但是可以在正整数前面加上负号, 这是对正整数取负值的一元运算表达式  
@@ -177,8 +172,7 @@ java--表达式必须是下列之一:
     String      实现字符串String类型和字符串相关操作
     Array       实现数组Array类型和数组相关操作
     Output      处理屏幕上的文字输出
-    Screen      处理屏幕上的图像输出
-    Keyboard    处理键盘的用户输入
+    Input       处理键盘的输入
     Memory      处理内存操作
     Sys         提供与程序执行相关的服务
 
@@ -198,12 +192,8 @@ java--表达式必须是下列之一:
 #### Output类
 该类提供在屏幕上打印文本的服务
 
-<a name = "Screen类"/>
-#### Screen类
-该类提供在屏幕上绘制图形的服务
-
-<a name = "Keyboard类"/>
-#### Keyboard类
+<a name = "Input类"/>
+#### Input类
 该类提供从标准键盘上读取输入的服务
 
 <a name = "Memory类"/>
@@ -222,18 +212,18 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-本项目是在Windows平台下用VS2013开发的,编译之后生成jack.exe可执行文件
-jack Main.jack  
-即可以对Main.jack源文件编译,如果没有报错,就可以生成一个可执行文件Main.exe
+这是用vs2013编译的, 工程文件都在目录中
+调试的时候, 需要把api目录复制到jackc和jack目录里面,生成jack.exe和jackc之后, 就把jack.exe, jackc.exe和api目录都复制到工作目录中
+然后再开始编写代码
 
 <a name = "模块介绍"/>
 ## 模块介绍
-jack编译器主要有词法分析器模块,语法分析器模块,语义分析器模块,中间代码生成模块, 虚拟机模块, 目标代码生成模块
+jack编译器主要有词法分析器,语法分析器,语义分析器,vm代码生成 和 虚拟机
 
 <a name = "词法分析器"/>
 ### 词法分析器
 词法分析器的源代码为Scanner.cpp  使用的手工编码的方法实现的  
-&nbsp;&nbsp;&nbsp;&nbsp;词法分析器的主要任务是识别源程序中的单词(Token),假如有下面的代码:
+&nbsp;&nbsp;&nbsp;&nbsp;词法分析器的主要任务是识别源程序中的单词(Token),假如有下面的C代码:
 ```C++
 int main()
 {
@@ -366,8 +356,14 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
             | positive_factor
     positive_factor -> <strong>~</strong> not_factor
                      | not_factor
-    positive_factor -> <strong>~</strong> not_factor
-                     | not_factor
+    not_factor -> <strong>INT_CONST</strong>
+                | <strong>CHAR_CONST</strong>
+                | <strong>STRING_CONST</strong>
+                | keywordConstant
+                | ID
+                | ID <strong>[</strong> expression <strong>]</strong>
+                | call_expression
+                | <strong>(</strong> expression <strong>)</strong>
     keywordConstant -> <strong>true</strong>
                      | <strong>false</strong>
                      | <strong>null</strong>
@@ -389,7 +385,6 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
 <a name = "符号表"/>
 ####符号表
 
-<a name = "其他"/>
-## 其他
-后续工作
+<a name = "虚拟机"/>
+####虚拟机
 
