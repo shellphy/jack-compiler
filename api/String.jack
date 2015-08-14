@@ -145,12 +145,7 @@ class String
 
     /** 返回换行符 */
     function char newLine() {
-        return 128;
-    }
-
-    /** 返回退格字符 */
-    function char backSpace() {
-        return 129;
+        return 10;
     }
 
     /** 返回双引号字符 */
