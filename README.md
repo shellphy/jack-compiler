@@ -344,9 +344,7 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-这是用vs2013编译的, 工程文件都在目录中
-调试的时候, 需要把api目录复制到jackc和jack目录里面,生成jack.exe和jackc之后, 就把jack.exe, jackc.exe和api目录都复制到工作目录中
-然后再开始编写代码
+在linux下运行compiler.sh或者make就可以变一处jackc.exe和jack.exe了
 
 <a name = "模块介绍"/>
 ## 模块介绍
