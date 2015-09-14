@@ -4,28 +4,28 @@
 #include <sstream>
 #include <cassert>
 
-static int sp;         // ¼Ä´æÆ÷  Õ»Ö¸Õë: Ö¸ÏòÕ»ÖĞÏÂÒ»¸ö×î¶¥µÄ»ùÖ·
-static int local;      // ¼Ä´æÆ÷  Ö¸Ïòµ±Ç°VMº¯ÊılocalµÄ»ùÖ·
-static int argument;   // ¼Ä´æÆ÷  Ö¸Ïòµ±Ç°VMº¯Êıargument¶ÎµÄ»ùÖ·
-static int _this;      // ¼Ä´æÆ÷  Ö¸Ïòµ±Ç°this¶Î(ÔÚ¶ÑÖĞ)µÄ»ùÖ·
-static int that;       // ¼Ä´æÆ÷  Ö¸Ïòµ±Ç°that¶Î(ÔÚ¶ÑÖĞ)µÄ»ùÖ·
-static int ip;         // ¼Ä´æÆ÷  Ö¸ÏòÏÂÒ»ÌõÒªÖ´ĞĞµÄÖ¸Áî
-static int temp[7];    // ¼Ä´æÆ÷  ´æ´¢ÁÙÊ±Öµ
+static int sp;         // å¯„å­˜å™¨  æ ˆæŒ‡é’ˆ: æŒ‡å‘æ ˆä¸­ä¸‹ä¸€ä¸ªæœ€é¡¶çš„åŸºå€
+static int local;      // å¯„å­˜å™¨  æŒ‡å‘å½“å‰VMå‡½æ•°localçš„åŸºå€
+static int argument;   // å¯„å­˜å™¨  æŒ‡å‘å½“å‰VMå‡½æ•°argumentæ®µçš„åŸºå€
+static int _this;      // å¯„å­˜å™¨  æŒ‡å‘å½“å‰thisæ®µ(åœ¨å †ä¸­)çš„åŸºå€
+static int that;       // å¯„å­˜å™¨  æŒ‡å‘å½“å‰thatæ®µ(åœ¨å †ä¸­)çš„åŸºå€
+static int ip;         // å¯„å­˜å™¨  æŒ‡å‘ä¸‹ä¸€æ¡è¦æ‰§è¡Œçš„æŒ‡ä»¤
+static int temp[7];    // å¯„å­˜å™¨  å­˜å‚¨ä¸´æ—¶å€¼
 /*
-*       RAMµØÖ·                 ¹¦ÄÜ
-*          0~15            ±£Áô×Å,Î´Ê¹ÓÃ
-*        16~155            VM³ÌĞòµÄËùÓĞVMº¯ÊıµÄ¾²Ì¬±äÁ¿
-*      256~2047            Õ»
-*    2048~16383            ¶Ñ(ÓÃÓÚ´æ·Å¶ÔÏóºÍÊı×é)
+*       RAMåœ°å€                 åŠŸèƒ½
+*          0~15            ä¿ç•™ç€,æœªä½¿ç”¨
+*        16~155            VMç¨‹åºçš„æ‰€æœ‰VMå‡½æ•°çš„é™æ€å˜é‡
+*      256~2047            æ ˆ
+*    2048~16383            å †(ç”¨äºå­˜æ”¾å¯¹è±¡å’Œæ•°ç»„)
 **/
-static short ram[266385];                                   // Êı¾İ´æ´¢Æ÷
-static vector<vector<string>> instructions_ram;             // Ö¸Áî´æ´¢Æ÷
-static int staticCount;                                     // ¼ÇÂ¼¾²Ì¬±äÁ¿ÒÑ¾­·ÖÅäµÄÊıÁ¿
-static unordered_map<string, int> staticVarNames;           // ¼ÇÂ¼¾²Ì¬±äÁ¿ÔÚÄÚ´æÖĞµÄÎ»ÖÃ
-static unordered_map<string, int> instruction_address;      // ±£´ælabelºÍfunctionÖ¸ÁîÔÚÖ¸Áî´æ´¢Æ÷ÖĞµÄµØÖ·
-static vector<string> currentInstruction;                   // ±£´æµ±Ç°ÕıÔÚÖ´ĞĞµÄÖ¸Áî
-static string currentClassName;                             // ±£´æµ±Ç°ÕıÔÚÖ´ĞĞµÄÖ¸ÁîËùÔÚµÄÀàµÄÃû×Ö
-static bool arriveEnd = false;                              // ±ê¼ÇÊÇ·ñµ½´ï³ÌĞò½áÎ²
+static short ram[266385];                                   // æ•°æ®å­˜å‚¨å™¨
+static vector<vector<string>> instructions_ram;             // æŒ‡ä»¤å­˜å‚¨å™¨
+static int staticCount;                                     // è®°å½•é™æ€å˜é‡å·²ç»åˆ†é…çš„æ•°é‡
+static unordered_map<string, int> staticVarNames;           // è®°å½•é™æ€å˜é‡åœ¨å†…å­˜ä¸­çš„ä½ç½®
+static unordered_map<string, int> instruction_address;      // ä¿å­˜labelå’ŒfunctionæŒ‡ä»¤åœ¨æŒ‡ä»¤å­˜å‚¨å™¨ä¸­çš„åœ°å€
+static vector<string> currentInstruction;                   // ä¿å­˜å½“å‰æ­£åœ¨æ‰§è¡Œçš„æŒ‡ä»¤
+static string currentClassName;                             // ä¿å­˜å½“å‰æ­£åœ¨æ‰§è¡Œçš„æŒ‡ä»¤æ‰€åœ¨çš„ç±»çš„åå­—
+static bool arriveEnd = false;                              // æ ‡è®°æ˜¯å¦åˆ°è¾¾ç¨‹åºç»“å°¾
 
 void executeArithmetic(string command)
 {
@@ -205,7 +205,7 @@ void executeReturn()
 {
     int temp = local;
     ip = ram[temp - 5];
-    ram[argument] = ram[--sp];      // ÖØÖÃµ÷ÓÃÕßµÄ·µ»ØÖµ
+    ram[argument] = ram[--sp];      // é‡ç½®è°ƒç”¨è€…çš„è¿”å›å€¼
     sp = argument + 1;
     that = ram[temp - 1];
     _this = ram[temp - 2];
