@@ -28,6 +28,7 @@ public:
         NodeKind nodeKind;
         TreeNode()
         {
+			nodeKind = None;
             child[0] = child[1] = child[2] = child[3] = child[4] = nullptr;
             next = nullptr;
         }

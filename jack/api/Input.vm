@@ -1,0 +1,33 @@
+function Input.readChar 1
+call IO.getchar 0
+pop local 0
+push local 0
+return
+function Input.readLine 2
+push constant 100
+call String.new 1
+pop local 1
+label WHILE_EXP9
+push constant 0
+not
+not
+if-goto WHILE_END9
+call IO.getchar 0
+pop local 0
+push local 0
+push constant 10
+eq
+if-goto IF_TRUE31
+goto IF_FALSE31
+label IF_TRUE31
+push local 1
+return
+label IF_FALSE31
+push local 1
+push local 0
+call String.appendChar 2
+pop local 1
+goto WHILE_EXP9
+label WHILE_END9
+push local 1
+return

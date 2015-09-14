@@ -8,7 +8,7 @@ jackc/jackc.o: jackc/jackc.cpp
 
 jackc/Scanner.o: jackc/Scanner.cpp
 	g++ -c -o jackc/Scanner.o jackc/Scanner.cpp -std=c++11
-
+ 
 jackc/Parser.o: jackc/Parser.cpp
 	g++ -c -o jackc/Parser.o jackc/Parser.cpp -std=c++11
 
@@ -35,7 +35,7 @@ jack/VirtualMachion.o: jack/VirtualMachion.cpp
 
 
 clean:
-	rm jackc/*.o
-	rm jack/*.o
-	rm jackc.exe
-	rm jack.exe
+	rm -rf jackc/*.o
+	rm -rf jack/*.o
+	rm -rf jackc.exe
+	rm -rf jack.exe

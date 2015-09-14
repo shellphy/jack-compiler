@@ -1,0 +1,52 @@
+function Output.printChar 0
+push argument 0
+call IO.putchar 1
+pop temp 0
+push constant 0
+return
+function Output.printString 3
+push constant 0
+pop local 2
+push argument 0
+call String.length 1
+pop local 0
+label WHILE_EXP8
+push local 2
+push local 0
+lt
+not
+if-goto WHILE_END8
+push argument 0
+push local 2
+call String.charAt 2
+pop local 1
+push local 1
+call Output.printChar 1
+pop temp 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP8
+label WHILE_END8
+push constant 0
+return
+function Output.printInt 1
+push constant 6
+call String.new 1
+pop local 0
+push local 0
+push argument 0
+call String.setInt 2
+pop temp 0
+push local 0
+call Output.printString 1
+pop temp 0
+push constant 0
+return
+function Output.println 0
+push constant 10
+call IO.putchar 1
+pop temp 0
+push constant 0
+return

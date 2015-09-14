@@ -1,0 +1,271 @@
+function String.new 0
+push constant 4
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+push constant 1
+lt
+if-goto IF_TRUE22
+goto IF_FALSE22
+label IF_TRUE22
+push constant 1
+pop argument 0
+label IF_FALSE22
+push argument 0
+pop this 3
+push constant 0
+pop this 2
+push argument 0
+call Array.new 1
+pop this 0
+push constant 0
+pop this 1
+push pointer 0
+return
+function String.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Array.dispose 1
+pop temp 0
+push constant 0
+return
+function String.length 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function String.charAt 1
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+return
+function String.setCharAt 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+push argument 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function String.appendChar 1
+push argument 0
+pop pointer 0
+push this 1
+push this 3
+eq
+if-goto IF_TRUE23
+goto IF_FALSE23
+label IF_TRUE23
+push constant 17
+call Sys.error 1
+pop temp 0
+label IF_FALSE23
+push this 1
+pop local 0
+push local 0
+push this 0
+add
+push argument 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push this 1
+push constant 1
+add
+pop this 1
+push pointer 0
+return
+function String.eraseLastChar 1
+push argument 0
+pop pointer 0
+push this 1
+pop local 0
+push this 1
+push constant 1
+sub
+pop this 1
+push constant 0
+return
+function String.intValue 5
+push argument 0
+pop pointer 0
+push constant 0
+pop local 4
+push constant 0
+pop local 1
+push this 1
+pop local 0
+push constant 0
+pop local 2
+push constant 0
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 45
+eq
+if-goto IF_TRUE24
+goto IF_FALSE24
+label IF_TRUE24
+push constant 0
+not
+pop local 4
+push local 1
+push constant 1
+add
+pop local 1
+label IF_FALSE24
+label WHILE_EXP7
+push local 1
+push local 0
+lt
+not
+if-goto WHILE_END7
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 47
+gt
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 58
+lt
+and
+if-goto IF_TRUE25
+goto IF_FALSE25
+label IF_TRUE25
+push local 1
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 48
+sub
+pop local 3
+push local 2
+push constant 10
+call Math.multiply 2
+push local 3
+add
+pop local 2
+push local 1
+push constant 1
+add
+pop local 1
+goto IF_END25
+label IF_FALSE25
+push local 4
+if-goto IF_TRUE26
+goto IF_FALSE26
+label IF_TRUE26
+push local 2
+neg
+pop local 2
+label IF_FALSE26
+push local 2
+return
+label IF_END25
+goto WHILE_EXP7
+label WHILE_END7
+push local 4
+if-goto IF_TRUE27
+goto IF_FALSE27
+label IF_TRUE27
+push local 2
+neg
+pop local 2
+label IF_FALSE27
+push local 2
+return
+function String.setInt 4
+push argument 0
+pop pointer 0
+push constant 0
+pop this 1
+push argument 1
+push constant 0
+lt
+if-goto IF_TRUE28
+goto IF_FALSE28
+label IF_TRUE28
+push constant 0
+not
+pop this 2
+push argument 1
+call Math.abs 1
+pop argument 1
+label IF_FALSE28
+push argument 1
+push constant 10
+call Math.divide 2
+pop local 1
+push local 1
+push constant 10
+call Math.multiply 2
+pop local 2
+push argument 1
+push local 2
+sub
+pop local 0
+push local 0
+push constant 48
+add
+pop local 3
+push argument 1
+push constant 10
+lt
+if-goto IF_TRUE29
+goto IF_FALSE29
+label IF_TRUE29
+push this 2
+if-goto IF_TRUE30
+goto IF_FALSE30
+label IF_TRUE30
+push pointer 0
+push constant 45
+call String.appendChar 2
+pop temp 0
+push constant 0
+pop this 2
+label IF_FALSE30
+push pointer 0
+push local 3
+call String.appendChar 2
+pop temp 0
+goto IF_END29
+label IF_FALSE29
+push pointer 0
+push local 1
+call String.setInt 2
+pop temp 0
+push pointer 0
+push local 3
+call String.appendChar 2
+pop temp 0
+label IF_END29
+push constant 0
+return
+function String.newLine 0
+push constant 10
+return
+function String.doubleQuote 0
+push constant 34
+return

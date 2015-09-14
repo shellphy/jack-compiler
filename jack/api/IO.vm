@@ -1,0 +1,5 @@
+function IO.putchar 0
+push constant 0
+return
+function IO.getchar 0
+return
