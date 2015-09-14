@@ -87,7 +87,7 @@ class Main
 }
 ```
 #####运行结果:
-![图片5](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/5.jpg)
+![图片6](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/6.png)
 
 #####Demo3:
 ```C++
@@ -129,7 +129,7 @@ class Main
 }
 ```
 #####运行结果:
-![图片6](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/6.jpg)
+![图片5](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/5.png)
 
 
 
