@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
-#include <GL/glut.h>
 
 static int sp;         // 寄存器  栈指针: 指向栈中下一个最顶的基址
 static int local;      // 寄存器  指向当前VM函数local的基址
@@ -274,7 +273,7 @@ void run()
     while (true)
     {
         instructionFetch();
-        if (ip == 120)
+        if (ip == 1)
         {
             int temp;
             temp = 0;
