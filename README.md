@@ -1,7 +1,7 @@
 # jack-Compiler 
 
 ### 效果
-#####jack代码:
+#####Demo1:
 ```C++
 class Main 
 {
@@ -24,9 +24,114 @@ class Main
 
 }
 ```
-#####运行示例:
+#####运行结果:
 ![图片4](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.jpg)
    
+
+#####Demo2
+```C++
+class Main 
+{
+    function void main() 
+    {
+		Array arr;
+		String s;
+		int i;
+		
+		arr = Array.new(5);		// 创建一个大小为5的数组
+		i = 0;
+		while (i < 5)
+		{
+			s = Input.readLine();
+			arr[i] = s.intValue();
+			i = i + 1;
+		}
+		
+		Main.bubble_sort(arr, 5);
+		
+		i = 0;
+		while (i < 5)
+		{
+			Output.printInt(arr[i]);
+			i = i + 1;
+		}
+		Output.println();
+		
+		return;
+	}
+	
+	/* 冒泡排序 */
+	function void bubble_sort(Array arr, int n)
+	{
+		int i, j, tmp;
+		i = n - 1;
+		
+		while (i > 0 | i == 0)		// 由于还没有加上 >= 运算符, 所以暂时用这个代替
+		{
+			j = 0;
+			while (j < i)
+			{
+				if (arr[j] > arr[j + 1])
+				{
+					tmp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = tmp;
+				}
+				j = j + 1;
+			}
+			i = i - 1;
+		}
+	
+		return;
+	}
+}
+```
+#####运行结果:
+![图片5](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.jpg)
+
+#####Demo3:
+```C++
+class Main
+{
+	function void main()
+	{
+		int a, b, c;
+		String s;
+		
+		s = Input.readLine();
+		a = s.intValue();
+		
+		s = Input.readLine();
+		b = s.intValue();
+		
+		c = Main.gcd(a, b);   
+		
+		Output.printInt(c);
+		Output.println();
+		
+		return;
+	}
+	
+	// 求最大公约数
+	function int gcd(int a, int b)
+	{
+		if (b == 0)
+		{
+			return a;
+		}
+		else
+		{
+			return Main.gcd(b, a - a / b * b);
+			/* a - a / b * b相当于 a % b */
+		}
+	}
+	
+}
+```
+#####运行结果:
+![图片6](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.jpg)
+
+
 
 ##<a name = "index"/>目录
 * [背景介绍](#背景介绍)
