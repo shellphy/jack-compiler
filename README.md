@@ -282,7 +282,7 @@ class Main
 
 <a name = "表达式"/>
 ### 表达式
-java--表达式必须是下列之一:
+jack--表达式必须是下列之一:
 
 * 常数
 * 在作用域内的变量名(变量可以是静态、局部、成员或参数类型)
@@ -318,7 +318,7 @@ java--表达式必须是下列之一:
 
 <a name = "Array类"/>
 #### Array类
-该类构造和清楚数组
+该类构造和清除数组
 
 <a name = "Output类"/>
 #### Output类
@@ -344,7 +344,7 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-在linux下运行compiler.sh或者make就可以变一处jackc.exe和jack.exe了
+在linux下运行compiler.sh或者make就可以编译出jackc.exe和jack.exe了
 
 <a name = "模块介绍"/>
 ## 模块介绍
