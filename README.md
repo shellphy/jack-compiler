@@ -1,7 +1,7 @@
 # jack-Compiler 
 
 ### 效果
-#####Demo1:
+##### Demo1:
 ```C++
 class Main 
 {
@@ -24,11 +24,11 @@ class Main
 
 }
 ```
-#####运行结果:
+##### 运行结果:
 ![图片4](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/4.jpg)
    
 
-#####Demo2
+##### Demo2
 ```C++
 class Main 
 {
@@ -86,10 +86,10 @@ class Main
 	}
 }
 ```
-#####运行结果:
+##### 运行结果:
 ![图片6](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/6.png)
 
-#####Demo3:
+##### Demo3:
 ```C++
 class Main
 {
@@ -128,12 +128,12 @@ class Main
 	
 }
 ```
-#####运行结果:
+##### 运行结果:
 ![图片5](https://github.com/Xiang1993/C-Mini-Compiler/blob/master/folder/5.png)
 
 
 
-##<a name = "index"/>目录
+## <a name = "index"/>目录
 * [背景介绍](#背景介绍)
 * [jack语言介绍](#jack语言介绍)
     * [语法要素](#语法要素)
@@ -166,11 +166,11 @@ class Main
 * [虚拟机](#虚拟机)
 
 <a name = "背景介绍"/>
-#背景介绍
+# 背景介绍
 去年学了编译原理,但是这门课的理论太多了,而且很难,学得是云里雾里.网上很多大神说学了编译原理之后最好能够实际动手做一个编译器出来,这样对能力有很大的提升.于是就下了定决心,带着写一个编译器的目的来重新学习编译原理.然后开始找公开课,买书,就这样开始了.
 
 <a name = "jack语言介绍">
-##java--语言介绍
+## jack--语言介绍
 ### 语法要素
 1, 保留字:   
 
@@ -282,7 +282,7 @@ class Main
 
 <a name = "表达式"/>
 ### 表达式
-java--表达式必须是下列之一:
+jack--表达式必须是下列之一:
 
 * 常数
 * 在作用域内的变量名(变量可以是静态、局部、成员或参数类型)
@@ -318,7 +318,7 @@ java--表达式必须是下列之一:
 
 <a name = "Array类"/>
 #### Array类
-该类构造和清楚数组
+该类构造和清除数组
 
 <a name = "Output类"/>
 #### Output类
@@ -344,7 +344,7 @@ java--表达式必须是下列之一:
 
 <a name = "使用说明/">
 ## 使用说明
-在linux下运行compiler.sh或者make就可以变一处jackc.exe和jack.exe了
+在linux下运行compiler.sh或者make就可以编译出jackc.exe和jack.exe了
 
 <a name = "模块介绍"/>
 ## 模块介绍
@@ -384,7 +384,7 @@ int main()
 
     
 <a name = "转移图"/>
-####转移图
+#### 转移图
 根据上面的词法规则可以画出状态转移图(FA),以方便编程
 
 1,&nbsp;简单的转移图示例:
@@ -503,18 +503,18 @@ jack语言的语法由如下的上下文无关文法(BNF)定义.
 </pre>
 
 <a name = "语法树">
-####语法树
+#### 语法树
 树的节点类型:  
 
 <a name = "语义分析器"/>
 ### 语义分析器
 
 <a name = "语义规则"/>
-####语义规则
+#### 语义规则
 
 <a name = "符号表"/>
-####符号表
+#### 符号表
 
 <a name = "虚拟机"/>
-####虚拟机
+#### 虚拟机
 
