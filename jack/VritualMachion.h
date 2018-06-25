@@ -1,31 +1,31 @@
 #ifndef _VIRTUAL_MACHION_H
 #define _VIRTUAL_MACHION_H
 
-#include <vector>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
 extern vector<string> filenames;
 
-void executeArithmetic(string command);                         // Ö´ĞĞËãÊõÖ¸Áî
-void executePush(string segment, int index);                    // Ö´ĞĞpushÖ¸Áî
-void executePop(string segment, int index);                     // Ö´ĞĞpopÖ¸Áî
-void executeLabel(string label);                                // Ö´ĞĞlabelÖ¸Áî
-void executeGoto(string label);                                 // Ö´ĞĞgotoÖ¸Áî
-void executeIf(string label);                                   // Ö´ĞĞif-gotoÖ¸Áî
-void executeCall(string functionName, int numArgs);             // Ö´ĞĞcallÖ¸Áî
-void executeReturn();                                           // Ö´ĞĞreturnÖ¸Áî
-void executeFunction(string functionName, int numLocals);       // Ö´ĞĞfunctionÖ¸Áî
-void executeEnd();                                              // ³ÌĞò½áÊø
+void executeArithmetic(string command);                   // æ‰§è¡Œç®—æœ¯æŒ‡ä»¤
+void executePush(string segment, int index);              // æ‰§è¡ŒpushæŒ‡ä»¤
+void executePop(string segment, int index);               // æ‰§è¡ŒpopæŒ‡ä»¤
+void executeLabel(string label);                          // æ‰§è¡ŒlabelæŒ‡ä»¤
+void executeGoto(string label);                           // æ‰§è¡ŒgotoæŒ‡ä»¤
+void executeIf(string label);                             // æ‰§è¡Œif-gotoæŒ‡ä»¤
+void executeCall(string functionName, int numArgs);       // æ‰§è¡ŒcallæŒ‡ä»¤
+void executeReturn();                                     // æ‰§è¡ŒreturnæŒ‡ä»¤
+void executeFunction(string functionName, int numLocals); // æ‰§è¡ŒfunctionæŒ‡ä»¤
+void executeEnd();                                        // ç¨‹åºç»“æŸ
 
-void init();                                                    // cpuÍ¨µçÖ®ºó³õÊ¼»¯ip
-void instructionFetch();                                        // cpuÈ¡Ö¸Áî
-void execute();                                                 // cpuÖ´ĞĞÖ¸Áî
+void init();             // cpué€šç”µä¹‹ååˆå§‹åŒ–ip
+void instructionFetch(); // cpuå–æŒ‡ä»¤
+void execute();          // cpuæ‰§è¡ŒæŒ‡ä»¤
 
 void setKeyboardValue(short val);
-void loadProgram();                                             // ÔØÈë³ÌĞòµ½Ö¸Áî´æ´¢Æ÷ÖĞ
-void run();                                                     // CPUÍ¨µç¿ªÊ¼ÔËĞĞ
+void loadProgram(); // è½½å…¥ç¨‹åºåˆ°æŒ‡ä»¤å­˜å‚¨å™¨ä¸­
+void run();         // CPUé€šç”µå¼€å§‹è¿è¡Œ
 
 #endif

@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         filenames.push_back(argv[i]);
         fin.close();
     }
-    // Î´ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
+    // æœªåˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
     filenames.push_back("./api/Array.vm");
     filenames.push_back("./api/Memory.vm");
     filenames.push_back("./api/Math.vm");
