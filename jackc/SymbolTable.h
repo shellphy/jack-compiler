@@ -5,60 +5,57 @@
 #include <map>
 #include <vector>
 
-class SymbolTable
-{
+class SymbolTable {
 public:
-    enum Kind
-    {
-        STATIC, FIELD, ARG, VAR, FUNCTION, METHOD, CONSTRUCTOR, NONE
-    };
-    class Info
-    {
-    public:
-        string type;    // int, float, char, string
-        Kind kind;      // kind : static, field, var, argument 
-        int index;
-        vector<string> args;
-        Info()
-        {
-            type = "0";
-            kind = NONE;
-            index = 0;
-        }
-        friend bool operator==(Info info1, Info info2)
-        {
-            if (info1.type == info2.type && info1.kind == info2.kind && info1.args == info2.args)
-                return true;
-            else
-                return false;
-        }
-    };
-    static Info None;
+  enum Kind { STATIC, FIELD, ARG, VAR, FUNCTION, METHOD, CONSTRUCTOR, NONE };
+  class Info {
+  public:
+    string type; // int, float, char, string
+    Kind kind;   // kind : static, field, var, argument
+    int index;
+    vector<string> args;
+    Info() {
+      type = "0";
+      kind = NONE;
+      index = 0;
+    }
+    friend bool operator==(Info info1, Info info2) {
+      if (info1.type == info2.type && info1.kind == info2.kind &&
+          info1.args == info2.args)
+        return true;
+      else
+        return false;
+    }
+  };
+  static Info None;
+
 private:
-    int static_index;
-    int field_index;
-    int arg_index;
-    int var_index;
-    int errorNum;
-    map<string, int> classIndex;                // ´ÓÀàÃûµ½Êı×éË÷Òı
-    vector<map<string, Info>> classesTable;     // Àà·ûºÅ±íÊı×é, ½«Ò»Ö±±£Áô×Å²»»á±»Ïú»Ù
-    map<string, Info> subroutineTable;          // º¯Êı·ûºÅ±í
-    int currentClassNumber;     // ±éÀúÓï·¨Ê÷µÄÊ±ºò, ±£´æµ±Ç°Àà·ûºÅ±íÊı×éË÷Òı
-    string currentClass;        // ±éÀúÓï·¨Ê÷µÄÊ±ºò, ±£´æµ±Ç°ÀàÃû³Æ
-    void initialSubroutineTable();          // Ïú»Ùº¯Êı·ûºÅ±í
-    SymbolTable();
-    static SymbolTable * instance;      // Ö¸Ïò·ûºÅ±íµ¥ÊµÀı¶ÔÏó
+  int static_index;
+  int field_index;
+  int arg_index;
+  int var_index;
+  int errorNum;
+  map<string, int> classIndex; // ä»ç±»ååˆ°æ•°ç»„ç´¢å¼•
+  vector<map<string, Info>>
+      classesTable; // ç±»ç¬¦å·è¡¨æ•°ç»„, å°†ä¸€ç›´ä¿ç•™ç€ä¸ä¼šè¢«é”€æ¯
+  map<string, Info> subroutineTable; // å‡½æ•°ç¬¦å·è¡¨
+  int currentClassNumber; // éå†è¯­æ³•æ ‘çš„æ—¶å€™, ä¿å­˜å½“å‰ç±»ç¬¦å·è¡¨æ•°ç»„ç´¢å¼•
+  string currentClass; // éå†è¯­æ³•æ ‘çš„æ—¶å€™, ä¿å­˜å½“å‰ç±»åç§°
+  void initialSubroutineTable(); // é”€æ¯å‡½æ•°ç¬¦å·è¡¨
+  SymbolTable();
+  static SymbolTable *instance; // æŒ‡å‘ç¬¦å·è¡¨å•å®ä¾‹å¯¹è±¡
 public:
-    static SymbolTable * getInstance();     // ·µ»Ø·ûºÅ±íµ¥ÊµÀı¶ÔÏó
-    void classesTableInsert(Parser::TreeNode *t);       // Àà·ûºÅ±íµÄ²åÈë²Ù×÷
-    void subroutineTableInsert(Parser::TreeNode *t);    // º¯Êı·ûºÅ±íµÄ²åÈë²Ù×÷
-    
-    Info subroutineTableFind(string name);  // º¯Êı·ûºÅ±íµÄ²éÕÒ²Ù×÷
-    Info classesTableFind(string className, string functionName);   // Àà·ûºÅ±íµÄ²éÕÒ²Ù×÷
-    bool classIndexFind(string className);  // ÅĞ¶ÏclassNameÊÇ²»ÊÇºÏ·¨µÄÀàÃû
-    
-    int getFieldNumber(string className);
-    void printClassesTable();       // ²âÊÔ³ÌĞò, ´òÓ¡Àà·ûºÅ±í
+  static SymbolTable *getInstance(); // è¿”å›ç¬¦å·è¡¨å•å®ä¾‹å¯¹è±¡
+  void classesTableInsert(Parser::TreeNode *t); // ç±»ç¬¦å·è¡¨çš„æ’å…¥æ“ä½œ
+  void subroutineTableInsert(Parser::TreeNode *t); // å‡½æ•°ç¬¦å·è¡¨çš„æ’å…¥æ“ä½œ
+
+  Info subroutineTableFind(string name); // å‡½æ•°ç¬¦å·è¡¨çš„æŸ¥æ‰¾æ“ä½œ
+  Info classesTableFind(string className,
+                        string functionName); // ç±»ç¬¦å·è¡¨çš„æŸ¥æ‰¾æ“ä½œ
+  bool classIndexFind(string className); // åˆ¤æ–­classNameæ˜¯ä¸æ˜¯åˆæ³•çš„ç±»å
+
+  int getFieldNumber(string className);
+  void printClassesTable(); // æµ‹è¯•ç¨‹åº, æ‰“å°ç±»ç¬¦å·è¡¨
 };
 
 #endif

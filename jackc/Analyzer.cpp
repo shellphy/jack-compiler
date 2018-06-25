@@ -3,271 +3,238 @@
 
 using namespace std;
 
-Analyzer::Analyzer(Parser::TreeNode *t)
-{
-    symbolTable = SymbolTable::getInstance();
-    tree = t;
+Analyzer::Analyzer(Parser::TreeNode *t) {
+  symbolTable = SymbolTable::getInstance();
+  tree = t;
 }
 
-// ±È¿˙±Ì¥Ô Ω ˜
-void Analyzer::checkExpression(Parser::TreeNode *t)
-{
-    if (t != nullptr)
-    {
-        for (int i = 0; i < 5; i++)
-            checkExpression(t->child[i]);
-        switch (t->nodeKind)
-        {
-        case Parser::VAR_K:
-        {
-            SymbolTable::Info info = symbolTable->subroutineTableFind(t->token.lexeme);
-            if (info == SymbolTable::None)
-            {
-                info = symbolTable->classesTableFind(currentClassName, t->token.lexeme);
-                if (info == SymbolTable::None)
-                {
-                    error5(currentClassName, t->token.row, t->token.lexeme);
-                }
-            }
+// ÈÅçÂéÜË°®ËææÂºèÊ†ë
+void Analyzer::checkExpression(Parser::TreeNode *t) {
+  if (t != nullptr) {
+    for (int i = 0; i < 5; i++)
+      checkExpression(t->child[i]);
+    switch (t->nodeKind) {
+    case Parser::VAR_K: {
+      SymbolTable::Info info =
+          symbolTable->subroutineTableFind(t->token.lexeme);
+      if (info == SymbolTable::None) {
+        info = symbolTable->classesTableFind(currentClassName, t->token.lexeme);
+        if (info == SymbolTable::None) {
+          error5(currentClassName, t->token.row, t->token.lexeme);
         }
-        break;
-        case Parser::ARRAY_K:
-        {
-            SymbolTable::Info info = symbolTable->subroutineTableFind(t->token.lexeme);
-            if (info == SymbolTable::None)
-            {
-                info = symbolTable->classesTableFind(currentClassName, t->token.lexeme);
-                if (info == SymbolTable::None)
-                {
-                    error5(currentClassName, t->token.row, t->token.lexeme);
-                }
-            }
-            if (info.type != "Array")
-            {
-                error6(currentClassName, t->token.row, t->token.lexeme);
-            }
+      }
+    } break;
+    case Parser::ARRAY_K: {
+      SymbolTable::Info info =
+          symbolTable->subroutineTableFind(t->token.lexeme);
+      if (info == SymbolTable::None) {
+        info = symbolTable->classesTableFind(currentClassName, t->token.lexeme);
+        if (info == SymbolTable::None) {
+          error5(currentClassName, t->token.row, t->token.lexeme);
         }
-        break;
-        case Parser::CALL_EXPRESSION_K:
-        case Parser::CALL_STATEMENT_K:
+      }
+      if (info.type != "Array") {
+        error6(currentClassName, t->token.row, t->token.lexeme);
+      }
+    } break;
+    case Parser::CALL_EXPRESSION_K:
+    case Parser::CALL_STATEMENT_K: {
+      if (t->token.lexeme.find('.') ==
+          string::npos) // call_statement -> ID ( expressions )
+      {
+        // ÂÖàÊ£ÄÊü•ÂáΩÊï∞ÊúâÊ≤°ÊúâÂú®ÂΩìÂâçÁ±ª‰∏≠Â£∞Êòé
+        string functionName = t->token.lexeme;
+        if (symbolTable->classesTableFind(currentClassName, functionName) ==
+            SymbolTable::None) {
+          error7(currentClassName, currentClassName, t->token.row,
+                 functionName);
+          break;
+        }
+        SymbolTable::Kind currentFunctionKind =
+            symbolTable->classesTableFind(currentClassName, currentFunctionName)
+                .kind;
+        SymbolTable::Kind calledFunctionKind =
+            symbolTable->classesTableFind(currentClassName, functionName).kind;
+        // ÂÜçÊ£ÄÊü•ÂΩìÂâçÂ≠êËøáÁ®ãÂíåË¢´Ë∞ÉÁî®ËøáÁ®ãÊòØÂê¶ÈÉΩÊòØmethod
+        if (currentFunctionKind == SymbolTable::FUNCTION &&
+            calledFunctionKind == SymbolTable::FUNCTION) {
+          error8(currentClassName, t->token.row, functionName);
+          break;
+        }
+        // ÂÜçÊ£ÄÊü•ÂáΩÊï∞ÁöÑÂèÇÊï∞ÊòØÂê¶Ê≠£Á°Æ
+        SymbolTable::Info info =
+            symbolTable->classesTableFind(currentClassName, functionName);
+        checkArguments(t, info.args, functionName);
+        t->child[0]->nodeKind = Parser::METHOD_CALL_K;
+      } else // call_statement -> ID . ID ( expressions )
+      {
+        // ÂÖàÊ£ÄÊü•caller
+        string callerName = Parser::getCallerName(t->token.lexeme);
+        string functionName = Parser::getFunctionName(t->token.lexeme);
+        if (symbolTable->classIndexFind(callerName) == true) // Â¶ÇÊûúcallerÊòØÁ±ª
         {
-            if (t->token.lexeme.find('.') == string::npos)     // call_statement -> ID ( expressions ) 
-            {
-                // œ»ºÏ≤È∫Ø ˝”–√ª”–‘⁄µ±«∞¿‡÷–…˘√˜
-                string functionName = t->token.lexeme;
-                if (symbolTable->classesTableFind(currentClassName, functionName) == SymbolTable::None)
-                {
-                    error7(currentClassName, currentClassName, t->token.row, functionName);
-                    break;
-                }
-                SymbolTable::Kind currentFunctionKind = symbolTable->classesTableFind(currentClassName, currentFunctionName).kind;
-                SymbolTable::Kind calledFunctionKind = symbolTable->classesTableFind(currentClassName, functionName).kind;
-                // ‘ŸºÏ≤Èµ±«∞◊”π˝≥Ã∫Õ±ªµ˜”√π˝≥Ã «∑Ò∂º «method
-                if (currentFunctionKind == SymbolTable::FUNCTION && calledFunctionKind == SymbolTable::FUNCTION)
-                {
-                    error8(currentClassName, t->token.row, functionName);
-                    break;
-                }
-                // ‘ŸºÏ≤È∫Ø ˝µƒ≤Œ ˝ «∑Ò’˝»∑
-                SymbolTable::Info info = symbolTable->classesTableFind(currentClassName, functionName);
-                checkArguments(t, info.args, functionName);
-                t->child[0]->nodeKind = Parser::METHOD_CALL_K;
-            }
-            else                                            // call_statement -> ID . ID ( expressions ) 
-            {
-                // œ»ºÏ≤Ècaller
-                string callerName = Parser::getCallerName(t->token.lexeme);
-                string functionName = Parser::getFunctionName(t->token.lexeme);
-                if (symbolTable->classIndexFind(callerName) == true)    // »Áπ˚caller «¿‡
-                {
-                    // ‘ŸºÏ≤Èfunction
-                    SymbolTable::Info info = symbolTable->classesTableFind(callerName, functionName);
-                    if (info == SymbolTable::None)
-                    {
-                        error7(currentClassName, callerName, t->token.row, functionName);
-                        break;
-                    }
-                    if (info.kind == SymbolTable::METHOD)
-                    {
-                        error9(currentClassName, callerName, t->token.row, functionName);
-                        break;
-                    }
-                    // ‘ŸºÏ≤È≤Œ ˝
-                    checkArguments(t, info.args, functionName);
-                    if (info.kind == SymbolTable::FUNCTION)
-                        t->child[0]->nodeKind = Parser::FUNCTION_CALL_K;
-                    else if (info.kind == SymbolTable::CONSTRUCTOR)
-                        t->child[0]->nodeKind = Parser::CONSTRUCTOR_CALL_K;
-                }
-                else                                                   // »Áπ˚µ˜”√’ﬂ «∂‘œÛ
-                {
-                    // ‘ŸºÏ≤Ècaller”–√ª”–±ª…˘√˜
-                    SymbolTable::Info objInfo = symbolTable->subroutineTableFind(callerName);
-                    if (objInfo == SymbolTable::None)
-                    {
-                        objInfo = symbolTable->classesTableFind(currentClassName, callerName);
-                        if (objInfo == SymbolTable::None)
-                        {
-                            error5(currentClassName, t->token.row, callerName);
-                            break;
-                        }
-                    }
-                    // ‘ŸºÏ≤Èfunction
-                    SymbolTable::Info functionInfo = symbolTable->classesTableFind(objInfo.type, functionName);
-                    if (functionInfo == SymbolTable::None)
-                    {
-                        error7(currentClassName, callerName, t->token.row, functionName);
-                        break;
-                    }
-                    if (functionInfo.kind != SymbolTable::METHOD)
-                    {
-                        error10(currentClassName, callerName, t->token.row, functionName);
-                        break;
-                    }
-                    // ‘ŸºÏ≤È≤Œ ˝
-                    checkArguments(t, functionInfo.args, functionName);
-                    t->child[0]->nodeKind = Parser::METHOD_CALL_K;
-//                    t->token.lexeme = objInfo.type + "." + functionName;
-                }
-            }
+          // ÂÜçÊ£ÄÊü•function
+          SymbolTable::Info info =
+              symbolTable->classesTableFind(callerName, functionName);
+          if (info == SymbolTable::None) {
+            error7(currentClassName, callerName, t->token.row, functionName);
             break;
+          }
+          if (info.kind == SymbolTable::METHOD) {
+            error9(currentClassName, callerName, t->token.row, functionName);
+            break;
+          }
+          // ÂÜçÊ£ÄÊü•ÂèÇÊï∞
+          checkArguments(t, info.args, functionName);
+          if (info.kind == SymbolTable::FUNCTION)
+            t->child[0]->nodeKind = Parser::FUNCTION_CALL_K;
+          else if (info.kind == SymbolTable::CONSTRUCTOR)
+            t->child[0]->nodeKind = Parser::CONSTRUCTOR_CALL_K;
+        } else // Â¶ÇÊûúË∞ÉÁî®ËÄÖÊòØÂØπË±°
+        {
+          // ÂÜçÊ£ÄÊü•callerÊúâÊ≤°ÊúâË¢´Â£∞Êòé
+          SymbolTable::Info objInfo =
+              symbolTable->subroutineTableFind(callerName);
+          if (objInfo == SymbolTable::None) {
+            objInfo =
+                symbolTable->classesTableFind(currentClassName, callerName);
+            if (objInfo == SymbolTable::None) {
+              error5(currentClassName, t->token.row, callerName);
+              break;
+            }
+          }
+          // ÂÜçÊ£ÄÊü•function
+          SymbolTable::Info functionInfo =
+              symbolTable->classesTableFind(objInfo.type, functionName);
+          if (functionInfo == SymbolTable::None) {
+            error7(currentClassName, callerName, t->token.row, functionName);
+            break;
+          }
+          if (functionInfo.kind != SymbolTable::METHOD) {
+            error10(currentClassName, callerName, t->token.row, functionName);
+            break;
+          }
+          // ÂÜçÊ£ÄÊü•ÂèÇÊï∞
+          checkArguments(t, functionInfo.args, functionName);
+          t->child[0]->nodeKind = Parser::METHOD_CALL_K;
+          //                    t->token.lexeme = objInfo.type + "." +
+          //                    functionName;
         }
-        }
+      }
+      break;
     }
+    }
+  }
 }
 
 /*
-  ºÏ≤È∏≥÷µ”Ôæ‰, if”Ôæ‰, while”Ôæ‰, return”Ôæ‰, ∫Ø ˝µ˜”√”Ôæ‰
+  Ê£ÄÊü•ËµãÂÄºËØ≠Âè•, ifËØ≠Âè•, whileËØ≠Âè•, returnËØ≠Âè•, ÂáΩÊï∞Ë∞ÉÁî®ËØ≠Âè•
 */
-void Analyzer::checkStatement(Parser::TreeNode *t)
-{
-    switch (t->nodeKind)
-    {
-    case Parser::CLASS_K:
-        currentClassName = t->child[0]->token.lexeme;
-        break;
-    case Parser::ASSIGN_K:
-    {
-        checkExpression(t->child[0]);
-        checkExpression(t->child[1]);
+void Analyzer::checkStatement(Parser::TreeNode *t) {
+  switch (t->nodeKind) {
+  case Parser::CLASS_K:
+    currentClassName = t->child[0]->token.lexeme;
+    break;
+  case Parser::ASSIGN_K: {
+    checkExpression(t->child[0]);
+    checkExpression(t->child[1]);
+  }
+  case Parser::IF_STATEMENT_K:
+  case Parser::WHILE_STATEMENT_K: {
+    checkExpression(t->child[0]);
+    break;
+  }
+  case Parser::RETURN_STATEMENT_K: {
+    checkExpression(t->child[0]);
+    SymbolTable::Info info = symbolTable->subroutineTableFind("this");
+    if (t->child[0] == nullptr && info.type != "void") {
+      error11(currentClassName, info.type, t->token.row);
+      break;
+    } else if (t->child[0] != nullptr && info.type == "void") {
+      error12(currentClassName, t->token.row);
+      break;
     }
-    case Parser::IF_STATEMENT_K:
-    case Parser::WHILE_STATEMENT_K:
-    {
-        checkExpression(t->child[0]);
-        break;
+    if (info.kind == SymbolTable::CONSTRUCTOR &&
+        t->child[0]->token.lexeme != "this") {
+      error13(currentClassName, t->token.row);
+      break;
     }
-    case Parser::RETURN_STATEMENT_K:
-    {
-        checkExpression(t->child[0]);
-        SymbolTable::Info info = symbolTable->subroutineTableFind("this");
-        if (t->child[0] == nullptr && info.type != "void")
-        {
-            error11(currentClassName, info.type, t->token.row);
-            break;
-        }
-        else if (t->child[0] != nullptr && info.type == "void")
-        {
-            error12(currentClassName, t->token.row);
-            break;
-        }
-        if (info.kind == SymbolTable::CONSTRUCTOR && t->child[0]->token.lexeme != "this")
-        {
-            error13(currentClassName, t->token.row);
-            break;
-        }
-        break;
-    }
-    case Parser::CALL_STATEMENT_K:
-        checkExpression(t);
-        break;
-    }
+    break;
+  }
+  case Parser::CALL_STATEMENT_K:
+    checkExpression(t);
+    break;
+  }
 }
 
-void Analyzer::checkArguments(Parser::TreeNode *t, vector<string> parameter, string functionName)
-{
-    int argumentSize = 0;
-    for (auto p = t->child[0]->next; p != nullptr; p = p->next)
-    {
-        checkExpression(p);
-        argumentSize++;
-    }
-    if (argumentSize < parameter.size())
-    {
-        error14(currentClassName, functionName, t->token.row);
-        return;
-    }
-    else if (argumentSize > parameter.size())
-    {
-        error15(currentClassName, functionName, t->token.row);
-        return;
-    }
+void Analyzer::checkArguments(Parser::TreeNode *t, vector<string> parameter,
+                              string functionName) {
+  int argumentSize = 0;
+  for (auto p = t->child[0]->next; p != nullptr; p = p->next) {
+    checkExpression(p);
+    argumentSize++;
+  }
+  if (argumentSize < parameter.size()) {
+    error14(currentClassName, functionName, t->token.row);
+    return;
+  } else if (argumentSize > parameter.size()) {
+    error15(currentClassName, functionName, t->token.row);
+    return;
+  }
 }
 
-void Analyzer::check()
-{
-    buildClassesTable(tree);
-//    symbolTable->printClassesTable();
-    checkMain();
-    checkStatements(tree);
+void Analyzer::check() {
+  buildClassesTable(tree);
+  //    symbolTable->printClassesTable();
+  checkMain();
+  checkStatements(tree);
 }
 
-void Analyzer::checkMain()
-{
-    if (symbolTable->classIndexFind("Main") == false)
-    {
-        error16();
-        return;
-    }
-    auto info = symbolTable->classesTableFind("Main", "main");
-    if (info == SymbolTable::None)
-    {
-        error17();
-        return;
-    }
-    if (info.kind != SymbolTable::FUNCTION)
-    {
-        error18();
-        return;
-    }
-    if (info.type != "void")
-    {
-        error19();
-        return;
-    }
-    if (info.args.size() > 0)
-    {
-        error20();
-        return;
-    }
+void Analyzer::checkMain() {
+  if (symbolTable->classIndexFind("Main") == false) {
+    error16();
+    return;
+  }
+  auto info = symbolTable->classesTableFind("Main", "main");
+  if (info == SymbolTable::None) {
+    error17();
+    return;
+  }
+  if (info.kind != SymbolTable::FUNCTION) {
+    error18();
+    return;
+  }
+  if (info.type != "void") {
+    error19();
+    return;
+  }
+  if (info.args.size() > 0) {
+    error20();
+    return;
+  }
 }
 
-void Analyzer::buildClassesTable(Parser::TreeNode *t)
-{
-    static int depth = 0;
-    if (depth > 2)
-        return;
-    while (t != nullptr)
-    {
-        symbolTable->classesTableInsert(t);
-        for (int i = 0; i < 5; i++)
-        {
-            depth++;
-            buildClassesTable(t->child[i]);
-            depth--;
-        }
-        t = t->next;
+void Analyzer::buildClassesTable(Parser::TreeNode *t) {
+  static int depth = 0;
+  if (depth > 2)
+    return;
+  while (t != nullptr) {
+    symbolTable->classesTableInsert(t);
+    for (int i = 0; i < 5; i++) {
+      depth++;
+      buildClassesTable(t->child[i]);
+      depth--;
     }
+    t = t->next;
+  }
 }
 
-void Analyzer::checkStatements(Parser::TreeNode *t)
-{
-    while (t != nullptr)
-    {
-        symbolTable->subroutineTableInsert(t);
-        checkStatement(t);
-        for (int i = 0; i < 5; i++)
-            checkStatements(t->child[i]);
-        t = t->next;
-    }
+void Analyzer::checkStatements(Parser::TreeNode *t) {
+  while (t != nullptr) {
+    symbolTable->subroutineTableInsert(t);
+    checkStatement(t);
+    for (int i = 0; i < 5; i++)
+      checkStatements(t->child[i]);
+    t = t->next;
+  }
 }

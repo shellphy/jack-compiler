@@ -6,51 +6,55 @@
 extern int errorNum;
 
 bool hasError();
-void syntaxError(string currentParserFilename, string expected, Scanner::Token token);
+void syntaxError(string currentParserFilename, string expected,
+                 Scanner::Token token);
 
-// ÀàÃûºÍº¯ÊıÃû²»Ò»ÖÂ
+// ç±»åå’Œå‡½æ•°åä¸ä¸€è‡´
 void error1(string currentParserFilename);
 
-// ±äÁ¿ÖØ¶¨Òå
+// å˜é‡é‡å®šä¹‰
 void error2(string currentClass, int row, string type, string name);
 
-// º¯ÊıÖØ¶¨Òå
+// å‡½æ•°é‡å®šä¹‰
 void error3(string currentClass, int row, string type, string name);
 
-// ÀàĞÍÎ´¶¨Òå
+// ç±»å‹æœªå®šä¹‰
 void error4(string currentClassName, int row, string type);
 
-// ±äÁ¿Î´¶¨Òå
+// å˜é‡æœªå®šä¹‰
 void error5(string currentClassName, int row, string varName);
 
-// ÀàĞÍ²»Æ¥Åä
+// ç±»å‹ä¸åŒ¹é…
 void error6(string currentClassName, int row, string type);
 
-// º¯ÊıÎ´¶¨Òå
-void error7(string currentClassName, string callerName, int row, string functionName);
+// å‡½æ•°æœªå®šä¹‰
+void error7(string currentClassName, string callerName, int row,
+            string functionName);
 
-// º¯ÊıÀàĞÍ²»Ò»Ñù
+// å‡½æ•°ç±»å‹ä¸ä¸€æ ·
 void error8(string currentClassName, int row, string functionName);
 
-// º¯ÊıÀàĞÍ´íÎó
-void error9(string currentClassName, string callerName, int row, string functionName);
+// å‡½æ•°ç±»å‹é”™è¯¯
+void error9(string currentClassName, string callerName, int row,
+            string functionName);
 
-// º¯ÊıÀàĞÍ´íÎó
-void error10(string currentClassName, string callerName, int row, string functionName);
+// å‡½æ•°ç±»å‹é”™è¯¯
+void error10(string currentClassName, string callerName, int row,
+             string functionName);
 
-// ·µ»ØÖµ´íÎó
+// è¿”å›å€¼é”™è¯¯
 void error11(string currentClassName, string type, int row);
 
-// ·µ»ØÖµ´íÎó
+// è¿”å›å€¼é”™è¯¯
 void error12(string currentClassName, int row);
 
-// ·µ»ØÖµ´íÎó
+// è¿”å›å€¼é”™è¯¯
 void error13(string currentClassName, int row);
 
-// ²ÎÊıÌ«ÉÙ
+// å‚æ•°å¤ªå°‘
 void error14(string currentClassName, string functionName, int row);
 
-// ²ÎÊıÌ«¶à
+// å‚æ•°å¤ªå¤š
 void error15(string currentClassName, string functionName, int row);
 
 void error16();

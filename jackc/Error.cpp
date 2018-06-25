@@ -1,163 +1,152 @@
-#include <iostream>
 #include "Error.h"
+#include <iostream>
 
 using namespace std;
 
 int errorNum;
 
-bool hasError()
-{
-    return errorNum;
+bool hasError() { return errorNum; }
+
+void syntaxError(string currentParserFilename, string expected,
+                 Scanner::Token token) {
+  errorNum++;
+  cerr << "Error in class " << currentParserFilename << " in line " << token.row
+       << ": expect a " << expected << ", but got a " << token.lexeme << "\n";
 }
 
-void syntaxError(string currentParserFilename, string expected, Scanner::Token token)
-{
-    errorNum++;
-    cerr << "Error in class " << currentParserFilename << " in line " << token.row
-        << ": expect a " << expected << ", but got a " << token.lexeme << "\n";
+// ç±»åå’Œå‡½æ•°åä¸ä¸€è‡´
+void error1(string currentParserFilename) {
+  errorNum++;
+  cerr << "Error in file " << currentParserFilename << ".jack: "
+       << "classname should be same as filename" << endl;
 }
 
-// ÀàÃûºÍº¯ÊýÃû²»Ò»ÖÂ
-void error1(string currentParserFilename)
-{
-    errorNum++;
-    cerr << "Error in file " << currentParserFilename << ".jack: " << "classname should be same as filename" << endl;
+// å˜é‡é‡å®šä¹‰
+void error2(string currentClass, int row, string type, string name) {
+  errorNum++;
+  cerr << "Error in class " << currentClass << " in line " << row
+       << ": redeclaration of '" << type << " " << name << "'" << endl;
 }
 
-// ±äÁ¿ÖØ¶¨Òå
-void error2(string currentClass, int row, string type, string name)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClass << " in line " << row
-        << ": redeclaration of '" << type << " " << name << "'" << endl;
+// å‡½æ•°é‡å®šä¹‰
+void error3(string currentClass, int row, string type, string name) {
+  errorNum++;
+  cerr << "Error in class " << currentClass << " in line " << row
+       << ": redeclaration of '" << type << " " << name << "()" << endl;
 }
 
-// º¯ÊýÖØ¶¨Òå
-void error3(string currentClass, int row, string type, string name)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClass << " in line " << row
-        << ": redeclaration of '" << type << " " << name << "()" << endl;
+// ç±»åž‹æœªå®šä¹‰
+void error4(string currentClassName, int row, string type) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row << ": '"
+       << type << "' not declaraed" << endl;
 }
 
-// ÀàÐÍÎ´¶¨Òå
-void error4(string currentClassName, int row, string type)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": '" << type << "' not declaraed" << endl;
+// å˜é‡æœªå®šä¹‰
+void error5(string currentClassName, int row, string varName) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row << ": '"
+       << varName << "' does not declared in this scope" << endl;
 }
 
-// ±äÁ¿Î´¶¨Òå
-void error5(string currentClassName, int row, string varName)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": '" << varName << "' does not declared in this scope" << endl;
+void error6(string currentClassName, int row, string type) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row << ": "
+       << type << " does not an Array type" << endl;
 }
 
-void error6(string currentClassName, int row, string type)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": " << type << " does not an Array type" << endl;
+void error7(string currentClassName, string callerName, int row,
+            string functionName) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": class " << callerName << " haven't a member function '"
+       << functionName << "()'" << endl;
 }
 
-void error7(string currentClassName, string callerName, int row, string functionName)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": class " << callerName << " haven't a member function '" << functionName << "()'" << endl;
+void error8(string currentClassName, int row, string functionName) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": subroutine " << functionName
+       << " called as a method from within a function" << endl;
 }
 
-void error8(string currentClassName, int row, string functionName)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": subroutine " << functionName << " called as a method from within a function" << endl;
+void error9(string currentClassName, string callerName, int row,
+            string functionName) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row << ": '"
+       << functionName << "' is not a function in class " << callerName << endl;
 }
 
-void error9(string currentClassName, string callerName, int row, string functionName)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": '" << functionName << "' is not a function in class " << callerName << endl;
+// å‡½æ•°ç±»åž‹é”™è¯¯
+void error10(string currentClassName, string callerName, int row,
+             string functionName) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row << ": '"
+       << functionName << "' is not a method in class " << callerName << endl;
 }
 
-// º¯ÊýÀàÐÍ´íÎó
-void error10(string currentClassName, string callerName, int row, string functionName)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": '" << functionName << "' is not a method in class " << callerName << endl;
+// è¿”å›žå€¼é”™è¯¯
+void error11(string currentClassName, string type, int row) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": return-statement with no value, in function returning '" << type
+       << "'" << endl;
 }
 
-// ·µ»ØÖµ´íÎó
-void error11(string currentClassName, string type, int row)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": return-statement with no value, in function returning '" << type << "'" << endl;
+// è¿”å›žå€¼é”™è¯¯
+void error12(string currentClassName, int row) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": return-statement with a value, in function returning void" << endl;
 }
 
-// ·µ»ØÖµ´íÎó
-void error12(string currentClassName, int row)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": return-statement with a value, in function returning void" << endl;
+// è¿”å›žå€¼é”™è¯¯
+void error13(string currentClassName, int row) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": The return type of a constructor must be of the class type"
+       << endl;
 }
 
-// ·µ»ØÖµ´íÎó
-void error13(string currentClassName, int row)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": The return type of a constructor must be of the class type" << endl;
+// å‚æ•°å¤ªå°‘
+void error14(string currentClassName, string functionName, int row) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": too few arguments to function " << functionName << "()" << endl;
 }
 
-// ²ÎÊýÌ«ÉÙ
-void error14(string currentClassName, string functionName, int row)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": too few arguments to function " << functionName << "()" << endl;
+// å‚æ•°å¤ªå¤š
+void error15(string currentClassName, string functionName, int row) {
+  errorNum++;
+  cerr << "Error in class " << currentClassName << " in line " << row
+       << ": too many arguments to function " << functionName << endl;
 }
 
-// ²ÎÊýÌ«¶à
-void error15(string currentClassName, string functionName, int row)
-{
-    errorNum++;
-    cerr << "Error in class " << currentClassName << " in line " << row
-        << ": too many arguments to function " << functionName << endl;
+void error16() {
+  errorNum++;
+  cerr << "Error: Main class not exsist" << endl;
 }
 
-void error16()
-{
-    errorNum++;
-    cerr << "Error: Main class not exsist" << endl;
+void error17() {
+  errorNum++;
+  cerr << "Error in class Main: main function does not exsit!" << endl;
 }
 
-void error17()
-{
-    errorNum++;
-    cerr << "Error in class Main: main function does not exsit!" << endl;
+void error18() {
+  errorNum++;
+  cerr << "Error in class Main: the kind of subroutine main must be a function"
+       << endl;
 }
 
-void error18()
-{
-    errorNum++;
-    cerr << "Error in class Main: the kind of subroutine main must be a function" << endl;
+void error19() {
+  errorNum++;
+  cerr << "Error in class Main: the type of subroutine main must be a void"
+       << endl;
 }
 
-void error19()
-{
-    errorNum++;
-    cerr << "Error in class Main: the type of subroutine main must be a void" << endl;
-}
-
-void error20()
-{
-    errorNum++;
-    cerr << "Error in class Main: the argument size of subroutine main must be null" << endl;
+void error20() {
+  errorNum++;
+  cerr << "Error in class Main: the argument size of subroutine main must be "
+          "null"
+       << endl;
 }

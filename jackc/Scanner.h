@@ -1,75 +1,72 @@
 #ifndef _Scanner_H_
 #define _Scanner_H_
 
-#include <string>
-#include <fstream>
 #include <deque>
+#include <fstream>
 #include <set>
+#include <string>
 
 using namespace std;
 
-class Scanner
-{
+class Scanner {
 private:
-    enum State	// ×ªÒÆÍ¼ÖĞµÄ×´Ì¬
-    {
-        START_STATE,		// ¿ªÊ¼×´Ì¬
-        ID_STATE,			// ±êÊ¶·û×´Ì¬
-        INT_STATE,			// ÕûĞÍÊı×´Ì¬
-        CHAR_STATE,			// ×Ö·û×´Ì¬		
-        CHAR_STATE_A,
-        CHAR_STATE_B,
-        CHAR_STATE_C,
-        FLOAT_STATE,		// ¸¡µãÊı×´Ì¬
-        D_FLOAT_STATE,		// ½Ó½ü´øĞ¡ÊıµãµÄ¸¡µãÊı×´Ì¬
-        E_FLOAT_STATE,		// ½Ó½ü¿ÆÑ§¼¼Êõ·¨µÄ¸¡µãÊı×´Ì¬
-        STRING_STATE,		// ×Ö·û´®×´Ì¬
-        S_STRING_STATE,		// º¬ÓĞ×ªÒÆ×Ö·ûµÄ×Ö·û´®
-        SYMBOL_STATE, 
-        INCOMMENT_STATE,	// ×¢ÊÍ×´Ì¬
-        P_INCOMMENT_STATE,	// ¿ìÒª½áÊø×¢ÊÍ×´Ì¬
-        DONE_STATE,			// ½áÊø×´Ì¬
-        ERROR_STATE			// ´íÎó×´Ì¬
-    };
+  enum State     // è½¬ç§»å›¾ä¸­çš„çŠ¶æ€
+  { START_STATE, // å¼€å§‹çŠ¶æ€
+    ID_STATE,    // æ ‡è¯†ç¬¦çŠ¶æ€
+    INT_STATE,   // æ•´å‹æ•°çŠ¶æ€
+    CHAR_STATE,  // å­—ç¬¦çŠ¶æ€
+    CHAR_STATE_A,
+    CHAR_STATE_B,
+    CHAR_STATE_C,
+    FLOAT_STATE,    // æµ®ç‚¹æ•°çŠ¶æ€
+    D_FLOAT_STATE,  // æ¥è¿‘å¸¦å°æ•°ç‚¹çš„æµ®ç‚¹æ•°çŠ¶æ€
+    E_FLOAT_STATE,  // æ¥è¿‘ç§‘å­¦æŠ€æœ¯æ³•çš„æµ®ç‚¹æ•°çŠ¶æ€
+    STRING_STATE,   // å­—ç¬¦ä¸²çŠ¶æ€
+    S_STRING_STATE, // å«æœ‰è½¬ç§»å­—ç¬¦çš„å­—ç¬¦ä¸²
+    SYMBOL_STATE,
+    INCOMMENT_STATE,   // æ³¨é‡ŠçŠ¶æ€
+    P_INCOMMENT_STATE, // å¿«è¦ç»“æŸæ³¨é‡ŠçŠ¶æ€
+    DONE_STATE,        // ç»“æŸçŠ¶æ€
+    ERROR_STATE        // é”™è¯¯çŠ¶æ€
+  };
 
 public:
-    set<string> keyWords;
-    set<string> symbols;
-    enum TokenType
-    {      
-        KEY_WORD,
-        ID,				// ±êÊ¶·û
-        INT,			// ÕûĞÍÊı×Ö
-        BOOL,			// ²¼¶ûÀàĞÍ
-        CHAR,			// ×Ö·û
-        STRING,			// ×Ö·û´®
-        SYMBOL,         // ºÏ·¨µÄ·ûºÅ
-        NONE,		    // ÎŞÀàĞÍ
-        ERROR,		    // ´íÎó
-        ENDOFFILE	    // ÎÄ¼ş½áÊø
-    };
-    struct Token
-    {
-        TokenType kind;				// TokenµÄÀàĞÍ
-        string lexeme;				// TokenµÄÖµ
-        unsigned row;	   	        // µ±Ç°ĞĞ
-    };
-    void initKeyWords();
-    void initSymbols();
+  set<string> keyWords;
+  set<string> symbols;
+  enum TokenType {
+    KEY_WORD,
+    ID,       // æ ‡è¯†ç¬¦
+    INT,      // æ•´å‹æ•°å­—
+    BOOL,     // å¸ƒå°”ç±»å‹
+    CHAR,     // å­—ç¬¦
+    STRING,   // å­—ç¬¦ä¸²
+    SYMBOL,   // åˆæ³•çš„ç¬¦å·
+    NONE,     // æ— ç±»å‹
+    ERROR,    // é”™è¯¯
+    ENDOFFILE // æ–‡ä»¶ç»“æŸ
+  };
+  struct Token {
+    TokenType kind; // Tokençš„ç±»å‹
+    string lexeme;  // Tokençš„å€¼
+    unsigned row;   // å½“å‰è¡Œ
+  };
+  void initKeyWords();
+  void initSymbols();
+
 private:
-    string lineBuffer;					// »º³åĞĞ, ±£´æÔ´³ÌĞòÖĞµÄÒ»ĞĞÊı¾İ
-    unsigned bufferPos;					// »º³åĞĞµÄÖ¸Õë
-    unsigned row;						// ±£´æµ±Ç°»º³åĞĞÔÚÔ´³ÌĞòÖĞµÄĞĞºÅ
-    ifstream fin;						// Ô´³ÌĞòÎÄ¼şµÄÊäÈëÁ÷¶ÔÏó
-    char nextChar();					// ·µ»Ø»º³åÇøÖĞµÄÏÂÒ»¸ö×Ö·û
-    void rollBack();					// »Ø¹ö»º³åÇø
-    TokenType searchReserved(string &s);	// ²éÕÒ¹Ø¼ü×Ö
+  string lineBuffer;  // ç¼“å†²è¡Œ, ä¿å­˜æºç¨‹åºä¸­çš„ä¸€è¡Œæ•°æ®
+  unsigned bufferPos; // ç¼“å†²è¡Œçš„æŒ‡é’ˆ
+  unsigned row;       // ä¿å­˜å½“å‰ç¼“å†²è¡Œåœ¨æºç¨‹åºä¸­çš„è¡Œå·
+  ifstream fin;       // æºç¨‹åºæ–‡ä»¶çš„è¾“å…¥æµå¯¹è±¡
+  char nextChar();    // è¿”å›ç¼“å†²åŒºä¸­çš„ä¸‹ä¸€ä¸ªå­—ç¬¦
+  void rollBack();    // å›æ»šç¼“å†²åŒº
+  TokenType searchReserved(string &s); // æŸ¥æ‰¾å…³é”®å­—
 public:
-    Scanner();
-    void openFile(string filename);
-    void closeFile();
-    Token nextToken();					// ·µ»ØÏÂÒ»¸öToken
-    void resetRow();
+  Scanner();
+  void openFile(string filename);
+  void closeFile();
+  Token nextToken(); // è¿”å›ä¸‹ä¸€ä¸ªToken
+  void resetRow();
 };
 
 #endif

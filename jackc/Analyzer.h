@@ -1,27 +1,28 @@
 #ifndef _ANALYZER_H
 #define _ANALYZER_H
 
+#include "Error.h"
 #include "Parser.h"
 #include "SymbolTable.h"
 #include <vector>
-#include "Error.h"
 
-class Analyzer
-{
+class Analyzer {
 private:
-    Parser::TreeNode *tree;
-    SymbolTable *symbolTable;
-    string currentClassName;        // ±éÀúÊ÷µÄÊ±ºò, ±£´æµ±Ç°ÀàµÄÃû³Æ
-    string currentFunctionName;     // ±éÀúÊ÷µÄÊ±ºò, ±£´æµ±Ç°º¯ÊıµÄÃû³Æ
-    void buildClassesTable(Parser::TreeNode *t);
-    void checkStatements(Parser::TreeNode *t);
-    void checkStatement(Parser::TreeNode *t);
-    void checkExpression(Parser::TreeNode *t);
-    void checkArguments(Parser::TreeNode *t, vector<string> parameter, string functionName);
-    void checkMain();
+  Parser::TreeNode *tree;
+  SymbolTable *symbolTable;
+  string currentClassName;    // éå†æ ‘çš„æ—¶å€™, ä¿å­˜å½“å‰ç±»çš„åç§°
+  string currentFunctionName; // éå†æ ‘çš„æ—¶å€™, ä¿å­˜å½“å‰å‡½æ•°çš„åç§°
+  void buildClassesTable(Parser::TreeNode *t);
+  void checkStatements(Parser::TreeNode *t);
+  void checkStatement(Parser::TreeNode *t);
+  void checkExpression(Parser::TreeNode *t);
+  void checkArguments(Parser::TreeNode *t, vector<string> parameter,
+                      string functionName);
+  void checkMain();
+
 public:
-    Analyzer(Parser::TreeNode *t);
-    void check();
+  Analyzer(Parser::TreeNode *t);
+  void check();
 };
 
 #endif

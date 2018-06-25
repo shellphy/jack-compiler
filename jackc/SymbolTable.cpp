@@ -1,221 +1,198 @@
 #include "SymbolTable.h"
-#include <iostream>
-#include <cassert>
 #include "Error.h"
+#include <cassert>
+#include <iostream>
 
 using namespace std;
 
 SymbolTable::Info SymbolTable::None;
 
-SymbolTable * SymbolTable::instance = nullptr;
+SymbolTable *SymbolTable::instance = nullptr;
 
-SymbolTable * SymbolTable::getInstance()
-{
-    if (instance == nullptr)
-        instance = new SymbolTable();
-    return instance;
+SymbolTable *SymbolTable::getInstance() {
+  if (instance == nullptr)
+    instance = new SymbolTable();
+  return instance;
 }
 
-SymbolTable::SymbolTable()
-{
-    currentClassNumber = 0;
-    static_index = 0;
-    field_index = 0;
-    arg_index = 0;
-    var_index = 0;
-    errorNum = 0;
+SymbolTable::SymbolTable() {
+  currentClassNumber = 0;
+  static_index = 0;
+  field_index = 0;
+  arg_index = 0;
+  var_index = 0;
+  errorNum = 0;
 }
 
+void SymbolTable::classesTableInsert(Parser::TreeNode *t) {
+  if (t->nodeKind == Parser::CLASS_K) {
+    map<string, Info> temp;
+    classesTable.push_back(temp);
+    currentClass = t->child[0]->token.lexeme;
+    int index = classesTable.size() - 1;
+    classIndex.insert({currentClass, index});
+    static_index = field_index = 0;
+  } else if (t->nodeKind == Parser::CLASS_VAR_DEC_K) // t = CLASS_VAR_DEC_K
+  {            // t->child[0] = static | field
+    Info info; // t->child[1] = type
+    info.type =
+        t->child[1]
+            ->token.lexeme; // t->child[2] = varName - varName - varName ...
+    for (auto p = t->child[2]; p != nullptr; p = p->next) {
+      string name = p->token.lexeme;
+      if (t->child[0]->token.lexeme == "field") {
+        info.kind = FIELD;
+        info.index = field_index++;
+      } else if (t->child[0]->token.lexeme == "static") {
+        info.kind = STATIC;
+        info.index = static_index++;
+      }
 
-void SymbolTable::classesTableInsert(Parser::TreeNode *t)
-{
-    if (t->nodeKind == Parser::CLASS_K)
+      if (classesTable.back().insert({name, info}).second ==
+          false) // ÊèíÂÖ•Â§±Ë¥•,Á¨¶Âè∑Ë°®‰∏≠ÊúâÂ∑≤ÁªèÂ≠òÂú®ÁöÑÂÖÉÁ¥†
+      {
+        error2(currentClass, p->token.row, info.type, name);
+      }
+    }
+  } else if (t->nodeKind == Parser::SUBROUTINE_DEC_K) // t = SUBROUTINE_DEC_K
+  {                                                   // t->child[0] = function
+    Info info;                                        // t->child[1] = type
+    if (t->child[0]->token.lexeme == "function") // t->child[2] = functionName
+      info.kind = FUNCTION; // t->child[3] = arg - arg - arg ...
+    else if (t->child[0]->token.lexeme == "method")
+      info.kind = METHOD;
+    else if (t->child[0]->token.lexeme == "constructor")
+      info.kind = CONSTRUCTOR;
+    info.type = t->child[1]->token.lexeme;
+    for (auto p = t->child[3]; p != nullptr; p = p->next) {
+      string type = p->child[0]->token.lexeme;
+      info.args.push_back(type);
+    }
+    string name = Parser::getFunctionName(t->child[2]->token.lexeme);
+    if (classesTable.back().insert({name, info}).second == false) {
+      error3(currentClass, t->child[0]->token.row, info.type, name);
+    }
+  }
+}
+
+void SymbolTable::subroutineTableInsert(Parser::TreeNode *t) {
+  if (t->nodeKind == Parser::CLASS_K)
+    currentClass = t->child[0]->token.lexeme;
+  else if (t->nodeKind == Parser::SUBROUTINE_DEC_K) // t = SUBROUTINE_DEC_K
+  {                                                 // t->child[0] = function
+    initialSubroutineTable();                       // t->child[1] = type
+    string className = Parser::getCallerName(
+        t->child[2]->token.lexeme); // t->child[2] = functionName
+    string functionName = Parser::getFunctionName(
+        t->child[2]->token.lexeme); // t->child[3] = arg - arg - arg ...
+    currentClassNumber = classIndex.find(className)->second;
+    Info info = classesTable[currentClassNumber].find(functionName)->second;
+    subroutineTable["this"] = info;
+    var_index = arg_index = 0;
+  } else if (t->nodeKind == Parser::PARAM_K) // t = PARAM_K
+  {                                          // t->child[0] = type
+    // ÂÖàÊ£ÄÊü•typeÊòØÂê¶ÂêàÁêÜ                       // t->child[1] = varName
+    Info info;
+    info.kind = ARG;
+    info.index = arg_index++;
+    info.type = t->child[0]->token.lexeme;
+    if (info.type != "int" && info.type != "char" && info.type != "void" &&
+        info.type != "string" && info.type != "boolean") // Â¶ÇÊûú‰∏çÊòØÂü∫Êú¨Á±ªÂûã
     {
-        map<string, Info> temp;
-        classesTable.push_back(temp);
-        currentClass = t->child[0]->token.lexeme;
-        int index = classesTable.size() - 1;
-        classIndex.insert({currentClass, index});
-        static_index = field_index = 0;
+      if (classIndexFind(info.type) == false) // ‰πü‰∏çÊòØÁ±ªÁ±ªÂûã
+      {
+        error4(currentClass, t->child[1]->token.row, info.type);
+        return;
+      }
     }
-    else if (t->nodeKind == Parser::CLASS_VAR_DEC_K)            // t = CLASS_VAR_DEC_K  
-    {                                                           // t->child[0] = static | field
-        Info info;                                              // t->child[1] = type          
-        info.type = t->child[1]->token.lexeme;                  // t->child[2] = varName - varName - varName ...
-        for (auto p = t->child[2]; p != nullptr; p = p->next)
-        {
-            string name = p->token.lexeme;
-            if (t->child[0]->token.lexeme == "field")
-            {
-                info.kind = FIELD;
-                info.index = field_index++;
-            }
-            else if (t->child[0]->token.lexeme == "static")
-            {
-                info.kind = STATIC;
-                info.index = static_index++;
-            }
-
-            if (classesTable.back().insert({ name, info }).second == false)   // ≤Â»Î ß∞‹,∑˚∫≈±Ì÷–”–“—æ≠¥Ê‘⁄µƒ‘™Àÿ
-            {
-                error2(currentClass, p->token.row, info.type, name);
-            }
-        }
+    // ÂÜçÊ£ÄÊü•varNameÊòØÂê¶ÂêàÁêÜ
+    string varName = t->child[1]->token.lexeme;
+    if (subroutineTable.insert({varName, info}).second == false) {
+      error2(currentClass, t->child[1]->token.row, info.type, varName);
+      return;
     }
-    else if (t->nodeKind == Parser::SUBROUTINE_DEC_K)           // t = SUBROUTINE_DEC_K
-    {                                                           // t->child[0] = function
-        Info info;                                              // t->child[1] = type
-        if (t->child[0]->token.lexeme == "function")            // t->child[2] = functionName
-            info.kind = FUNCTION;                               // t->child[3] = arg - arg - arg ...
-        else if (t->child[0]->token.lexeme == "method")
-            info.kind = METHOD;
-        else if (t->child[0]->token.lexeme == "constructor")
-            info.kind = CONSTRUCTOR;
-        info.type = t->child[1]->token.lexeme;
-        for (auto p = t->child[3]; p != nullptr; p = p->next)
-        {
-            string type = p->child[0]->token.lexeme;
-            info.args.push_back(type);
-        }
-        string name = Parser::getFunctionName(t->child[2]->token.lexeme);
-        if (classesTable.back().insert({ name, info }).second == false)
-        {
-            error3(currentClass, t->child[0]->token.row, info.type, name);
-        }
+  } else if (t->nodeKind == Parser::VAR_DEC_K) // t = VAR_DEC_K
+  {                                            // t->child[0] = type
+    Info info; // t->child[1] = varName - varName - varName
+    info.kind = VAR;
+    info.type = t->child[0]->token.lexeme;
+    // ÂÖàÊ£ÄÊü•typeÊòØÂê¶ÂêàÁêÜ
+    if (info.type != "int" && info.type != "char" && info.type != "void" &&
+        info.type != "string" && info.type != "boolean") {
+      if (classIndex.find(info.type) == classIndex.end()) {
+        errorNum++;
+        error4(currentClass, t->child[1]->token.row, info.type);
+        return;
+      }
     }
+    // ÂÜçÊ£ÄÊü•varNameÊòØÂê¶ÂêàÁêÜ
+    for (auto p = t->child[1]; p != nullptr; p = p->next) {
+      string varName = p->token.lexeme;
+      info.index = var_index++;
+      if (subroutineTable.insert({varName, info}).second == false) {
+        error2(currentClass, p->token.row, info.type, varName);
+      }
+    }
+  }
 }
 
-void SymbolTable::subroutineTableInsert(Parser::TreeNode *t)
-{
-    if (t->nodeKind == Parser::CLASS_K)
-        currentClass = t->child[0]->token.lexeme;
-    else if (t->nodeKind == Parser::SUBROUTINE_DEC_K)                               // t = SUBROUTINE_DEC_K
-    {                                                                               // t->child[0] = function
-        initialSubroutineTable();                                                   // t->child[1] = type
-        string className = Parser::getCallerName(t->child[2]->token.lexeme);        // t->child[2] = functionName
-        string functionName = Parser::getFunctionName(t->child[2]->token.lexeme);   // t->child[3] = arg - arg - arg ...
-        currentClassNumber = classIndex.find(className)->second;
-        Info info = classesTable[currentClassNumber].find(functionName)->second;
-        subroutineTable["this"] = info;
-        var_index = arg_index = 0;
+SymbolTable::Info SymbolTable::subroutineTableFind(string name) {
+  auto iter = subroutineTable.find(name);
+  if (iter == subroutineTable.end())
+    return None;
+  else
+    return iter->second;
+}
+
+SymbolTable::Info SymbolTable::classesTableFind(string className,
+                                                string functionName) {
+  assert(classIndexFind(className) == true);
+  int classTableNumber = classIndex.find(className)->second;
+  auto iter = classesTable[classTableNumber].find(functionName);
+  if (iter == classesTable[classTableNumber].end())
+    return None;
+  else
+    return iter->second;
+}
+
+void SymbolTable::initialSubroutineTable() { subroutineTable.clear(); }
+
+void SymbolTable::printClassesTable() {
+  cout << "class index: " << endl;
+  cout << "Á±ªÂêç\t\tÁºñÂè∑\t\t" << endl;
+  for (auto iter = classIndex.cbegin(); iter != classIndex.cend(); ++iter)
+    cout << iter->first << "\t\t" << iter->second << endl;
+  cout << endl;
+  cout << "********************Á¨¶Âè∑Ë°®********************" << endl;
+  for (int i = 0; i < classesTable.size(); i++) {
+    cout << "class table: " << i << endl;
+    cout << "name\ttype\tkind\tvars" << endl;
+    for (auto iter = classesTable[i].cbegin(); iter != classesTable[i].cend();
+         ++iter) {
+      cout << iter->first << "\t" << iter->second.type << "\t"
+           << iter->second.kind << "\t" << iter->second.index;
+      for (int k = 0; k < iter->second.args.size(); ++k)
+        cout << iter->second.args[k] << "\t";
+      cout << endl;
     }
-    else if (t->nodeKind == Parser::PARAM_K)        // t = PARAM_K
-    {                                               // t->child[0] = type
-        // œ»ºÏ≤Ètype «∑Ò∫œ¿Ì                       // t->child[1] = varName
-        Info info;                                  
-        info.kind = ARG;
-        info.index = arg_index++;
-        info.type = t->child[0]->token.lexeme;
-        if (info.type != "int" && info.type != "char" && 
-            info.type != "void" && info.type != "string" && info.type != "boolean")     // »Áπ˚≤ª «ª˘±æ¿‡–Õ
-        {
-            if (classIndexFind(info.type) == false)     // “≤≤ª «¿‡¿‡–Õ
-            {
-                error4(currentClass, t->child[1]->token.row, info.type);
-                return;
-            }
-        }
-        // ‘ŸºÏ≤ÈvarName «∑Ò∫œ¿Ì
-        string varName = t->child[1]->token.lexeme;
-        if (subroutineTable.insert({ varName, info }).second == false)
-        {
-            error2(currentClass, t->child[1]->token.row, info.type, varName);
-            return;
-        }
-    }
-    else if (t->nodeKind == Parser::VAR_DEC_K)          // t = VAR_DEC_K
-    {                                                   // t->child[0] = type
-        Info info;                                      // t->child[1] = varName - varName - varName
-        info.kind = VAR;
-        info.type = t->child[0]->token.lexeme;
-        // œ»ºÏ≤Ètype «∑Ò∫œ¿Ì
-        if (info.type != "int" && info.type != "char" &&
-            info.type != "void" && info.type != "string" && info.type != "boolean")
-        {
-            if (classIndex.find(info.type) == classIndex.end())
-            {
-                errorNum++;
-                error4(currentClass, t->child[1]->token.row, info.type);
-                return;
-            }
-        }
-        // ‘ŸºÏ≤ÈvarName «∑Ò∫œ¿Ì
-        for (auto p = t->child[1]; p != nullptr; p = p->next)
-        {
-            string varName = p->token.lexeme;
-            info.index = var_index++;
-            if (subroutineTable.insert({ varName, info }).second == false)
-            {
-                error2(currentClass, p->token.row, info.type, varName);
-            }
-        }
-    }
+    cout << endl << endl;
+  }
 }
 
-SymbolTable::Info SymbolTable::subroutineTableFind(string name)
-{
-    auto iter = subroutineTable.find(name);
-    if (iter == subroutineTable.end())
-        return None;
-    else
-        return iter->second;
+bool SymbolTable::classIndexFind(string className) {
+  if (classIndex.find(className) == classIndex.end())
+    return false;
+  else
+    return true;
 }
 
-SymbolTable::Info SymbolTable::classesTableFind(string className, string functionName)
-{
-    assert(classIndexFind(className) == true);
-    int classTableNumber = classIndex.find(className)->second;
-    auto iter = classesTable[classTableNumber].find(functionName);
-    if (iter == classesTable[classTableNumber].end())
-        return None;
-    else
-        return iter->second;
-}
-
-void SymbolTable::initialSubroutineTable()
-{
-    subroutineTable.clear();
-}
-
-void SymbolTable::printClassesTable()
-{
-    cout << "class index: " << endl;
-    cout << "¿‡√˚\t\t±‡∫≈\t\t" << endl;
-    for (auto iter = classIndex.cbegin(); iter != classIndex.cend(); ++iter)       
-        cout << iter->first << "\t\t" << iter->second << endl;
-    cout << endl;
-    cout << "********************∑˚∫≈±Ì********************" << endl;
-    for (int i = 0; i < classesTable.size(); i++)
-    {
-        cout << "class table: " << i << endl;
-        cout << "name\ttype\tkind\tvars" << endl;
-        for (auto iter = classesTable[i].cbegin(); iter != classesTable[i].cend(); ++iter)
-        {
-            cout << iter->first << "\t" << iter->second.type << "\t" << iter->second.kind << "\t" << iter->second.index;
-            for (int k = 0; k < iter->second.args.size(); ++k)
-                cout << iter->second.args[k] << "\t";
-            cout << endl;
-        }
-        cout << endl << endl;
-    }
-
-}
-
-bool SymbolTable::classIndexFind(string className)
-{
-    if (classIndex.find(className) == classIndex.end())
-        return false;
-    else
-        return true;
-}
-
-int SymbolTable::getFieldNumber(string className)
-{
-    assert(classIndexFind(className) == true);
-    int classNum = classIndex.find(className)->second;
-    int nField = 0;
-    for (auto iter = classesTable[classNum].cbegin(); iter != classesTable[classNum].cend(); ++iter)
-        if (iter->second.kind == FIELD)
-            nField++;
-    return nField;
+int SymbolTable::getFieldNumber(string className) {
+  assert(classIndexFind(className) == true);
+  int classNum = classIndex.find(className)->second;
+  int nField = 0;
+  for (auto iter = classesTable[classNum].cbegin();
+       iter != classesTable[classNum].cend(); ++iter)
+    if (iter->second.kind == FIELD)
+      nField++;
+  return nField;
 }
