@@ -1,4 +1,4 @@
-#include "VritualMachion.h"
+#include "VM.h"
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -225,12 +225,13 @@ void run() {
     if (ip == 1) {
       int temp;
       temp = 0;
-      sp;
-      local;
-      argument;
-      _this;
-      that;
-      currentInstruction;
+      /// @todo find out what this makes
+      // sp;
+      // local;
+      // argument;
+      // _this;
+      // that;
+      // currentInstruction;
     }
     ++ip;
     execute();

@@ -114,7 +114,7 @@ void Scanner::rollBack() {
 
 Scanner::Token Scanner::nextToken() {
   Token token;
-  unsigned tokenStringIndex = 0;
+  // unsigned tokenStringIndex = 0;
   State state = START_STATE;
   while (state != DONE_STATE) {
     char ch = nextChar();
@@ -317,6 +317,8 @@ Scanner::Token Scanner::nextToken() {
       else
         state = INCOMMENT_STATE;
       break;
+    default:
+        /*fallthrough*/;
     }
     if (state == DONE_STATE && token.kind == ID)
       token.kind = searchReserved(token.lexeme);

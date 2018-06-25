@@ -163,6 +163,8 @@ void CodeGen::translate(Parser::TreeNode *t) {
     }
     break;
   }
+  default:
+      /*fallthrough*/;
   }
 }
 
@@ -312,6 +314,8 @@ void CodeGen::writeExpression(Parser::TreeNode *t) {
       }
       break;
     }
+    default:
+        /*fallthrough*/;
     }
   }
 }

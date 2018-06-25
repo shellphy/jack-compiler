@@ -123,6 +123,8 @@ void Analyzer::checkExpression(Parser::TreeNode *t) {
       }
       break;
     }
+    default:
+        /*fallthrough*/;
     }
   }
 }
@@ -164,6 +166,8 @@ void Analyzer::checkStatement(Parser::TreeNode *t) {
   case Parser::CALL_STATEMENT_K:
     checkExpression(t);
     break;
+  default:
+      /*fallthrough*/;
   }
 }
 

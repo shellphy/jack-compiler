@@ -920,6 +920,8 @@ void Parser::printSyntaxTree(TreeNode *tree) {
     case SUBROUTINE_BODY_K:
       cout << "subroutine_body" << endl;
       break;
+    default:
+        /*fallthrough*/;
     }
     printSyntaxTree(tree->child[0]);
     printSyntaxTree(tree->child[1]);

@@ -1,5 +1,5 @@
-#ifndef _VIRTUAL_MACHION_H
-#define _VIRTUAL_MACHION_H
+#ifndef _VM_H
+#define _VM_H
 
 #include <string>
 #include <unordered_map>
