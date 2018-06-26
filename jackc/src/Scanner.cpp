@@ -17,7 +17,7 @@ Scanner::Scanner() {
 
 void Scanner::resetRow() { row = 0; }
 
-void Scanner::openFile(string filename) {
+void Scanner::openFile(const string &filename) {
   string suffix = filename.substr(filename.size() - 5, 5);
   if (suffix != ".jack") {
     cerr << "file '" << filename
@@ -85,7 +85,7 @@ void Scanner::initSymbols() {
   //    symbols.insert("||");
 }
 
-Scanner::TokenType Scanner::searchReserved(string &s) {
+Scanner::TokenType Scanner::searchReserved(const string &s) {
   if (keyWords.find(s) != keyWords.end())
     return KEY_WORD;
   else

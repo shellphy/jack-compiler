@@ -49,12 +49,12 @@ public:
   void classesTableInsert(Parser::TreeNode *t); // 类符号表的插入操作
   void subroutineTableInsert(Parser::TreeNode *t); // 函数符号表的插入操作
 
-  Info subroutineTableFind(string name); // 函数符号表的查找操作
-  Info classesTableFind(string className,
-                        string functionName); // 类符号表的查找操作
-  bool classIndexFind(string className); // 判断className是不是合法的类名
+  Info subroutineTableFind(string const& name); // 函数符号表的查找操作
+  Info classesTableFind(string const& className,
+                        string const& functionName); // 类符号表的查找操作
+  bool classIndexFind(string const& className); // 判断className是不是合法的类名
 
-  int getFieldNumber(string className);
+  int getFieldNumber(string const& className);
   void printClassesTable(); // 测试程序, 打印类符号表
 };
 

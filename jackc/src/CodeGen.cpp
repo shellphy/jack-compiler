@@ -410,17 +410,17 @@ void CodeGen::writeArithmetic(Command command) {
   }
 }
 
-void CodeGen::writeLabel(string label) { fout << "label " << label << "\n"; }
+void CodeGen::writeLabel(const string &label) { fout << "label " << label << "\n"; }
 
-void CodeGen::writeGoto(string label) { fout << "goto " << label << "\n"; }
+void CodeGen::writeGoto(const string &label) { fout << "goto " << label << "\n"; }
 
-void CodeGen::writeIf(string label) { fout << "if-goto " << label << "\n"; }
+void CodeGen::writeIf(const string &label) { fout << "if-goto " << label << "\n"; }
 
-void CodeGen::writeCall(string name, int nArgs) {
+void CodeGen::writeCall(const string &name, int nArgs) {
   fout << "call " << name << " " << nArgs << "\n";
 }
 
-void CodeGen::writeFunction(string name, int nArgs) {
+void CodeGen::writeFunction(const string &name, int nArgs) {
   fout << "function " << name << " " << nArgs << "\n";
 }
 

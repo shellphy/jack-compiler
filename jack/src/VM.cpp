@@ -28,7 +28,7 @@ static vector<string> currentInstruction; // 保存当前正在执行的指令
 static string currentClassName; // 保存当前正在执行的指令所在的类的名字
 static bool arriveEnd = false; // 标记是否到达程序结尾
 
-void executeArithmetic(string command) {
+void executeArithmetic(const string &command) {
   if (command == "add") {
     ram[sp - 2] = ram[sp - 2] + ram[sp - 1];
     sp--;
@@ -66,7 +66,7 @@ void executeArithmetic(string command) {
   }
 }
 
-void executePush(string segment, int index) {
+void executePush(const string &segment, int index) {
   if (segment == "static") {
     string t;
     ostringstream iss(t);
@@ -99,7 +99,7 @@ void executePush(string segment, int index) {
     ram[sp++] = temp[index];
 }
 
-void executePop(string segment, int index) {
+void executePop(const string &segment, int index) {
   if (segment == "static") {
     string t;
     ostringstream iss(t);
@@ -130,19 +130,19 @@ void executePop(string segment, int index) {
   } else if (segment == "temp")
     temp[index] = ram[--sp];
 }
-void executeLabel(string label) {
+void executeLabel(const string &label) {
   // do nothing
 }
 
-void executeGoto(string label) { ip = instruction_address.find(label)->second; }
+void executeGoto(const string &label) { ip = instruction_address.find(label)->second; }
 
-void executeIf(string label) {
+void executeIf(const string &label) {
   int temp = ram[--sp];
   if (temp != 0)
     ip = instruction_address.find(label)->second;
 }
 
-void executeCall(string functionName, int numArgs) {
+void executeCall(const string &functionName, int numArgs) {
   if (functionName == "IO.putchar") {
     putchar(ram[sp - 1]);
     return;
@@ -171,7 +171,7 @@ void executeReturn() {
   local = ram[temp - 4];
 }
 
-void executeFunction(string functionName, int numLocals) {
+void executeFunction(const string &functionName, int numLocals) {
   auto iter = functionName.cbegin();
   while (iter != functionName.cend())
     if (*iter++ == '.')

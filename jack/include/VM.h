@@ -9,15 +9,15 @@ using namespace std;
 
 extern vector<string> filenames;
 
-void executeArithmetic(string command);                   // 执行算术指令
-void executePush(string segment, int index);              // 执行push指令
-void executePop(string segment, int index);               // 执行pop指令
-void executeLabel(string label);                          // 执行label指令
-void executeGoto(string label);                           // 执行goto指令
-void executeIf(string label);                             // 执行if-goto指令
-void executeCall(string functionName, int numArgs);       // 执行call指令
+void executeArithmetic(string const& command);                   // 执行算术指令
+void executePush(string const& segment, int index);              // 执行push指令
+void executePop(string const& segment, int index);               // 执行pop指令
+void executeLabel(string const& label);                          // 执行label指令
+void executeGoto(string const& label);                           // 执行goto指令
+void executeIf(string const& label);                             // 执行if-goto指令
+void executeCall(string const& functionName, int numArgs);       // 执行call指令
 void executeReturn();                                     // 执行return指令
-void executeFunction(string functionName, int numLocals); // 执行function指令
+void executeFunction(string const& functionName, int numLocals); // 执行function指令
 void executeEnd();                                        // 程序结束
 
 void init();             // cpu通电之后初始化ip

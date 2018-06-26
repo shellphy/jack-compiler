@@ -60,10 +60,10 @@ private:
   ifstream fin;       // 源程序文件的输入流对象
   char nextChar();    // 返回缓冲区中的下一个字符
   void rollBack();    // 回滚缓冲区
-  TokenType searchReserved(string &s); // 查找关键字
+  TokenType searchReserved(string const&s); // 查找关键字
 public:
   Scanner();
-  void openFile(string filename);
+  void openFile(string const& filename);
   void closeFile();
   Token nextToken(); // 返回下一个Token
   void resetRow();

@@ -38,7 +38,7 @@ string Parser::getFullName(string name) {
   return fullname;
 }
 
-string Parser::getCallerName(string fullName) {
+string Parser::getCallerName(const string &fullName) {
   auto iter = fullName.cbegin();
   while (iter != fullName.cend()) {
     if (*iter == '.')
@@ -48,7 +48,7 @@ string Parser::getCallerName(string fullName) {
   return string(fullName.cbegin(), iter);
 }
 
-string Parser::getFunctionName(string fullName) {
+string Parser::getFunctionName(const string &fullName) {
   auto iter = fullName.cbegin();
   while (iter != fullName.cend()) {
     if (*iter == '.')

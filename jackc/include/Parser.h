@@ -112,8 +112,8 @@ public:
   TreeNode *getSyntaxTree();
   void print();
   void parse_program();
-  static string getCallerName(string fullName);
-  static string getFunctionName(string fullName);
+  static string getCallerName(string const& fullName);
+  static string getFunctionName(string const &fullName);
 };
 
 #endif

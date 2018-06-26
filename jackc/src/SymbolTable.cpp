@@ -136,7 +136,7 @@ void SymbolTable::subroutineTableInsert(Parser::TreeNode *t) {
   }
 }
 
-SymbolTable::Info SymbolTable::subroutineTableFind(string name) {
+SymbolTable::Info SymbolTable::subroutineTableFind(const string &name) {
   auto iter = subroutineTable.find(name);
   if (iter == subroutineTable.end())
     return None;
@@ -144,8 +144,8 @@ SymbolTable::Info SymbolTable::subroutineTableFind(string name) {
     return iter->second;
 }
 
-SymbolTable::Info SymbolTable::classesTableFind(string className,
-                                                string functionName) {
+SymbolTable::Info SymbolTable::classesTableFind(const string &className,
+                                                const string &functionName) {
   assert(classIndexFind(className) == true);
   int classTableNumber = classIndex.find(className)->second;
   auto iter = classesTable[classTableNumber].find(functionName);
@@ -179,14 +179,14 @@ void SymbolTable::printClassesTable() {
   }
 }
 
-bool SymbolTable::classIndexFind(string className) {
+bool SymbolTable::classIndexFind(const string &className) {
   if (classIndex.find(className) == classIndex.end())
     return false;
   else
     return true;
 }
 
-int SymbolTable::getFieldNumber(string className) {
+int SymbolTable::getFieldNumber(const string &className) {
   assert(classIndexFind(className) == true);
   int classNum = classIndex.find(className)->second;
   int nField = 0;

@@ -171,8 +171,8 @@ void Analyzer::checkStatement(Parser::TreeNode *t) {
   }
 }
 
-void Analyzer::checkArguments(Parser::TreeNode *t, vector<string> parameter,
-                              string functionName) {
+void Analyzer::checkArguments(Parser::TreeNode *t, const vector<string> &parameter,
+                              const string &functionName) {
   int argumentSize = 0;
   for (auto p = t->child[0]->next; p != nullptr; p = p->next) {
     checkExpression(p);
